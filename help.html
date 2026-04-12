@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZX PixelPaste - Help / Nápověda</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#121933;
+      --panel2:#182241;
+      --text:#eef3ff;
+      --muted:#aab6d4;
+      --accent:#77a2ff;
+      --border:#2a3863;
+      --ok:#8fe29b;
+      --warn:#ffd27a;
+      --danger:#ff9aa5;
+      --code:#0a0f1d;
+      --shadow:0 16px 40px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:linear-gradient(180deg,#070b16,#0d1326);color:var(--text);font:16px/1.55 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    a{color:var(--accent)}
+    .page{max-width:1200px;margin:0 auto;padding:28px 18px 80px}
+    .hero,.panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero{padding:28px;position:relative}
+    .hero h1{margin:0 0 8px;font-size:34px;line-height:1.15}
+    .hero p{margin:8px 0;color:var(--muted)}
+    .badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .badge{padding:6px 10px;border:1px solid #4560a0;border-radius:999px;background:#20315e;color:#e7efff;font-size:13px}
+    .badge-next{border-color:#5a8aff;background:#1a2e5e;color:#b8d4ff}
+    .badge-text{border-color:#7fb0ff;background:#1a2e4a;color:#c8e0ff}
+    .site-chrome{position:sticky;top:0;z-index:40;padding-top:12px;margin:-12px -12px 0;background:linear-gradient(180deg,rgba(7,11,22,.96),rgba(7,11,22,.88) 72%,rgba(7,11,22,0));backdrop-filter:blur(8px)}
+    .lang-switch{display:flex;gap:8px;flex-wrap:wrap;position:absolute;top:24px;right:24px}
+    .lang-btn{padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:#182341;color:var(--text);cursor:pointer;font-weight:600}
+    .lang-btn.active{background:#2f4f93;border-color:#79a2ff}
+    .layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:20px;margin-top:20px}
+    .toc{position:sticky;top:176px;padding:18px;height:max-content;max-height:calc(100vh - 192px);overflow:auto}
+    .toc h2{margin:0 0 12px;font-size:18px}
+    .toc a{text-decoration:none}
+    .toc ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+    .toc li{margin:0}
+    .toc .sub{padding-left:14px;display:grid;gap:6px;margin-top:4px}
+    .content{display:grid;gap:20px}
+    section.panel{padding:24px}
+    h2{margin:0 0 10px;font-size:28px}
+    h3{margin:28px 0 10px;font-size:22px}
+    h4{margin:18px 0 8px;font-size:18px}
+    p{margin:10px 0}
+    ul,ol{margin:10px 0 0 20px}
+    li{margin:6px 0}
+    .note,.tip,.warn,.next-note,.text-note{padding:14px 16px;border-radius:14px;margin:14px 0}
+    .note{background:#11192d;border:1px solid #2d406d}
+    .tip{background:#102314;border:1px solid #2f6a38}
+    .warn{background:#2a1b12;border:1px solid #845122}
+    .next-note{background:#0e1e3a;border:1px solid #3a6aaa}
+    .text-note{background:#0e1e30;border:1px solid #3a5a8a}
+    .grid{display:grid;gap:14px}
+    .two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .card{background:#0f1529;border:1px solid #26365f;border-radius:14px;padding:16px}
+    .card h4{margin-top:0}
+    table{width:100%;border-collapse:collapse;margin-top:12px;background:#0d1428;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+    th,td{padding:10px 12px;border-bottom:1px solid #23345c;vertical-align:top;text-align:left}
+    th{background:#182341}
+    tr:last-child td{border-bottom:none}
+    code{background:var(--code);padding:2px 6px;border-radius:8px;border:1px solid #243251}
+    .kbd{display:inline-block;padding:2px 8px;border-radius:8px;background:#0e1730;border:1px solid #34497d;font-size:14px}
+    .footer{color:var(--muted);font-size:14px}
+    .lang-pane{display:none}
+    .lang-pane.active{display:block}
+    /* ── Search ── */
+    .search-wrap{margin-top:18px;position:relative}
+    .scroll-top-btn{position:fixed;right:22px;bottom:22px;z-index:60;width:52px;height:52px;border-radius:999px;border:1px solid #5a8aff;background:linear-gradient(180deg,#2f4f93,#223a6d);color:#eef3ff;box-shadow:0 14px 34px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;opacity:0;transform:translateY(12px) scale(.96);pointer-events:none;transition:opacity .18s ease,transform .18s ease,background .15s ease}
+    .scroll-top-btn:hover{background:linear-gradient(180deg,#3b63b4,#29477f)}
+    .scroll-top-btn.visible{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+    .search-input{width:100%;padding:11px 44px 11px 16px;border-radius:12px;border:1px solid var(--border);background:#0d1428;color:var(--text);font-size:15px;outline:none;transition:border-color .15s}
+    .search-input:focus{border-color:#5a8aff}
+    .search-input::placeholder{color:var(--muted)}
+    .search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;line-height:1;padding:4px;display:none}
+    .search-clear.visible{display:block}
+    .search-status{font-size:13px;color:var(--muted);margin-top:6px;min-height:18px}
+    .search-status .hit-count{color:var(--ok);font-weight:600}
+    .search-status .no-hit{color:var(--danger)}
+    mark{background:#7a5c00;color:#ffe77a;border-radius:3px;padding:0 2px}
+    section.panel.search-hidden{display:none}
+
+    /* Keep anchor targets visible below sticky search/header */
+    section.panel[id],
+    h3[id],
+    h4[id]{scroll-margin-top:140px}
+    .toc a.toc-hidden{opacity:.3;pointer-events:none}
+    @media (max-width: 900px){
+      .site-chrome{position:sticky;top:0;padding-top:8px;margin:-8px -8px 0}
+      .layout{grid-template-columns:1fr}
+      .toc{position:static;max-height:none;overflow:visible}
+      .two{grid-template-columns:1fr}
+      .lang-switch{position:static;margin-top:14px}
+      .scroll-top-btn{right:16px;bottom:16px;width:48px;height:48px}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="cz">Čeština</button>
+      </div>
+
+      <div id="hero-en" class="lang-pane active">
+        <h1>ZX PixelPaste – Help</h1>
+        <p>This page contains a full English help and a full Czech help. Use the language switch in the top-right corner to toggle between them.</p>
+        <p>The application supports both classic ZX Spectrum mode (<strong>256×192 bitmap</strong>, <strong>32×24 attribute grid</strong>) and <strong>ZX Spectrum Next Layer 2</strong> mode (256×192, 256 colors, 8bpp indexed). Dedicated workflows exist for screens, sprites, fonts, masks, text objects, and BIN/ASM/SPR export.</p>
+      </div>
+
+      <div id="hero-cz" class="lang-pane">
+        <h1>ZX PixelPaste – Nápověda</h1>
+        <p>Tato stránka obsahuje plnou anglickou i plnou českou nápovědu. Mezi jazyky přepínáš tlačítky vpravo nahoře.</p>
+        <p>Aplikace podporuje klasický ZX Spectrum režim (<strong>bitmapa 256×192</strong>, <strong>atributová mřížka 32×24</strong>) i <strong>ZX Spectrum Next Layer 2</strong> mód (256×192, 256 barev, 8bpp indexed). Jsou tu samostatné workflow pro obrazovky, sprity, fonty, masky, textové objekty a export BIN/ASM/SPR/NXI.</p>
+      </div>
+    </header>
+
+    <div class="site-chrome">
+      <div class="page" style="padding-top:0;padding-bottom:0;margin-top:-8px">
+        <div class="search-wrap">
+          <input class="search-input" id="searchInput" type="search" autocomplete="off" spellcheck="false"
+            placeholder="Search help… / Hledat v nápovědě…">
+          <button class="search-clear" id="searchClear" title="Clear search">✕</button>
+          <div class="search-status" id="searchStatus"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ ENGLISH ═══ -->
+    <div id="pane-en" class="lang-pane active">
+      <div class="layout">
+        <nav class="toc panel">
+          <h2>Contents</h2>
+          <ul>
+            <li><a href="#en-basics">1. General basics</a></li>
+            <li><a href="#en-screen">2. Screen Editor</a>
+              <div class="sub">
+                <a href="#en-screen-top">Top controls</a>
+                <a href="#en-screen-toolbox">Toolbox</a>
+                <a href="#en-screen-canvas">Canvas and color controls</a>
+                <a href="#en-screen-text">Text tool</a>
+                <a href="#en-screen-next">Next Layer 2 mode</a>
+                <a href="#en-screen-layers">Layers and text layers</a>
+                <a href="#en-screen-selection">Selection panel</a>
+                <a href="#en-screen-files">Import / export / project files</a>
+              </div>
+            </li>
+            <li><a href="#en-sprite">3. Sprite Editor</a>
+              <div class="sub">
+                <a href="#en-sprite-classic">Classic ZX sprite mode</a>
+                <a href="#en-sprite-next">Next 8bpp sprite mode</a>
+                <a href="#en-sprite-multisize">Large / multi-tile sprites</a>
+              </div>
+            </li>
+            <li><a href="#en-font">4. Font Editor</a></li>
+            <li><a href="#en-shortcuts">5. Keyboard and mouse controls</a></li>
+            <li><a href="#en-workflow">6. Recommended workflows</a></li>
+          </ul>
+        </nav>
+
+        <main class="content">
+          <section id="en-basics" class="panel">
+            <h2>1. General basics</h2>
+            <div class="grid two">
+              <div class="card">
+                <h4>Main tabs</h4>
+                <ul>
+                  <li><strong>Screen Editor</strong> – full ZX screen editing with bitmap, attributes, selections, layers, text objects, and dithering. Also supports Next Layer 2 mode.</li>
+                  <li><strong>Sprite Editor</strong> – sprite frames, optional masks, animation preview, BIN/ASM export. Also supports Next 8bpp/4bpp sprite mode.</li>
+                  <li><strong>Font Editor</strong> – font or UDG editing, glyph transforms, preview, BIN/ASM export.</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h4>How drawing works</h4>
+                <ul>
+                  <li><strong>Left mouse button</strong> draws or confirms the current tool operation.</li>
+                  <li><strong>Right mouse button</strong> erases in bitmap-based editors.</li>
+                  <li><strong>Middle mouse button</strong> samples the visible attribute (classic) or color index (Next) under the cursor in Screen Editor.</li>
+                  <li>Selections can become <strong>floating selections</strong> that can be moved before being committed.</li>
+                  <li>All drawing tools use <strong>Bresenham interpolation</strong> on drag, so no pixels are skipped even on fast movements.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="note"><strong>Important:</strong> the editor stores bitmap and attribute data separately. In Screen Editor, a visible pixel and its colors are related but not identical. In Sprite and Font editors, the bitmap is primary while palette and mask behavior depends on the current mode.</div>
+
+            <table>
+              <thead><tr><th>Concept</th><th>Meaning</th></tr></thead>
+              <tbody>
+                <tr><td>INK</td><td>Foreground color (classic ZX: 0–7, bright variants via Bright flag).</td></tr>
+                <tr><td>PAPER</td><td>Background color.</td></tr>
+                <tr><td>Bright</td><td>Uses bright variants of the ZX palette.</td></tr>
+                <tr><td>Flash</td><td>Sets the ZX FLASH attribute bit.</td></tr>
+                <tr><td>Mask</td><td>Auxiliary per-pixel layer for sprites and fonts.</td></tr>
+                <tr><td>Text layer</td><td>A live, editable text object that appears as a separate entry in the Layers panel and is rendered on top of bitmap layers.</td></tr>
+                <tr><td>ASM preview</td><td>Generated assembly text preview of current data, updated after each stroke.</td></tr>
+                <tr><td>Layer 2</td><td>ZX Spectrum Next full-color screen mode — 256×192, 256-color indexed palette, no attribute grid.</td></tr>
+                <tr><td>NXI</td><td>Next screen file format: 49152 bytes of pixel data + optional 512-byte palette.</td></tr>
+                <tr><td>SL2</td><td>Alternative Next Layer 2 binary format (raw pixel data only, no header).</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section id="en-screen" class="panel">
+            <h2>2. Screen Editor</h2>
+            <p>The Screen Editor is the main workspace for building a ZX Spectrum screen. It combines a 256×192 bitmap, a 32×24 attribute layer, selection tools, paint tools, dithering, text objects, layer management, and SCR/ATTR/NXI import-export. Switch between <strong>classic ZX</strong> and <strong>Next Layer 2</strong> modes via the screen mode selector at the top.</p>
+
+            <h3 id="en-screen-top">Top controls</h3>
+            <table>
+              <thead><tr><th>Control</th><th>What it does</th><th>How to use it</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Screen name</strong></td><td>Name of the current screen item.</td><td>Type directly into the text field.</td></tr>
+                <tr><td><strong>Screen mode</strong></td><td>Switches between <em>Classic ZX Spectrum</em> and <em>ZX Spectrum Next Layer 2</em>. When switching modes, text object colors are automatically converted to the nearest equivalent.</td><td>Select from the dropdown. Switching converts the current canvas including all text layers.</td></tr>
+                <tr><td><strong>↶ Undo / ↷ Redo</strong></td><td>Undo or restore the last action.</td><td>Use the buttons or <span class="kbd">Ctrl</span>+<span class="kbd">Z</span> / <span class="kbd">Ctrl</span>+<span class="kbd">Y</span>.</td></tr>
+                <tr><td><strong>− / +</strong></td><td>Zoom out or in.</td><td>Use buttons or keyboard shortcuts.</td></tr>
+                <tr><td><strong>?</strong></td><td>Opens the help dialog.</td><td>Click once.</td></tr>
+                <tr><td><strong>Status</strong></td><td>Shows what the editor is currently doing.</td><td>Read-only.</td></tr>
+              </tbody>
+            </table>
+
+            <h3 id="en-screen-toolbox">Toolbox</h3>
+            <table>
+              <thead><tr><th>Group</th><th>Tools</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Selection</strong></td><td>Rect sel, Oval sel, Free sel, Move</td><td>Create and manipulate selected areas. Move turns a selection into a floating selection that can be dragged before committing.</td></tr>
+                <tr><td><strong>Draw</strong></td><td>Pencil, Brush, Erase, Spray, Line, <strong>Text</strong></td><td>Bitmap drawing and direct painting. Spray applies continuously on drag. Text places editable text objects directly on the canvas.</td></tr>
+                <tr><td><strong>Shapes</strong></td><td>Rect, Fill rect, Ellipse, Fill oval</td><td>Drag-based geometric drawing with live preview while dragging.</td></tr>
+                <tr><td><strong>Paint &amp; Color</strong></td><td>Fill, <strong>Dither</strong>, Attr, Pick</td><td>Fill areas, apply dithering, paint attribute cells, or sample values from the canvas.</td></tr>
+              </tbody>
+            </table>
+
+            <h3 id="en-screen-canvas">Canvas and color controls</h3>
+            <table>
+              <thead><tr><th>Control</th><th>Meaning</th><th>How to use it</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Show Attrs / Layer 2</strong></td><td>Toggles attribute coloring (classic) or shows Layer 2 label (Next).</td><td>In classic mode: useful when checking ZX color clash.</td></tr>
+                <tr><td><strong>INK swatches</strong></td><td>Select foreground color (classic mode). While a text object is being edited, clicking an INK swatch instantly changes its color.</td><td>Click one of the 8 ZX colors. In Next mode, use the 256-color palette grid.</td></tr>
+                <tr><td><strong>PAPER swatches</strong></td><td>Select background color (classic mode only).</td><td>Click one of the 8 ZX colors.</td></tr>
+                <tr><td><strong>Bright</strong></td><td>Attribute switch (classic mode). While a text object is being edited, toggling Bright instantly updates its color.</td><td>Toggle on or off.</td></tr>
+                <tr><td><strong>Flash</strong></td><td>Attribute switch (classic mode only).</td><td>Toggle on or off.</td></tr>
+                <tr><td><strong>Transparent PAPER</strong></td><td>Makes the current layer background transparent in the current 8×8 attribute cell.</td><td>Best used on upper layers in classic mode. Not available in Next mode.</td></tr>
+                <tr><td><strong>INK ⇄ PAPER</strong></td><td>Swaps the current foreground and background colors.</td><td>Useful for fast color inversion.</td></tr>
+                <tr><td><strong>Hover attr</strong></td><td>Shows the final visible INK/PAPER under the cursor (classic) or color index (Next).</td><td>Useful when working with multiple layers.</td></tr>
+                <tr><td><strong>Brush / Spray / Density</strong></td><td>Tool-specific sliders for size and density.</td><td>Adjust to match the active tool.</td></tr>
+                <tr><td><strong>Dither len.</strong></td><td>Controls the fade-out distance of the Dither tool stroke.</td><td>Higher values produce a longer gradient trail.</td></tr>
+                <tr><td><strong>Dither mode</strong></td><td>Selects the dither pattern: Solid, Checker, Sparse, or Radial.</td><td>Choose from the dropdown next to the Dither length slider.</td></tr>
+                <tr><td><strong>Attr Only</strong></td><td>Edits only the 32×24 attribute map (classic mode only).</td><td>Use for recoloring without changing bitmap pixels. <strong>Left-click</strong> writes the current INK+PAPER. <strong>Right-click</strong> writes with INK and PAPER <em>swapped</em> — useful for quickly inverting a cell's colors without changing the editor palette.</td></tr>
+                <tr><td><strong>1×1 / 8×8</strong></td><td>Grid overlays (classic mode only).</td><td>Use 1×1 for pixel precision and 8×8 for attribute planning.</td></tr>
+              </tbody>
+            </table>
+
+            <div class="tip"><strong>Transparent PAPER workflow:</strong> use transparent PAPER mainly on upper layers for highlights, text, overlays, or details. <strong>Overlay</strong> is the simpler compositing mode, while <strong>Smart remap</strong> tries to find a more suitable ZX attribute remap for the final visible result. When you start drawing with Transparent PAPER into an already occupied area of the same layer, the editor may automatically create a new overlay layer above the active one and redirect the stroke there.</div>
+
+            <!-- ── TEXT TOOL ── -->
+            <h3 id="en-screen-text">Text tool</h3>
+            <div class="text-note">The Text tool places <strong>live, editable text objects</strong> directly on the canvas. Each text object is a separate entry in the Layers panel and is rendered on top of all bitmap layers. Text objects can be moved, hidden, renamed, and deleted independently. When Merge Layers is used, visible text objects are rasterized into pixels.</div>
+
+            <h4>Basic usage</h4>
+            <ol>
+              <li>Select the <strong>Text</strong> tool from the Draw group in the toolbox.</li>
+              <li>Click anywhere on the canvas — a floating editor box appears and gets focus immediately. Start typing right away.</li>
+              <li>The text is rendered live on the canvas as you type — no need to confirm to see it.</li>
+              <li>Press <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> or <span class="kbd">Esc</span> to close the editor box. Clicking elsewhere on the canvas also closes it.</li>
+            </ol>
+
+            <h4>Text editor box</h4>
+            <p>When editing, a floating editor box appears near the text. It has a <strong>drag handle</strong> (⠿) at the top — grab it to drag the editor anywhere in the canvas area so it doesn't cover what you're working on. The editor box is positioned automatically below or above the text depending on available space.</p>
+
+            <table>
+              <thead><tr><th>Control / shortcut</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">Enter</span></td><td>Closes the text editor and confirms all edits. The text remains as a live layer.</td></tr>
+                <tr><td><span class="kbd">Esc</span></td><td>Closes the text editor. Edits are preserved (text is stored live on every keystroke).</td></tr>
+                <tr><td>Click on canvas</td><td>Closes the text editor without creating a new text object at the click position.</td></tr>
+                <tr><td>Drag the ⠿ handle</td><td>Moves the editor box to any position within the canvas area.</td></tr>
+                <tr><td>Multiline support</td><td>Press <span class="kbd">Enter</span> inside the editor for multi-line text.</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Text tool panel</h4>
+            <p>When the Text tool is active, a panel appears below the canvas controls with the following options:</p>
+            <table>
+              <thead><tr><th>Option</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Font</strong></td><td>Choose between <em>Tiny 5×7</em> (compact pixel font), <em>ZX ROM 8×8</em> (the original ZX Spectrum font), or <em>Font editor</em> (uses the font currently open in the Font Editor tab).</td></tr>
+                <tr><td><strong>Bold</strong></td><td>Renders each glyph one pixel wider for a bold effect.</td></tr>
+                <tr><td><strong>Italic</strong></td><td>Applies a slight horizontal slant to each glyph.</td></tr>
+                <tr><td><strong>Delete text</strong></td><td>Permanently removes the currently selected text object.</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Changing text color</h4>
+            <table>
+              <thead><tr><th>Mode</th><th>How to change color</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Classic ZX mode</strong></td><td>While the text editor is open, click any <strong>INK swatch</strong> or toggle <strong>Bright</strong> — the text color updates instantly. The selected INK + Bright combination becomes the text color.</td></tr>
+                <tr><td><strong>Next Layer 2 mode</strong></td><td>While the text editor is open, click any color in the <strong>256-color palette grid</strong> or the quick-pick row — the text color updates instantly to that palette index.</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Moving text on the canvas</h4>
+            <p>With the Text tool active, <strong>click and drag</strong> any existing text object on the canvas to reposition it. The text moves in real time. You can also move it via the Layers panel — select the text layer and use the Up/Down buttons.</p>
+
+            <h4>Editing existing text</h4>
+            <p>With the Text tool active, <strong>double-click</strong> any text object on the canvas (or click the ✎ button next to it in the Layers panel) to reopen the editor box and change the content.</p>
+
+            <div class="tip"><strong>Workflow tip:</strong> compose your text objects freely, adjust colors and fonts, then use <strong>Merge Layers</strong> when you're satisfied. Merge rasterizes all visible text objects into the merged bitmap layer — after that the text is permanent pixels. Use Undo to go back if needed.</div>
+
+            <div class="warn"><strong>Note:</strong> text objects are stored separately from bitmap data. They are saved in the project JSON file and survive Save/Load Project. However, SCR/BIN/NXI exports always include the rendered text (as if merged) — text is always baked into exports.</div>
+
+            <!-- ── NEXT MODE ── -->
+            <h3 id="en-screen-next">Next Layer 2 mode</h3>
+            <div class="next-note">This section applies only when <strong>ZX Spectrum Next Layer 2</strong> is selected as the screen mode.</div>
+
+            <p>In Next mode the 256×192 canvas uses a fully indexed 256-color palette — no attribute grid, no INK/PAPER, no color clash. Each pixel stores a palette index (0–255). This maps directly to the ZX Spectrum Next Layer 2 screen format.</p>
+
+            <table>
+              <thead><tr><th>Feature</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><strong>256-color palette</strong></td><td>The palette grid shows all 256 Next colors. <strong>Left-click</strong> assigns <strong>Color A</strong> (main draw color), <strong>right-click</strong> assigns <strong>Color B</strong> (secondary / erase color).</td></tr>
+                <tr><td><strong>Color A / Color B chips</strong></td><td>The two chips above the palette show the currently selected Next indices, their swatches, and numeric palette IDs.</td></tr>
+                <tr><td><strong>Middle mouse</strong></td><td>Middle-click on the canvas samples the color index under the cursor and assigns it to the active draw color.</td></tr>
+                <tr><td><strong>Text color in Next mode</strong></td><td>While editing a text object, clicking any color in the palette instantly changes the text color to that palette index.</td></tr>
+                <tr><td><strong>Next preview adjustments</strong></td><td>Below the palette are three live preview sliders: <strong>Brightness</strong>, <strong>Contrast</strong>, and <strong>Saturation</strong> (all −100…+100). They affect only the Screen Editor preview until applied.</td></tr>
+                <tr><td><strong>Apply to layer</strong></td><td>Commits the current Brightness / Contrast / Saturation preview changes permanently into the <strong>active Next bitmap layer</strong>. The editor remaps each painted pixel to the nearest Next palette entry and then resets the sliders back to 0.</td></tr>
+                <tr><td><strong>Reset</strong></td><td>Clears the Next preview adjustment sliders back to zero without modifying layer data.</td></tr>
+                <tr><td><strong>Import L2</strong></td><td>Loads a raw Layer 2 file (49152 bytes of 8bpp indexed data, no header). Replaces the canvas pixel data.</td></tr>
+                <tr><td><strong>Export L2 Raw</strong></td><td>Exports 49152 bytes of raw indexed pixel data. Load directly into Next Layer 2 memory at address <code>$C000</code> (bank 8).</td></tr>
+                <tr><td><strong>Export PAL</strong></td><td>Exports the 512-byte Next palette block (256 × 2 bytes in RRRGGGBB + B format).</td></tr>
+                <tr><td><strong>Export SL2</strong></td><td>Exports an SL2 file — same pixel layout as L2 Raw, alternative extension used by some Next tools.</td></tr>
+                <tr><td><strong>Export NXI</strong></td><td>Exports an NXI file: 49152 bytes of pixel data followed by the 512-byte palette. This is the most complete Next screen format and can be loaded directly by NextBASIC or Z80 loaders.</td></tr>
+                <tr><td><strong>Export NXI + NXP (compat)</strong></td><td>Exports a compatibility pair for workflows that want screen data and palette as separate files.</td></tr>
+                <tr><td><strong>Import NXI</strong></td><td>Loads an NXI file. If the file contains palette data (≥ 49664 bytes) it is also applied to the editor palette.</td></tr>
+                <tr><td><strong>Convert to Next</strong></td><td>Converts the current classic ZX screen to Next Layer 2 format. Text object colors are also converted to the nearest Next palette index.</td></tr>
+                <tr><td><strong>Convert to Classic</strong></td><td>Converts the current Next Layer 2 canvas back to classic ZX Spectrum format. A <strong>conversion dialog</strong> appears with a live before/after preview and the following options:<br><br>
+                  <strong>Method:</strong> <em>Direct conversion</em> (nearest ZX colour per pixel, fast) or <em>Dithering — Ordered Bayer</em> (dot patterns simulate mid-tones within each 8×8 attribute cell).<br>
+                  <strong>Dither strength</strong> (0–100 %): how strongly the Bayer pattern is applied. At 0 % it behaves like direct conversion; at 100 % full dithering is used.<br>
+                  <strong>Matrix:</strong> Bayer 2×2 (finer), 4×4 (recommended), or 8×8 (coarser texture).<br>
+                  <strong>Brightness / Contrast / Saturation</strong> (-100…+100): pre-process the source image before conversion. The preview updates live as you move the sliders.<br><br>
+                  Text object palette indices are mapped to the nearest ZX ink color.</td></tr>
+              </tbody>
+            </table>
+
+            <div class="tip"><strong>NXI workflow:</strong> draw in Next mode → <strong>Export NXI</strong> → load from NextBASIC with <code>LOAD "screen.nxi" LAYER 2</code> or from Z80 with a standard Layer 2 loader. The NXI format bundles pixels and palette together so the colors are exactly as you designed them.</div>
+
+            <div class="note"><strong>Classic ↔ Next conversion:</strong> use <em>Convert to Next</em> to move a finished classic screen into full-color Next mode for further editing. Use <em>Convert to Classic</em> to go the other way — colors will be quantized to the nearest ZX attribute pair per 8×8 cell, so some color detail will be lost. Text object colors are converted automatically in both directions.</div>
+
+            <!-- ── LAYERS ── -->
+            <h3 id="en-screen-layers">Layers and text layers</h3>
+            <p>The Layers panel shows all bitmap layers and all text objects together in a unified list. Bitmap layers are marked with a filled square (⬛); text layers are marked with a blue <strong>T</strong> badge and show a preview of their content in quotes.</p>
+
+            <table>
+              <thead><tr><th>Control</th><th>Applies to</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Add</strong></td><td>Bitmap</td><td>Creates a new bitmap layer with transparent attributes.</td></tr>
+                <tr><td><strong>Duplicate</strong></td><td>Both</td><td>Copies the active layer. For text layers, creates a copy offset by 4 pixels.</td></tr>
+                <tr><td><strong>Delete</strong></td><td>Both</td><td>Deletes the active layer or text object (with confirmation). At least one bitmap layer always remains.</td></tr>
+                <tr><td><strong>Clear</strong></td><td>Bitmap</td><td>Clears all pixels and attributes from the active bitmap layer.</td></tr>
+                <tr><td><strong>↑ Up / ↓ Down</strong></td><td>Both</td><td>Changes layer order. For text layers, changes their z-order relative to other text objects.</td></tr>
+                <tr><td><strong>Merge Layers</strong></td><td>Both</td><td>Merges all visible bitmap layers into one, and rasterizes all visible text objects into the merged result. Text objects are permanently converted to pixels — use Undo to reverse.</td></tr>
+                <tr><td><strong>Rename (✎)</strong></td><td>Bitmap</td><td>Opens a dialog to rename the selected bitmap layer.</td></tr>
+                <tr><td><strong>Edit text (✎)</strong></td><td>Text</td><td>Opens the text editor box for the selected text layer.</td></tr>
+                <tr><td><strong>Visibility checkbox</strong></td><td>Both</td><td>Shows or hides a layer. Hidden text layers are excluded from rendering and exports.</td></tr>
+                <tr><td><strong>Click on layer name</strong></td><td>Bitmap</td><td>Activates the layer for drawing.</td></tr>
+                <tr><td><strong>Click on text layer</strong></td><td>Text</td><td>Selects the text object and switches to the Text tool.</td></tr>
+                <tr><td><strong>Double-click on text layer</strong></td><td>Text</td><td>Opens the text editor box immediately.</td></tr>
+              </tbody>
+            </table>
+
+            <div class="note"><strong>Layer ordering:</strong> text layers are always displayed above the bitmap layer they belong to (the layer that was active when the text was created). Bitmap layer order is controlled by Up/Down buttons. You can have multiple text layers interleaved with bitmap layers.</div>
+
+            <!-- ── SELECTION ── -->
+            <h3 id="en-screen-selection">Selection panel</h3>
+            <table>
+              <thead><tr><th>Control</th><th>What it does</th><th>When to use it</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Copy / Paste / Cut</strong></td><td>Clipboard-based selection operations on bitmap data.</td><td>Use for duplication and repositioning of bitmap content.</td></tr>
+                <tr><td><strong>To Layer</strong></td><td>Moves or copies selected content into a new layer.</td><td>Useful for separating screen elements.</td></tr>
+                <tr><td><strong>Delete</strong></td><td>Deletes the selected contents.</td><td>Use after confirming the selected area.</td></tr>
+                <tr><td><strong>Move</strong></td><td>Turns the selection into a movable floating selection.</td><td>Use for repositioning.</td></tr>
+                <tr><td><strong>Move 8 px</strong></td><td>Snaps movement to 8-pixel steps.</td><td>Useful for attribute-aligned placement.</td></tr>
+              </tbody>
+            </table>
+
+            <div class="warn"><strong>Floating selection:</strong> after Paste or Move, the result is not final yet. Drag it into place, then press <span class="kbd">Enter</span> to commit or <span class="kbd">Esc</span> to cancel.</div>
+
+            <!-- ── FILES ── -->
+            <h3 id="en-screen-files">Import / export / project files</h3>
+            <p>When loading a project with <strong>Load Project</strong>, a progress overlay shows the loading stages. This is useful for large projects with many layers or text objects.</p>
+            <table>
+              <thead><tr><th>Control</th><th>Mode</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Import Image</strong></td><td>Both</td><td>Converts a regular image (JPG, PNG, …) to ZX-compatible screen data. In <strong>classic ZX mode</strong> a conversion dialog appears with a live before/after preview and these options:<br><br>
+                  <strong>Method:</strong> <em>Direct conversion</em> (two most common ZX colours per 8×8 cell) or <em>Dithering — Ordered Bayer</em> (dot patterns simulate gradients and mid-tones).<br>
+                  <strong>Dither strength</strong> (0–100 %): intensity of the Bayer pattern.<br>
+                  <strong>Matrix:</strong> Bayer 2×2 / 4×4 / 8×8.<br>
+                  <strong>Brightness / Contrast / Saturation</strong> (-100…+100): adjust the image before conversion. The preview canvas updates live.<br><br>
+                  In <strong>Next mode</strong> the image is converted directly to the nearest Next palette index (no dialog).</td></tr>
+                <tr><td><strong>Import SCR / Import L2</strong></td><td>Classic / Next</td><td>Loads SCR/BIN screen data (classic) or raw 49152-byte Layer 2 data (Next).</td></tr>
+                <tr><td><strong>Export SCR / Export L2 Raw</strong></td><td>Classic / Next</td><td>Exports a standard 6912-byte SCR (classic) or raw Layer 2 pixel data (Next). Text objects are baked into the exported image.</td></tr>
+                <tr><td><strong>Export ATTR / Export PAL</strong></td><td>Classic / Next</td><td>Exports only the attribute block (classic) or the 512-byte Next palette (Next).</td></tr>
+                <tr><td><strong>Export SL2</strong></td><td>Next only</td><td>Exports an SL2 file (raw Layer 2 data, alternative extension).</td></tr>
+                <tr><td><strong>Export NXI</strong></td><td>Next only</td><td>Exports pixels + palette as a single NXI file. Text is baked in.</td></tr>
+                <tr><td><strong>Import NXI</strong></td><td>Next only</td><td>Loads an NXI file including its palette.</td></tr>
+                <tr><td><strong>Save Project / Load Project</strong></td><td>Both</td><td>Saves or loads project JSON with all editor state including text layers. Load shows a progress bar overlay.</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- ── SPRITE ── -->
+          <section id="en-sprite" class="panel">
+            <h2>3. Sprite Editor</h2>
+            <p>The Sprite Editor handles frame-based sprite work. It supports two main modes: <strong>Classic ZX Spectrum</strong> (1bpp monochrome or color with ZX attributes) and <strong>ZX Spectrum Next 8bpp</strong> (indexed 256-color). Select the mode from the <em>Sprite mode</em> dropdown in the setup panel.</p>
+
+            <h3 id="en-sprite-classic">Classic ZX sprite mode</h3>
+            <table>
+              <thead><tr><th>Area</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Sprite setup</strong></td><td>Set sprite name, palette, bright, width (multiples of 8), height (any), zoom, monochrome/color mode, mask and grid.</td></tr>
+                <tr><td><strong>Monochrome / Color</strong></td><td>Monochrome stores only a 1bpp bitmap. Color additionally stores a ZX attribute per 8×8 cell.</td></tr>
+                <tr><td><strong>Mask: ON/OFF</strong></td><td>When on, generates or lets you manually edit a 1bpp mask (1 = transparent, 0 = opaque). Classic sprite routines use OR/AND masking.</td></tr>
+                <tr><td><strong>Frame controls</strong></td><td>New Frame, Duplicate Frame, Delete Frame — build multi-frame animations.</td></tr>
+                <tr><td><strong>Sprite canvas</strong></td><td>Left draws, right erases. Dragging interpolates missing pixels. Middle-click picks color.</td></tr>
+                <tr><td><strong>Mask panel</strong></td><td>Edit mask pixels manually. Restore auto-generated mask with <strong>↺ Auto</strong>.</td></tr>
+                <tr><td><strong>Animation preview</strong></td><td>Plays frames at the configured delay (ms).</td></tr>
+                <tr><td><strong>Export BIN</strong></td><td>Binary export of all frames: bitmap rows then mask rows per frame.</td></tr>
+                <tr><td><strong>Export ASM</strong></td><td>Assembly DB listing, one row per line, with frame labels and optional mask.</td></tr>
+                <tr><td><strong>Import ASM / BIN</strong></td><td>Re-imports previously exported data back into frames.</td></tr>
+              </tbody>
+            </table>
+            <div class="note"><strong>Mask editing:</strong> manual mask edits override auto-generated masks until you restore them with <strong>↺ Auto</strong>.</div>
+
+            <h3 id="en-sprite-next">Next 8bpp sprite mode</h3>
+            <div class="next-note">Select <strong>ZX Spectrum Next 8bpp</strong> from the Sprite mode dropdown to enable this mode.</div>
+
+            <p>In Next mode each pixel stores a palette index (0–255). Index 0 is the hardware transparent color by default. The editor uses the 256-color Next palette for drawing.</p>
+
+            <table>
+              <thead><tr><th>Feature</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Width / Height</strong></td><td>Both must be multiples of 16 (step 16). Minimum 16×16. The Next hardware sprite unit is always 16×16 pixels.</td></tr>
+                <tr><td><strong>256-color palette</strong></td><td>Left-click a color to set the draw color. Right-click to set the transparent index.</td></tr>
+                <tr><td><strong>Middle mouse on canvas</strong></td><td>Picks the color index under the cursor.</td></tr>
+                <tr><td><strong>Transparent index</strong></td><td>Pixels with this index are treated as transparent by the Next sprite hardware. Default is index 0.</td></tr>
+                <tr><td><strong>Export Next SPR</strong></td><td>Exports an SPR file. For a 16×16 sprite: 256 bytes. For larger sprites see below.</td></tr>
+                <tr><td><strong>Export ASM</strong></td><td>DB listing in Next 8bpp format with sub-sprite labels for multi-tile sprites.</td></tr>
+                <tr><td><strong>Export format</strong></td><td><em>8bpp raw</em> — one byte per pixel (standard). <em>4bpp packed</em> — two pixels per byte (uses hw4 format, 128 bytes per 16×16 tile).</td></tr>
+              </tbody>
+            </table>
+
+            <h3 id="en-sprite-multisize">Large / multi-tile sprites</h3>
+            <p>The ZX Spectrum Next hardware supports only <strong>16×16 pixel sprites</strong>. To create larger characters or objects you combine multiple hardware sprites, each 16×16, positioned adjacent to each other in software.</p>
+
+            <p>The editor supports this directly: set any canvas size that is a multiple of 16 in both dimensions (e.g. 32×32, 32×48, 64×64). The editor then:</p>
+            <ul>
+              <li>Draws the info badge showing the sub-sprite grid, e.g. <em>"Next sprite: 2×2 = 4× 16×16 sub-sprites"</em>.</li>
+              <li><strong>SPR export</strong> outputs all hardware tiles sequentially: left-to-right, top-to-bottom. A 32×32 sprite produces 4 × 256 = 1024 bytes (8bpp), ready for <code>SPRITE CONTINUE</code> calls.</li>
+              <li><strong>ASM export</strong> produces a separate label for each 16×16 tile: <code>sprite_frame0_sub0_0:</code>, <code>sub1</code>, <code>sub2</code>, etc., with a comment showing the pixel offset of each tile.</li>
+            </ul>
+
+            <div class="tip"><strong>Using multi-tile sprites on Next:</strong> use <code>SPRITE N,X,Y,PAL,ID</code> for the first tile, then <code>SPRITE CONTINUE</code> for subsequent tiles at X+16, X+32 offsets. The SPR file from this editor is laid out in exactly the order Next expects for sequential loading.</div>
+
+            <div class="warn"><strong>Size locking in Next mode:</strong> when Next mode is active, the Width and Height inputs step in increments of 16 and snap to multiples of 16. Switching from classic to Next mode automatically rounds the current canvas size up to the nearest 16×16 multiple.</div>
+          </section>
+
+          <!-- ── FONT ── -->
+          <section id="en-font" class="panel">
+            <h2>4. Font Editor</h2>
+            <p>The Font Editor manages either the standard character set (<code>32..127</code>) or UDGs (<code>A..U</code>). It supports glyph editing, mask editing, transforms, ZX ROM import, and ASM preview. The active font in the Font Editor can be used directly by the Text tool in the Screen Editor — select <em>Font editor</em> from the Text tool font dropdown.</p>
+            <table>
+              <thead><tr><th>Area</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Font setup</strong></td><td>Set font name, width, height, zoom, mask mode, and grid.</td></tr>
+                <tr><td><strong>Glyph tools</strong></td><td>Shift and rotate the active glyph or the entire set; load ZX 8×8; import ROM/CH8/ASM-like input.</td></tr>
+                <tr><td><strong>Character set</strong></td><td>Switch between standard printable characters and UDGs.</td></tr>
+                <tr><td><strong>Glyph canvas</strong></td><td>Main glyph editor. Left-click draws; right-click erases.</td></tr>
+                <tr><td><strong>Mask editor</strong></td><td>Works like sprite mask editing when mask mode is enabled.</td></tr>
+                <tr><td><strong>Preview / Export</strong></td><td>Large preview, mask preview, ASM preview, plus BIN/ASM import-export for both font and UDG sets.</td></tr>
+                <tr><td><strong>Use in Screen Editor</strong></td><td>Select <em>Font editor</em> from the Text tool's font dropdown to render screen text using the currently edited font.</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- ── SHORTCUTS ── -->
+          <section id="en-shortcuts" class="panel">
+            <h2>5. Keyboard and mouse controls</h2>
+            <table>
+              <thead><tr><th>Shortcut / control</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td><span class="kbd">Left mouse</span></td><td>Draw / place / confirm most editor actions. In Text tool: click canvas to create a new text object with immediate focus.</td></tr>
+                <tr><td><span class="kbd">Right mouse</span></td><td>Erase in bitmap editors. In <strong>Attr Only mode</strong>: writes the current attribute with <strong>INK and PAPER swapped</strong> — useful for inverting cell colors. In Next sprite mode: sets the transparent color index.</td></tr>
+                <tr><td><span class="kbd">Middle mouse</span></td><td>Screen Editor: samples the visible attribute (classic) or color index (Next) under the cursor. Next Sprite Editor: picks the color index under the cursor.</td></tr>
+                <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">Z</span></td><td>Undo.</td></tr>
+                <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">Y</span></td><td>Redo.</td></tr>
+                <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">Shift</span> + <span class="kbd">Z</span></td><td>Redo.</td></tr>
+                <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">C</span> / <span class="kbd">V</span> / <span class="kbd">X</span></td><td>Copy / Paste / Cut selection in Screen Editor.</td></tr>
+                <tr><td><span class="kbd">Enter</span> / <span class="kbd">Esc</span></td><td>Commit / cancel floating selection. In text editor: <span class="kbd">Esc</span> closes the text editor box.</td></tr>
+                <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">Enter</span></td><td>Confirm and close the text editor box.</td></tr>
+                <tr><td><span class="kbd">Delete</span> / <span class="kbd">Backspace</span></td><td>Deletes the active text object when the Text tool is selected and no editor box is open.</td></tr>
+                <tr><td><span class="kbd">+</span> / <span class="kbd">-</span></td><td>Zoom in / out in Screen Editor.</td></tr>
+                <tr><td><span class="kbd">W</span> <span class="kbd">A</span> <span class="kbd">S</span> <span class="kbd">D</span></td><td>Scroll around the zoomed screen canvas.</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- ── WORKFLOW ── -->
+          <section id="en-workflow" class="panel">
+            <h2>6. Recommended workflows</h2>
+
+            <h3>Classic full-screen workflow</h3>
+            <ol>
+              <li>Start in <strong>Screen Editor</strong> (Classic ZX Spectrum mode).</li>
+              <li>Set <strong>INK</strong>, <strong>PAPER</strong>, and <strong>Bright</strong>; use <strong>INK ⇄ PAPER</strong> for quick reversal.</li>
+              <li>Turn on the <strong>8×8</strong> grid to monitor attribute boundaries.</li>
+              <li>Use layers for background, foreground, and overlays. Use <strong>Transparent PAPER</strong> on upper layers when lower-layer background should remain visible.</li>
+              <li>Use <strong>Attr Only</strong> to fine-tune ZX attribute cells without damaging bitmap structure.</li>
+              <li>Export with <strong>Export SCR</strong> when finished.</li>
+            </ol>
+
+            <h3>Text overlay workflow</h3>
+            <ol>
+              <li>Select the <strong>Text</strong> tool from the toolbox.</li>
+              <li>Click on the canvas where you want to place text — the editor opens immediately with focus, start typing.</li>
+              <li>Change color by clicking an <strong>INK swatch</strong> (classic) or a palette color (Next) while the editor is open.</li>
+              <li>Use <strong>Bold</strong> or <strong>Italic</strong> from the text panel for styling. Switch <strong>Font</strong> to ZX ROM 8×8 for authentic look.</li>
+              <li>Drag the <strong>⠿ handle</strong> to move the editor box if it covers your work.</li>
+              <li>Press <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> to close the editor.</li>
+              <li>Click and drag the text on the canvas to reposition, or use the Layers panel to manage visibility and order.</li>
+              <li>When satisfied, use <strong>Merge Layers</strong> to rasterize the text into pixels for final export.</li>
+            </ol>
+
+            <h3>Dithering workflow</h3>
+            <ol>
+              <li>Select the <strong>Dither</strong> tool from the Paint &amp; Color group.</li>
+              <li>Choose a dither pattern from the <strong>Dither</strong> dropdown: <em>Solid</em>, <em>Checker</em>, <em>Sparse</em>, or <em>Radial</em>.</li>
+              <li>Adjust the <strong>Dither len.</strong> slider to control the fade-out distance of the stroke.</li>
+              <li>Paint over the canvas — the tool progressively blends INK and PAPER within the attribute constraints.</li>
+            </ol>
+
+            <h3>Next Layer 2 screen workflow</h3>
+            <ol>
+              <li>Switch to <strong>Screen Editor</strong> and select <em>ZX Spectrum Next Layer 2</em> from the mode dropdown.</li>
+              <li>Pick <strong>Color A</strong> with left-click and <strong>Color B</strong> with right-click in the 256-color palette grid. Middle-click on the canvas picks the color under the cursor.</li>
+              <li>Draw freely — no color clash, no attribute grid.</li>
+              <li>Use the <strong>Brightness / Contrast / Saturation</strong> sliders under the palette for temporary preview tuning. Use <strong>Apply to layer</strong> only when you want those changes baked permanently into the active layer; otherwise use <strong>Reset</strong>.</li>
+              <li>Use <strong>Import NXI</strong> to load an existing Next screen, or <strong>Import L2</strong> for raw pixel data.</li>
+              <li>When done, use <strong>Export NXI</strong> for a complete file (pixels + palette), <strong>Export NXI + NXP (compat)</strong> for split compatibility output, or <strong>Export L2 Raw</strong> / <strong>Export SL2</strong> for raw pixel data only.</li>
+              <li>To load in NextBASIC: <code>LOAD "screen.nxi" LAYER 2</code>.</li>
+            </ol>
+
+            <h3>Image import and Next → Classic conversion with dithering</h3>
+            <ol>
+              <li>In <strong>classic ZX mode</strong>, click <strong>Import Image</strong> and select a JPG/PNG file — or switch the screen mode from <em>Next Layer 2</em> to <em>Classic ZX Spectrum</em>. A conversion dialog opens.</li>
+              <li>The dialog shows a <strong>live preview</strong> with the source image on top and the converted ZX result below. Both update automatically as you change any setting.</li>
+              <li>Choose the conversion <strong>method</strong>: <em>Direct</em> for speed and clean solid areas, or <em>Dithering (Ordered Bayer)</em> for photos and complex graphics where gradients matter.</li>
+              <li>If dithering is selected, set the <strong>dither strength</strong> (70–100 % is a good starting point) and pick a <strong>matrix</strong>: Bayer 4×4 is the best general-purpose choice.</li>
+              <li>Use the <strong>Brightness / Contrast / Saturation</strong> sliders to pre-process the source image. Increasing contrast often improves ZX conversion results by making colours more distinct.</li>
+              <li>When the preview looks good, click <strong>Convert</strong> / <strong>Import</strong>. The conversion is applied to the canvas and can be undone.</li>
+            </ol>
+
+            <div class="tip"><strong>Dithering tips:</strong> the algorithm selects the best ink+paper pair for each 8×8 attribute cell using perceptual colour distance (weighted for human vision), then applies the Bayer pattern within each cell. Increasing contrast before conversion, or using Saturation +20–40, often produces crisper attribute choices. If the result looks too noisy, reduce the dither strength or try Bayer 2×2 instead of 4×4.</div>
+
+            <h3>Classic → Next conversion workflow</h3>
+            <ol>
+              <li>Design your image in classic ZX Spectrum mode including any text layers.</li>
+              <li>Use <strong>Convert to Next</strong> — each visible pixel is mapped to the nearest Next palette color. Text object colors are also converted automatically.</li>
+              <li>Continue editing in Next mode with full 256-color freedom.</li>
+              <li>Export as NXI.</li>
+            </ol>
+
+            <h3>Next sprite workflow (single 16×16)</h3>
+            <ol>
+              <li>Switch to <strong>Sprite Editor</strong>, select <em>ZX Spectrum Next 8bpp</em> mode.</li>
+              <li>Set size to 16×16 (default). Select palette colors and transparent index.</li>
+              <li>Draw your sprite. Use middle-click to pick colors.</li>
+              <li>Add frames for animation with <strong>New Frame</strong>.</li>
+              <li>Export as <strong>Next SPR</strong> — 256 bytes per frame, load with <code>LOAD SPRITE</code> or your own loader.</li>
+            </ol>
+
+            <h3>Next sprite workflow (large / multi-tile)</h3>
+            <ol>
+              <li>Switch to <strong>Sprite Editor</strong>, select <em>ZX Spectrum Next 8bpp</em> mode.</li>
+              <li>Set width and height to multiples of 16 (e.g. 32×32 for a 2×2 tile character). The info badge will show <em>"2×2 = 4× 16×16 sub-sprites"</em>.</li>
+              <li>Draw on the full canvas — the editor handles the internal tile split automatically.</li>
+              <li>Export as <strong>Next SPR</strong>. The file contains all hardware tiles sequentially (left-to-right, top-to-bottom).</li>
+              <li>In your Z80 code, load consecutive sprites with <code>LOAD SPRITE</code> / <code>NEXTREG</code> calls and position them at X, X+16, X+32, Y, Y+16, Y+32 as appropriate.</li>
+              <li>Alternatively use the <strong>ASM export</strong> which provides per-tile labels for direct inclusion in your sjasmplus or ASW source.</li>
+            </ol>
+
+            <h3>Classic sprite workflow</h3>
+            <ol>
+              <li>Switch to <strong>Sprite Editor</strong>.</li>
+              <li>Set width (multiple of 8), height, zoom, and mode (Monochrome or Color).</li>
+              <li>Create frames with <strong>New Frame</strong>.</li>
+              <li>Draw frames and preview them with <strong>Play</strong>.</li>
+              <li>Use mask mode if your target routine requires explicit mask data.</li>
+              <li>Export as <strong>BIN</strong> or <strong>ASM</strong>.</li>
+            </ol>
+
+            <h3>Typical font workflow</h3>
+            <ol>
+              <li>Switch to <strong>Font Editor</strong>.</li>
+              <li>Select <strong>Standard 32..127</strong> or <strong>UDG A..U</strong>.</li>
+              <li>Import an existing font, load ZX 8×8, or draw from scratch.</li>
+              <li>Edit glyphs from the thumbnail grid one by one.</li>
+              <li>Apply shift and rotate tools where needed.</li>
+              <li>To use your font in the Screen Editor, go to the Text tool and select <em>Font editor</em> from the font dropdown.</li>
+              <li>Export in BIN or ASM format.</li>
+            </ol>
+
+            <p class="footer">This help page reflects the current interface including: Next Layer 2 screen mode (NXI/SL2/L2 import-export), Next 8bpp sprite mode (SPR export, multi-tile large sprites), classic↔Next conversion (including automatic text color conversion), Transparent PAPER, layer renaming, INK ⇄ PAPER swapping, Bresenham interpolation in all drawing tools, continuous spray, live text layers with drag handle and inline color editing, dithering with multiple patterns, image import and Next→Classic conversion with Ordered Bayer dithering (strength slider, 2×2/4×4/8×8 matrix, brightness/contrast/saturation pre-processing, live before/after preview), Attr Only right-click INK↔PAPER swap, and project loading progress overlay.</p>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════ ČEŠTINA ═══ -->
+    <div id="pane-cz" class="lang-pane">
+      <div class="layout">
+        <nav class="toc panel">
+          <h2>Obsah</h2>
+          <ul>
+            <li><a href="#cz-basics">1. Základní přehled</a></li>
+            <li><a href="#cz-screen">2. Screen Editor</a>
+              <div class="sub">
+                <a href="#cz-screen-top">Horní ovládání</a>
+                <a href="#cz-screen-toolbox">Toolbox</a>
+                <a href="#cz-screen-canvas">Canvas a barvy</a>
+                <a href="#cz-screen-text">Textový nástroj</a>
+                <a href="#cz-screen-next">Next Layer 2 mód</a>
+                <a href="#cz-screen-layers">Vrstvy a textové vrstvy</a>
+                <a href="#cz-screen-selection">Selection panel</a>
+                <a href="#cz-screen-files">Import / export / projektové soubory</a>
+              </div>
+            </li>
+            <li><a href="#cz-sprite">3. Sprite Editor</a>
+              <div class="sub">
+                <a href="#cz-sprite-classic">Klasické ZX sprity</a>
+                <a href="#cz-sprite-next">Next 8bpp sprity</a>
+                <a href="#cz-sprite-multisize">Větší / víceblokové sprity</a>
+              </div>
+            </li>
+            <li><a href="#cz-font">4. Font Editor</a></li>
+            <li><a href="#cz-shortcuts">5. Klávesy a myš</a></li>
+            <li><a href="#cz-workflow">6. Doporučené workflow</a></li>
+          </ul>
+        </nav>
+
+        <main class="content">
+          <section id="cz-basics" class="panel">
+            <h2>1. Základní přehled</h2>
+            <div class="grid two">
+              <div class="card">
+                <h4>Hlavní režimy</h4>
+                <ul>
+                  <li><strong>Screen Editor</strong> – kompletní editace ZX obrazovky včetně bitmapy, atributů, výběrů, vrstev, textových objektů a ditheringu. Podporuje i Next Layer 2 mód.</li>
+                  <li><strong>Sprite Editor</strong> – práce se sprity po framech, volitelné masky, náhled animace a export BIN/ASM/SPR. Podporuje i Next 8bpp/4bpp mód.</li>
+                  <li><strong>Font Editor</strong> – editace fontu nebo UDG, transformace znaků, náhled a export BIN/ASM. Editovaný font lze přímo použít v textovém nástroji.</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h4>Jak funguje kreslení</h4>
+                <ul>
+                  <li><strong>Levé tlačítko myši</strong> kreslí nebo potvrzuje akci aktivního nástroje. U textového nástroje kliknutí na canvas okamžitě otevře editor s focusem.</li>
+                  <li><strong>Pravé tlačítko myši</strong> maže v bitmapových editorech.</li>
+                  <li><strong>Prostřední tlačítko myši</strong> ve Screen Editoru přebírá viditelný atribut (klasický) nebo index barvy (Next) pod kurzorem.</li>
+                  <li>Výběry se mohou změnit na <strong>plovoucí výběr</strong>, který jde před potvrzením přesunout.</li>
+                  <li>Všechny kreslicí nástroje při tahu používají <strong>Bresenhamovu interpolaci</strong>, takže se při rychlém pohybu nevynechávají pixely.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="note"><strong>Důležité:</strong> editor ukládá bitmapová data a atributová data odděleně. Ve Screen Editoru spolu viditelný pixel a jeho barvy souvisejí, ale nejsou to stejné informace. Ve Sprite a Font editoru je hlavní bitmapa, zatímco paleta a maska závisí na zvoleném režimu.</div>
+
+            <table>
+              <thead><tr><th>Pojem</th><th>Význam</th></tr></thead>
+              <tbody>
+                <tr><td>INK</td><td>Barva popředí (klasický ZX: 0–7, světlé varianty přes Bright).</td></tr>
+                <tr><td>PAPER</td><td>Barva pozadí.</td></tr>
+                <tr><td>Bright</td><td>Použije světlé varianty ZX palety.</td></tr>
+                <tr><td>Flash</td><td>Nastaví ZX atribut FLASH.</td></tr>
+                <tr><td>Mask</td><td>Pomocná pixelová vrstva pro sprity a fonty.</td></tr>
+                <tr><td>Textová vrstva</td><td>Živý, editovatelný textový objekt zobrazený jako samostatná položka v panelu Vrstvy, vykreslovaný nad bitmapovými vrstvami.</td></tr>
+                <tr><td>ASM preview</td><td>Generovaný textový náhled assembly dat, aktualizuje se po každém tahu.</td></tr>
+                <tr><td>Layer 2</td><td>Plnobarevný režim obrazovky ZX Spectrum Next — 256×192, 256barevná indexovaná paleta, bez atributové mřížky.</td></tr>
+                <tr><td>NXI</td><td>Next formát obrazovky: 49152 bajtů pixelových dat + volitelná 512bajtová paleta.</td></tr>
+                <tr><td>SL2</td><td>Alternativní Next Layer 2 formát (jen surová pixelová data, bez hlavičky).</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section id="cz-screen" class="panel">
+            <h2>2. Screen Editor</h2>
+            <p>Screen Editor je hlavní pracovní plocha pro sestavení celé ZX Spectrum obrazovky. Kombinuje bitmapu 256×192, atributovou vrstvu 32×24, výběry, kreslicí nástroje, dithering, textové objekty, vrstvy a import/export SCR/ATTR/NXI. Mezi <strong>klasickým ZX</strong> a <strong>Next Layer 2</strong> módem přepínáš pomocí selektoru módu nahoře.</p>
+
+            <h3 id="cz-screen-top">Horní ovládání</h3>
+            <table>
+              <thead><tr><th>Prvek</th><th>Co dělá</th><th>Jak se používá</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Screen name</strong></td><td>Název aktuální obrazovky nebo položky projektu.</td><td>Píše se přímo do textového pole.</td></tr>
+                <tr><td><strong>Screen mode</strong></td><td>Přepíná mezi <em>klasickým ZX Spectrum</em> a <em>ZX Spectrum Next Layer 2</em>. Při přepnutí se automaticky konvertují i barvy textových objektů.</td><td>Výběr z rozbalovacího menu. Při přepnutí se canvas konvertuje včetně textových vrstev.</td></tr>
+                <tr><td><strong>↶ Undo / ↷ Redo</strong></td><td>Vrátí nebo obnoví poslední akci.</td><td>Tlačítky nebo <span class="kbd">Ctrl</span>+<span class="kbd">Z</span> / <span class="kbd">Ctrl</span>+<span class="kbd">Y</span>.</td></tr>
+                <tr><td><strong>− / +</strong></td><td>Oddálení nebo přiblížení.</td><td>Tlačítkem nebo klávesovou zkratkou.</td></tr>
+                <tr><td><strong>?</strong></td><td>Otevře nápovědu.</td><td>Kliknout jednou.</td></tr>
+                <tr><td><strong>Status</strong></td><td>Ukazuje, co editor právě dělá.</td><td>Jen pro čtení.</td></tr>
+              </tbody>
+            </table>
+
+            <h3 id="cz-screen-toolbox">Toolbox</h3>
+            <table>
+              <thead><tr><th>Skupina</th><th>Nástroje</th><th>Účel</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Selection</strong></td><td>Rect sel, Oval sel, Free sel, Move</td><td>Vytváření a manipulace s výběrem. Move změní výběr na plovoucí, který lze přesunout před potvrzením.</td></tr>
+                <tr><td><strong>Draw</strong></td><td>Pencil, Brush, Erase, Spray, Line, <strong>Text</strong></td><td>Přímé kreslení do bitmapy. Spray při tahu stříká kontinuálně. Text vkládá editovatelné textové objekty přímo na canvas.</td></tr>
+                <tr><td><strong>Shapes</strong></td><td>Rect, Fill rect, Ellipse, Fill oval</td><td>Geometrické tvary s živým náhledem při tažení.</td></tr>
+                <tr><td><strong>Paint &amp; Color</strong></td><td>Fill, <strong>Dither</strong>, Attr, Pick</td><td>Výplně, dithering, malování atributů a přebírání hodnot z canvasu.</td></tr>
+              </tbody>
+            </table>
+
+            <h3 id="cz-screen-canvas">Canvas a barvy</h3>
+            <table>
+              <thead><tr><th>Prvek</th><th>Význam</th><th>Jak se používá</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Show Attrs / Layer 2</strong></td><td>Přepíná zobrazení atributů (klasický) nebo ukazuje popisek Layer 2 (Next).</td><td>V klasickém módu: hodí se při kontrole color clash.</td></tr>
+                <tr><td><strong>INK swatches</strong></td><td>Volba barvy popředí (klasický mód). Při editaci textového objektu klik na INK okamžitě změní barvu textu.</td><td>Klik na jednu z 8 ZX barev. V Next módu použij 256barevnou paletovou mřížku.</td></tr>
+                <tr><td><strong>PAPER swatches</strong></td><td>Volba barvy pozadí (jen klasický mód).</td><td>Klik na jednu z 8 ZX barev.</td></tr>
+                <tr><td><strong>Bright</strong></td><td>Atributový přepínač (klasický mód). Při editaci textového objektu přepnutí Bright okamžitě změní barvu textu.</td><td>Zapnout nebo vypnout.</td></tr>
+                <tr><td><strong>Flash</strong></td><td>Atributový přepínač (jen klasický mód).</td><td>Zapnout nebo vypnout.</td></tr>
+                <tr><td><strong>Transparent PAPER</strong></td><td>Průhledné pozadí v aktuální 8×8 buňce (jen klasický mód).</td><td>Nejlépe ve vyšších vrstvách. V Next módu není k dispozici.</td></tr>
+                <tr><td><strong>INK ⇄ PAPER</strong></td><td>Prohodí aktuální foreground a background.</td><td>Hodí se pro rychlé otočení barev.</td></tr>
+                <tr><td><strong>Hover attr</strong></td><td>Ukazuje výsledný viditelný INK/PAPER (klasický) nebo index barvy (Next) pod kurzorem.</td><td>Užitečné při práci s více vrstvami.</td></tr>
+                <tr><td><strong>Brush / Spray / Density</strong></td><td>Nastavení velikosti a hustoty aktivního nástroje.</td><td>Uprav podle potřeby.</td></tr>
+                <tr><td><strong>Dither len.</strong></td><td>Řídí vzdálenost, na které dithering postupně doznívá.</td><td>Vyšší hodnota = delší přechodový efekt.</td></tr>
+                <tr><td><strong>Dither mód</strong></td><td>Vybírá vzor ditheringu: Solid, Checker, Sparse nebo Radial.</td><td>Vyber z rozbalovacího menu vedle slideru.</td></tr>
+                <tr><td><strong>Attr Only</strong></td><td>Upravuje jen atributovou mapu 32×24 (jen klasický mód).</td><td>Použij pro přebarvení bez změny bitmapy. <strong>Levé tlačítko</strong> zapíše aktuální INK+PAPER. <strong>Pravé tlačítko</strong> zapíše atribut s <em>prohozeným INK a PAPER</em> — hodí se pro rychlé otočení barev buňky bez změny nastavení editoru.</td></tr>
+                <tr><td><strong>1×1 / 8×8</strong></td><td>Mřížky (jen klasický mód).</td><td>1×1 pro přesné pixely, 8×8 pro plánování atributů.</td></tr>
+              </tbody>
+            </table>
+
+            <div class="tip"><strong>Transparent PAPER workflow:</strong> Transparent PAPER používej hlavně ve vyšších vrstvách pro světla, text, overlaye nebo detaily. <strong>Overlay</strong> je jednodušší režim skládání, zatímco <strong>Smart remap</strong> se snaží najít vhodnější ZX remap atributů pro výsledný viditelný obraz. Když začneš kreslit s Transparent PAPER do už obsazené oblasti té samé vrstvy, editor může automaticky vytvořit novou overlay vrstvu nad aktivní vrstvou a tah do ní přesměrovat.</div>
+
+            <!-- ── TEXTOVÝ NÁSTROJ ── -->
+            <h3 id="cz-screen-text">Textový nástroj</h3>
+            <div class="text-note">Textový nástroj vkládá <strong>živé, editovatelné textové objekty</strong> přímo na canvas. Každý textový objekt je samostatná položka v panelu Vrstvy a vykresluje se nad všemi bitmapovými vrstvami. Textové objekty lze přesouvat, skrývat, přejmenovat a mazat nezávisle. Při použití Merge Layers se viditelné textové objekty rasterizují do pixelů.</div>
+
+            <h4>Základní použití</h4>
+            <ol>
+              <li>Vyber nástroj <strong>Text</strong> ze skupiny Draw v toolboxu.</li>
+              <li>Klikni kamkoliv na canvas — plovoucí editor se otevře a okamžitě dostane focus. Začni rovnou psát.</li>
+              <li>Text se živě vykresluje na canvasu při každém stisku klávesy — není třeba nic potvrzovat, abys viděl výsledek.</li>
+              <li>Stiskni <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> nebo <span class="kbd">Esc</span> pro zavření editoru. Kliknutí na jiné místo canvasu také editor zavře.</li>
+            </ol>
+
+            <h4>Editor textového objektu</h4>
+            <p>Při editaci se zobrazí plovoucí editor box u textu. Nahoře má <strong>ouško pro tažení</strong> (⠿) — chyť ho a přetáhni editor kamkoliv v editační oblasti, aby nepřekrýval to, na čem pracuješ. Editor se automaticky umístí pod nebo nad text podle dostupného místa.</p>
+
+            <table>
+              <thead><tr><th>Ovládání / zkratka</th><th>Co dělá</th></tr></thead>
+              <tbody>
+                <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">Enter</span></td><td>Zavře textový editor a potvrdí všechny úpravy. Text zůstane jako živá vrstva.</td></tr>
+                <tr><td><span class="kbd">Esc</span></td><td>Zavře textový editor. Úpravy jsou zachovány (text se ukládá průběžně při každém stisku klávesy).</td></tr>
+                <tr><td>Klik na canvas</td><td>Zavře textový editor bez vytvoření nového textu na místě kliku.</td></tr>
+                <tr><td>Tažení za ouško ⠿</td><td>Přesune editor box na libovolné místo v editační oblasti.</td></tr>
+                <tr><td>Víceřádkový text</td><td>Stiskni <span class="kbd">Enter</span> v editoru pro nový řádek.</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Panel textového nástroje</h4>
+            <p>Když je aktivní nástroj Text, zobrazí se pod ovládáním canvasu panel s těmito možnostmi:</p>
+            <table>
+              <thead><tr><th>Možnost</th><th>Co dělá</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Font</strong></td><td>Výběr mezi <em>Tiny 5×7</em> (kompaktní pixelový font), <em>ZX ROM 8×8</em> (originální font ZX Spectrum) nebo <em>Font editor</em> (použije font aktuálně otevřený ve Font Editoru).</td></tr>
+                <tr><td><strong>Bold</strong></td><td>Vykresluje každý znak o jeden pixel širší pro efekt tučného textu.</td></tr>
+                <tr><td><strong>Italic</strong></td><td>Aplikuje mírné horizontální zkosení na každý znak.</td></tr>
+                <tr><td><strong>Delete text</strong></td><td>Trvale smaže aktuálně vybraný textový objekt.</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Změna barvy textu</h4>
+            <table>
+              <thead><tr><th>Mód</th><th>Jak změnit barvu</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Klasický ZX mód</strong></td><td>Při otevřeném textovém editoru klikni na libovolný <strong>INK swatch</strong> nebo přepni <strong>Bright</strong> — barva textu se okamžitě změní. Zvolená kombinace INK + Bright se stane barvou textu.</td></tr>
+                <tr><td><strong>Next Layer 2 mód</strong></td><td>Při otevřeném textovém editoru klikni na libovolnou barvu v <strong>256barevné paletové mřížce</strong> nebo v rychlovýběrovém řádku — barva textu se okamžitě změní na daný index palety.</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Přesun textu po canvasu</h4>
+            <p>Při aktivním nástroji Text <strong>klikni a táhni</strong> libovolný textový objekt na canvasu pro změnu jeho polohy. Text se pohybuje v reálném čase. Textové objekty lze také přesouvat v panelu Vrstvy pomocí tlačítek Nahoru/Dolů.</p>
+
+            <h4>Editace existujícího textu</h4>
+            <p>Při aktivním nástroji Text <strong>dvakrát klikni</strong> na textový objekt na canvasu (nebo klikni na tlačítko ✎ u něj v panelu Vrstvy) pro znovuotevření editoru a změnu obsahu.</p>
+
+            <div class="tip"><strong>Tip pro workflow:</strong> sestav textové objekty volně, uprav barvy a fonty, pak použij <strong>Merge Layers</strong> až budeš spokojený. Merge rasterizuje všechny viditelné textové objekty do sloučené bitmapové vrstvy — po tomto kroku je text trvalými pixely. Undo tuto operaci vrátí.</div>
+
+            <div class="warn"><strong>Poznámka:</strong> textové objekty jsou uloženy odděleně od bitmapových dat. Ukládají se do projektového JSON souboru a přežívají Save/Load Project. Exporty SCR/BIN/NXI vždy obsahují i vykreslený text — text je vždy zahrnut do exportů.</div>
+
+            <!-- ── NEXT MODE ── -->
+            <h3 id="cz-screen-next">Next Layer 2 mód</h3>
+            <div class="next-note">Tato sekce platí pouze pokud je zvolen mód <strong>ZX Spectrum Next Layer 2</strong>.</div>
+
+            <p>V Next módu používá canvas 256×192 plně indexovanou 256barevnou paletu — žádná atributová mřížka, žádné INK/PAPER, žádný color clash. Každý pixel ukládá index palety (0–255). To přímo odpovídá formátu Layer 2 obrazovky ZX Spectrum Next.</p>
+
+            <table>
+              <thead><tr><th>Funkce</th><th>Popis</th></tr></thead>
+              <tbody>
+                <tr><td><strong>256barevná paleta</strong></td><td>Mřížka palety zobrazuje všech 256 Next barev. <strong>Levý klik</strong> nastavuje <strong>Color A</strong> (hlavní kreslicí barvu), <strong>pravý klik</strong> nastavuje <strong>Color B</strong> (sekundární / mazací barvu).</td></tr>
+                <tr><td><strong>Indikátory Color A / Color B</strong></td><td>Dva čipy nad paletou zobrazují aktuálně vybrané Next indexy, jejich swatche a číselné ID palety.</td></tr>
+                <tr><td><strong>Prostřední tlačítko</strong></td><td>Prostřední klik na canvasu sejme index barvy pod kurzorem a nastaví ho jako aktivní kreslicí barvu.</td></tr>
+                <tr><td><strong>Barva textu v Next módu</strong></td><td>Při editaci textového objektu kliknutí na libovolnou barvu v paletě okamžitě změní barvu textu na daný index.</td></tr>
+                <tr><td><strong>Next preview adjustments</strong></td><td>Pod paletou jsou tři živé preview slidery: <strong>Jas</strong>, <strong>Kontrast</strong> a <strong>Saturace</strong> (vše −100…+100). Ovlivňují jen náhled ve Screen Editoru, dokud je neaplikuješ.</td></tr>
+                <tr><td><strong>Apply to layer</strong></td><td>Natrvalo zapíše aktuální preview úpravy Jas / Kontrast / Saturace do <strong>aktivní Next bitmapové vrstvy</strong>. Editor přemapuje všechny vykreslené pixely na nejbližší barvy Next palety a potom vrátí slidery na 0.</td></tr>
+                <tr><td><strong>Reset</strong></td><td>Vynuluje slidery Next preview úprav bez změny dat vrstvy.</td></tr>
+                <tr><td><strong>Import L2</strong></td><td>Načte raw Layer 2 soubor (49152 bajtů 8bpp indexovaných dat, bez hlavičky).</td></tr>
+                <tr><td><strong>Export L2 Raw</strong></td><td>Exportuje 49152 bajtů surových indexovaných pixelových dat.</td></tr>
+                <tr><td><strong>Export PAL</strong></td><td>Exportuje 512bajtový Next paletový blok.</td></tr>
+                <tr><td><strong>Export SL2</strong></td><td>Exportuje SL2 soubor — stejné rozložení pixelů jako L2 Raw.</td></tr>
+                <tr><td><strong>Export NXI</strong></td><td>Exportuje NXI soubor: pixelová data + paleta. Jde načíst přímo přes NextBASIC nebo Z80 loader.</td></tr>
+                <tr><td><strong>Export NXI + NXP (compat)</strong></td><td>Exportuje kompatibilní dvojici souborů pro workflow, které chtějí obrazová data a paletu odděleně.</td></tr>
+                <tr><td><strong>Import NXI</strong></td><td>Načte NXI soubor včetně palety.</td></tr>
+                <tr><td><strong>Konverze Classic → Next</strong></td><td>Konvertuje klasickou ZX obrazovku do Next Layer 2 formátu. Barvy textových objektů jsou také automaticky konvertovány na nejbližší index Next palety.</td></tr>
+                <tr><td><strong>Konverze Next → Classic</strong></td><td>Konvertuje Next Layer 2 canvas zpět do klasického ZX formátu. Zobrazí se <strong>konverzní dialog</strong> s živým náhledem před/po a těmito možnostmi:<br><br>
+                  <strong>Metoda:</strong> <em>Přímý převod</em> (nejbližší ZX barva per pixel, rychlé) nebo <em>Dithering — Ordered Bayer</em> (tečkované vzory simulují střední tóny v rámci každé 8×8 atributové buňky).<br>
+                  <strong>Síla ditheringu</strong> (0–100 %): intenzita Bayer vzoru. Na 0 % se chová jako přímý převod, na 100 % plný dithering.<br>
+                  <strong>Matice:</strong> Bayer 2×2 (jemnější), 4×4 (doporučeno) nebo 8×8 (hrubší vzor).<br>
+                  <strong>Jas / Kontrast / Saturace</strong> (-100…+100): předúprava zdrojového obrázku před konverzí. Náhled se aktualizuje živě při pohybu sliderů.<br><br>
+                  Indexy palety textových objektů jsou namapovány na nejbližší ZX barvu inkoustu.</td></tr>
+              </tbody>
+            </table>
+
+            <div class="tip"><strong>NXI workflow:</strong> nakresli v Next módu → <strong>Export NXI</strong> → načti v NextBASIC pomocí <code>LOAD "screen.nxi" LAYER 2</code> nebo Z80 loaderem.</div>
+
+            <div class="note"><strong>Konverze Classic ↔ Next:</strong> při konverzi se automaticky konvertují i barvy textových objektů — ZX ink (0–15) na nejbližší Next paletový index a zpět.</div>
+
+            <!-- ── VRSTVY ── -->
+            <h3 id="cz-screen-layers">Vrstvy a textové vrstvy</h3>
+            <p>Panel Vrstvy zobrazuje všechny bitmapové vrstvy i všechny textové objekty v jednom sjednoceném seznamu. Bitmapové vrstvy jsou označeny vyplněným čtverečkem (⬛); textové vrstvy jsou označeny modrým odznakem <strong>T</strong> a zobrazují náhled obsahu v uvozovkách.</p>
+
+            <table>
+              <thead><tr><th>Ovládání</th><th>Platí pro</th><th>Co dělá</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Add</strong></td><td>Bitmapa</td><td>Vytvoří novou bitmapovou vrstvu s průhlednými atributy.</td></tr>
+                <tr><td><strong>Duplicate</strong></td><td>Obojí</td><td>Zkopíruje aktivní vrstvu. U textových vrstev vytvoří kopii posunutou o 4 pixely.</td></tr>
+                <tr><td><strong>Delete</strong></td><td>Obojí</td><td>Smaže aktivní vrstvu nebo textový objekt (s potvrzením). Alespoň jedna bitmapová vrstva vždy zůstane.</td></tr>
+                <tr><td><strong>Clear</strong></td><td>Bitmapa</td><td>Vyčistí všechny pixely a atributy z aktivní bitmapové vrstvy.</td></tr>
+                <tr><td><strong>↑ Nahoru / ↓ Dolů</strong></td><td>Obojí</td><td>Mění pořadí vrstev. U textových vrstev mění jejich z-pořadí vůči ostatním textovým objektům.</td></tr>
+                <tr><td><strong>Merge Layers</strong></td><td>Obojí</td><td>Sloučí všechny viditelné bitmapové vrstvy do jedné a rasterizuje viditelné textové objekty do výsledku. Textové objekty jsou trvale převedeny na pixely — operaci lze vrátit pomocí Undo.</td></tr>
+                <tr><td><strong>Přejmenování (✎)</strong></td><td>Bitmapa</td><td>Otevře dialog pro přejmenování vybrané bitmapové vrstvy.</td></tr>
+                <tr><td><strong>Editace textu (✎)</strong></td><td>Text</td><td>Otevře textový editor pro vybranou textovou vrstvu.</td></tr>
+                <tr><td><strong>Checkbox viditelnosti</strong></td><td>Obojí</td><td>Zobrazí nebo skryje vrstvu. Skryté textové vrstvy jsou vyloučeny z vykreslování i exportů.</td></tr>
+                <tr><td><strong>Klik na název vrstvy</strong></td><td>Bitmapa</td><td>Aktivuje vrstvu pro kreslení.</td></tr>
+                <tr><td><strong>Klik na textovou vrstvu</strong></td><td>Text</td><td>Vybere textový objekt a přepne na nástroj Text.</td></tr>
+                <tr><td><strong>Dvojklik na textovou vrstvu</strong></td><td>Text</td><td>Okamžitě otevře textový editor.</td></tr>
+              </tbody>
+            </table>
+
+            <div class="note"><strong>Pořadí vrstev:</strong> textové vrstvy se vždy zobrazují nad bitmapovou vrstvou, ke které patří (ta byla aktivní při vytvoření textu). Pořadí bitmapových vrstev ovládáš tlačítky Nahoru/Dolů. Textové vrstvy lze mít prokládané s bitmapovými vrstvami.</div>
+
+            <!-- ── SELECTION ── -->
+            <h3 id="cz-screen-selection">Selection panel</h3>
+            <table>
+              <thead><tr><th>Prvek</th><th>Co dělá</th><th>Kdy použít</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Copy / Paste / Cut</strong></td><td>Operace s bitmapovým výběrem přes interní schránku.</td><td>Pro kopírování, přesouvání a duplikování bitmapového obsahu.</td></tr>
+                <tr><td><strong>To Layer</strong></td><td>Přesune nebo zkopíruje vybraný obsah do nové vrstvy.</td><td>Hodí se pro oddělení prvků obrazovky.</td></tr>
+                <tr><td><strong>Delete</strong></td><td>Smaže obsah výběru.</td><td>Až po kontrole správné oblasti.</td></tr>
+                <tr><td><strong>Move</strong></td><td>Změní výběr na plovoucí a přesunutelný.</td><td>Pro posun výběru.</td></tr>
+                <tr><td><strong>Move 8 px</strong></td><td>Pohybuje po krocích 8 pixelů.</td><td>Vhodné pro zarovnání na atributy.</td></tr>
+              </tbody>
+            </table>
+
+            <div class="warn"><strong>Plovoucí výběr:</strong> po Paste nebo Move ještě není výsledek definitivní. Přesuň ho na místo a potvrď <span class="kbd">Enter</span>, nebo zruš <span class="kbd">Esc</span>.</div>
+
+            <!-- ── FILES ── -->
+            <h3 id="cz-screen-files">Import / export / projektové soubory</h3>
+            <p>Při načítání projektu přes <strong>Load Project</strong> se zobrazí překryvný ukazatel průběhu s jednotlivými fázemi načítání. To je užitečné u větších projektů s mnoha vrstvami nebo textovými objekty.</p>
+            <table>
+              <thead><tr><th>Prvek</th><th>Mód</th><th>Účel</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Import Image</strong></td><td>Oba</td><td>Převede běžný obrázek (JPG, PNG, …) na ZX kompatibilní screen data. V <strong>klasickém ZX módu</strong> se zobrazí konverzní dialog s živým náhledem před/po a těmito možnostmi:<br><br>
+                  <strong>Metoda:</strong> <em>Přímý převod</em> (dvě nejčastější ZX barvy na 8×8 buňku) nebo <em>Dithering — Ordered Bayer</em> (tečkové vzory simulují přechody a střední tóny).<br>
+                  <strong>Síla ditheringu</strong> (0–100 %): intenzita Bayer vzoru.<br>
+                  <strong>Matice:</strong> Bayer 2×2 / 4×4 / 8×8.<br>
+                  <strong>Jas / Kontrast / Saturace</strong> (-100…+100): úprava obrázku před konverzí. Náhled se aktualizuje živě.<br><br>
+                  V <strong>Next módu</strong> se obrázek konvertuje přímo na nejbližší index Next palety (bez dialogu).</td></tr>
+                <tr><td><strong>Import SCR / Import L2</strong></td><td>Klasický / Next</td><td>Načte ZX screen data (klasický) nebo raw Layer 2 data (Next).</td></tr>
+                <tr><td><strong>Export SCR / Export L2 Raw</strong></td><td>Klasický / Next</td><td>Exportuje SCR (klasický) nebo raw Layer 2 pixelová data (Next). Textové objekty jsou zahrnuty v exportu.</td></tr>
+                <tr><td><strong>Export ATTR / Export PAL</strong></td><td>Klasický / Next</td><td>Exportuje jen atributový blok (klasický) nebo 512bajtovou Next paletu (Next).</td></tr>
+                <tr><td><strong>Export SL2</strong></td><td>Jen Next</td><td>Exportuje SL2 soubor.</td></tr>
+                <tr><td><strong>Export NXI</strong></td><td>Jen Next</td><td>Exportuje pixely + paletu jako jeden NXI soubor. Text je zahrnut.</td></tr>
+                <tr><td><strong>Import NXI</strong></td><td>Jen Next</td><td>Načte NXI soubor včetně palety.</td></tr>
+                <tr><td><strong>Save Project / Load Project</strong></td><td>Oba</td><td>Uloží nebo načte JSON projektu včetně textových vrstev. Načítání zobrazuje ukazatel průběhu.</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- ── SPRITE ── -->
+          <section id="cz-sprite" class="panel">
+            <h2>3. Sprite Editor</h2>
+            <p>Sprite Editor slouží pro práci se sprity po jednotlivých framech. Podporuje dva hlavní režimy: <strong>klasický ZX Spectrum</strong> (1bpp monochromatický nebo barevný se ZX atributy) a <strong>ZX Spectrum Next 8bpp</strong> (indexovaných 256 barev). Mód vyberáš z rozbalovacího menu <em>Sprite mode</em> v setup panelu.</p>
+
+            <h3 id="cz-sprite-classic">Klasické ZX sprity</h3>
+            <table>
+              <thead><tr><th>Oblast</th><th>Co dělá</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Sprite setup</strong></td><td>Nastavení jména, palety, bright, šířky (násobky 8), výšky (libovolná), zoomu, režimu mono/color, masky a gridu.</td></tr>
+                <tr><td><strong>Monochrome / Color</strong></td><td>Monochrome ukládá jen 1bpp bitmapu. Color navíc ukládá ZX atribut na každých 8×8 pixelů.</td></tr>
+                <tr><td><strong>Mask: ON/OFF</strong></td><td>Při zapnuté masce se generuje nebo lze ručně editovat 1bpp maska (1 = průhledný, 0 = neprůhledný).</td></tr>
+                <tr><td><strong>Frame controls</strong></td><td>New Frame, Duplicate Frame, Delete Frame — vytváření animací po framech.</td></tr>
+                <tr><td><strong>Sprite canvas</strong></td><td>Levé kreslí, pravé maže. Při tahu se interpolují mezilehlé pixely. Prostřední klik přebírá barvu.</td></tr>
+                <tr><td><strong>Mask panel</strong></td><td>Ruční editace masky. Obnov auto-generovanou masku tlačítkem <strong>↺ Auto</strong>.</td></tr>
+                <tr><td><strong>Animation preview</strong></td><td>Přehrává framy v nastaveném intervalu (ms).</td></tr>
+                <tr><td><strong>Export BIN</strong></td><td>Binární export všech framů: řádky bitmapy pak řádky masky per frame.</td></tr>
+                <tr><td><strong>Export ASM</strong></td><td>Assembly DB výpis s labely framů a volitelnou maskou.</td></tr>
+                <tr><td><strong>Import ASM / BIN</strong></td><td>Znovu načte dříve exportovaná data zpět do framů.</td></tr>
+              </tbody>
+            </table>
+            <div class="note"><strong>Editace masky:</strong> ruční úprava masky přepíše automaticky generovanou, dokud ji neobnovíš tlačítkem <strong>↺ Auto</strong>.</div>
+
+            <h3 id="cz-sprite-next">Next 8bpp sprity</h3>
+            <div class="next-note">Vyber <strong>ZX Spectrum Next 8bpp</strong> z rozbalovacího menu Sprite mode pro aktivaci tohoto módu.</div>
+
+            <p>V Next módu každý pixel ukládá index palety (0–255). Index 0 je standardně průhledná barva hardwaru.</p>
+
+            <table>
+              <thead><tr><th>Funkce</th><th>Popis</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Šířka / Výška</strong></td><td>Obě musí být násobky 16 (krok 16). Minimum 16×16.</td></tr>
+                <tr><td><strong>256barevná paleta</strong></td><td>Levý klik vybírá barvu kreslení, pravý klik nastavuje průhledný index.</td></tr>
+                <tr><td><strong>Prostřední tlačítko na canvasu</strong></td><td>Přebírá index barvy pod kurzorem.</td></tr>
+                <tr><td><strong>Průhledný index</strong></td><td>Pixely s tímto indexem jsou HW hardwarem považovány za průhledné. Výchozí je index 0.</td></tr>
+                <tr><td><strong>Export Next SPR</strong></td><td>Exportuje SPR soubor. Pro 16×16 sprite: 256 bajtů.</td></tr>
+                <tr><td><strong>Export ASM</strong></td><td>DB výpis v Next 8bpp formátu s labely sub-spritů.</td></tr>
+                <tr><td><strong>Export formát</strong></td><td><em>8bpp raw</em> — jeden bajt na pixel. <em>4bpp packed</em> — dva pixely na bajt (hw4 formát).</td></tr>
+              </tbody>
+            </table>
+
+            <h3 id="cz-sprite-multisize">Větší / víceblokové sprity</h3>
+            <p>ZX Spectrum Next hardware podporuje pouze <strong>16×16 pixelové sprity</strong>. Pro větší objekty se kombinuje více HW spritů softwarově.</p>
+
+            <p>Editor to podporuje přímo: nastav libovolnou velikost canvasu jako násobek 16 v obou osách (např. 32×32, 32×48, 64×64). Editor pak:</p>
+            <ul>
+              <li>Zobrazí info badge s mřížkou sub-spritů, např. <em>"Next sprite: 2×2 = 4× 16×16 sub-spritu"</em>.</li>
+              <li><strong>SPR export</strong> vypíše všechny HW tile sekvenčně: zleva doprava, shora dolů.</li>
+              <li><strong>ASM export</strong> generuje samostatný label pro každý 16×16 tile s komentářem pixel-offsetu.</li>
+            </ul>
+
+            <div class="tip"><strong>Víceblokové sprity na Nextu:</strong> použij <code>SPRITE N,X,Y,PAL,ID</code> pro první tile, pak <code>SPRITE CONTINUE</code> pro následující tile na offsetech X+16, X+32 atd.</div>
+
+            <div class="warn"><strong>Uzamčení velikosti v Next módu:</strong> inputy Šířka a Výška se pohybují po krocích 16. Při přepnutí z klasického do Next módu se velikost automaticky zaokrouhlí na násobek 16.</div>
+          </section>
+
+          <!-- ── FONT ── -->
+          <section id="cz-font" class="panel">
+            <h2>4. Font Editor</h2>
+            <p>Font Editor spravuje standardní znakovou sadu (<code>32..127</code>) nebo UDG (<code>A..U</code>). Editovaný font lze přímo použít v textovém nástroji Screen Editoru — vyber <em>Font editor</em> z rozbalovacího menu Font v panelu textového nástroje.</p>
+            <table>
+              <thead><tr><th>Oblast</th><th>Co dělá</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Font setup</strong></td><td>Nastavení jména fontu, šířky, výšky, zoomu, masky a gridu.</td></tr>
+                <tr><td><strong>Glyph tools</strong></td><td>Posuny a rotace aktivního znaku nebo celé sady, načtení ZX 8×8 a import ROM/CH8/ASM.</td></tr>
+                <tr><td><strong>Character set</strong></td><td>Přepínání mezi standardní znakovou sadou a UDG.</td></tr>
+                <tr><td><strong>Glyph canvas</strong></td><td>Hlavní editor znaku. Levé tlačítko kreslí, pravé maže.</td></tr>
+                <tr><td><strong>Mask editor</strong></td><td>Při zapnuté masce funguje podobně jako u spritů.</td></tr>
+                <tr><td><strong>Preview / Export</strong></td><td>Velký náhled, náhled masky, ASM preview a import/export BIN/ASM pro font i UDG.</td></tr>
+                <tr><td><strong>Použití ve Screen Editoru</strong></td><td>Ve Screen Editoru vyber <em>Font editor</em> z rozbalovacího menu Font v panelu textového nástroje pro vykreslování textu aktuálně editovaným fontem.</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- ── KLÁVESY ── -->
+          <section id="cz-shortcuts" class="panel">
+            <h2>5. Klávesy a myš</h2>
+            <table>
+              <thead><tr><th>Zkratka / ovládání</th><th>Akce</th></tr></thead>
+              <tbody>
+                <tr><td><span class="kbd">Levé tlačítko</span></td><td>Kreslení / umístění / potvrzení většiny akcí. U textového nástroje: klik na canvas vytvoří nový textový objekt s okamžitým focusem.</td></tr>
+                <tr><td><span class="kbd">Pravé tlačítko</span></td><td>Mazání v bitmapových editorech. V <strong>režimu Attr Only</strong>: zapíše atribut s <strong>prohozeným INK a PAPER</strong> — hodí se pro rychlé otočení barev buňky. V Next sprite módu: nastavuje průhledný index barvy.</td></tr>
+                <tr><td><span class="kbd">Prostřední tlačítko</span></td><td>Screen Editor: přebírá viditelný atribut (klasický) nebo index barvy (Next) pod kurzorem. Next Sprite Editor: přebírá index barvy pod kurzorem.</td></tr>
+                <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">Z</span></td><td>Undo.</td></tr>
+                <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">Y</span></td><td>Redo.</td></tr>
+                <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">Shift</span> + <span class="kbd">Z</span></td><td>Redo.</td></tr>
+                <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">C</span> / <span class="kbd">V</span> / <span class="kbd">X</span></td><td>Copy / Paste / Cut výběru ve Screen Editoru.</td></tr>
+                <tr><td><span class="kbd">Enter</span> / <span class="kbd">Esc</span></td><td>Potvrzení / zrušení plovoucího výběru. V textovém editoru: <span class="kbd">Esc</span> zavře editor.</td></tr>
+                <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">Enter</span></td><td>Potvrdí a zavře textový editor.</td></tr>
+                <tr><td><span class="kbd">Delete</span> / <span class="kbd">Backspace</span></td><td>Smaže aktivní textový objekt, pokud je aktivní nástroj Text a editor není otevřen.</td></tr>
+                <tr><td><span class="kbd">+</span> / <span class="kbd">-</span></td><td>Přiblížení / oddálení ve Screen Editoru.</td></tr>
+                <tr><td><span class="kbd">W</span> <span class="kbd">A</span> <span class="kbd">S</span> <span class="kbd">D</span></td><td>Posun po přiblíženém canvasu ve Screen Editoru.</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- ── WORKFLOW ── -->
+          <section id="cz-workflow" class="panel">
+            <h2>6. Doporučené workflow</h2>
+
+            <h3>Klasická celá obrazovka</h3>
+            <ol>
+              <li>Začni ve <strong>Screen Editoru</strong> (klasický ZX Spectrum mód).</li>
+              <li>Nastav <strong>INK</strong>, <strong>PAPER</strong> a <strong>Bright</strong>; pro rychlé otočení dvojice použij <strong>INK ⇄ PAPER</strong>.</li>
+              <li>Zapni <strong>8×8</strong> grid pro kontrolu hranic atributů.</li>
+              <li>Používej vrstvy pro pozadí, popředí a overlaye. <strong>Transparent PAPER</strong> používej ve vyšších vrstvách tam, kde má zůstat viditelné pozadí ze spodních vrstev.</li>
+              <li><strong>Attr Only</strong> používej pro jemné doladění atributů bez poškození bitmapy.</li>
+              <li>Po dokončení exportuj přes <strong>Export SCR</strong>.</li>
+            </ol>
+
+            <h3>Workflow pro textové vrstvy</h3>
+            <ol>
+              <li>Vyber nástroj <strong>Text</strong> v toolboxu.</li>
+              <li>Klikni na canvas kde chceš umístit text — editor se okamžitě otevře s focusem, začni psát.</li>
+              <li>Změň barvu kliknutím na <strong>INK swatch</strong> (klasický) nebo barvu v paletě (Next) při otevřeném editoru.</li>
+              <li>Použij <strong>Bold</strong> nebo <strong>Italic</strong> v panelu pro stylování. Přepni <strong>Font</strong> na ZX ROM 8×8 pro autentický vzhled.</li>
+              <li>Přetáhni <strong>ouško ⠿</strong> pro přesunutí editoru, pokud překrývá tvou práci.</li>
+              <li>Stiskni <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> pro zavření editoru.</li>
+              <li>Klikni a táhni text na canvasu pro přemístění, nebo použij panel Vrstvy pro správu viditelnosti a pořadí.</li>
+              <li>Až budeš spokojený, použij <strong>Merge Layers</strong> pro rasterizaci textu do pixelů před finálním exportem.</li>
+            </ol>
+
+            <h3>Workflow pro dithering</h3>
+            <ol>
+              <li>Vyber nástroj <strong>Dither</strong> ze skupiny Paint &amp; Color.</li>
+              <li>Zvol vzor ditheringu z rozbalovacího menu <strong>Dither</strong>: <em>Solid</em>, <em>Checker</em>, <em>Sparse</em> nebo <em>Radial</em>.</li>
+              <li>Nastav slider <strong>Dither len.</strong> pro ovládání vzdálenosti doznívání tahu.</li>
+              <li>Maluj po canvasu — nástroj postupně prolíná INK a PAPER v rámci atributových omezení.</li>
+            </ol>
+
+            <h3>Next Layer 2 obrazovka</h3>
+            <ol>
+              <li>Přepni <strong>Screen Editor</strong> do módu <em>ZX Spectrum Next Layer 2</em>.</li>
+              <li>V paletě nastav <strong>Color A</strong> levým klikem a <strong>Color B</strong> pravým klikem. Prostřední klik na canvasu sebere barvu pod kurzorem.</li>
+              <li>Kresli libovolně — žádný color clash, žádná atributová mřížka.</li>
+              <li>Slidery <strong>Jas / Kontrast / Saturace</strong> pod paletou slouží pro dočasné doladění náhledu. <strong>Apply to layer</strong> použij jen tehdy, když chceš tyto změny napevno zapsat do aktivní vrstvy; jinak dej <strong>Reset</strong>.</li>
+              <li>Pro načtení existující Next obrazovky použij <strong>Import NXI</strong>, nebo <strong>Import L2</strong> pro raw pixelová data.</li>
+              <li>Po dokončení exportuj přes <strong>Export NXI</strong> (pixely + paleta), <strong>Export NXI + NXP (compat)</strong> pro kompatibilní oddělený export, nebo <strong>Export L2 Raw</strong> / <strong>Export SL2</strong> pro samotná pixelová data.</li>
+              <li>Načtení v NextBASIC: <code>LOAD "screen.nxi" LAYER 2</code>.</li>
+            </ol>
+
+            <h3>Import obrázku a konverze Next → Classic s ditheringem</h3>
+            <ol>
+              <li>V <strong>klasickém ZX módu</strong> klikni na <strong>Import Image</strong> a vyber JPG/PNG soubor — nebo přepni mód obrazovky z <em>Next Layer 2</em> na <em>Classic ZX Spectrum</em>. Otevře se konverzní dialog.</li>
+              <li>Dialog zobrazuje <strong>živý náhled</strong>: zdrojový obrázek nahoře a výsledek ZX konverze níže. Oboje se automaticky aktualizuje při každé změně nastavení.</li>
+              <li>Zvol <strong>metodu</strong>: <em>Přímý převod</em> je rychlý a vhodný pro čisté ploché barvy; <em>Dithering (Ordered Bayer)</em> je lepší pro fotografie a složitou grafiku, kde záleží na přechodech.</li>
+              <li>Při ditheringu nastav <strong>sílu</strong> (70–100 % je dobrý výchozí bod) a vyber <strong>matici</strong>: Bayer 4×4 je nejlepší pro obecné použití.</li>
+              <li>Slidermi <strong>Jas / Kontrast / Saturace</strong> předuprav zdrojový obrázek. Zvýšení kontrastu před konverzí často zlepší výsledek tím, že ZX barvy jsou výraznější.</li>
+              <li>Až náhled vypadá dobře, klikni <strong>Convert</strong> / <strong>Import</strong>. Konverze se aplikuje na canvas a jde vrátit pomocí Undo.</li>
+            </ol>
+
+            <div class="tip"><strong>Tipy pro dithering:</strong> algoritmus vybírá nejlepší dvojici ink+paper pro každou 8×8 atributovou buňku pomocí perceptuální vzdálenosti barev (vážená pro lidské vnímání), poté aplikuje Bayer vzor uvnitř každé buňky. Zvýšení kontrastu nebo saturace +20–40 před konverzí často dává čistší atributové volby. Pokud výsledek vypadá příliš zašuměně, sniž sílu ditheringu nebo zkus Bayer 2×2 místo 4×4.</div>
+
+            <h3>Konverze Classic → Next</h3>
+            <ol>
+              <li>Nakresli obrazovku v klasickém ZX Spectrum módu včetně textových vrstev.</li>
+              <li>Použij <strong>Konverzi do Next</strong> — každý viditelný pixel se namapuje na nejbližší barvu v Next paletě. Barvy textových objektů jsou také automaticky konvertovány.</li>
+              <li>Pokračuj v editaci v Next módu s plnou 256barevnou svobodou.</li>
+              <li>Exportuj jako NXI.</li>
+            </ol>
+
+            <h3>Next sprite (single 16×16)</h3>
+            <ol>
+              <li>Přepni se do <strong>Sprite Editoru</strong>, vyber mód <em>ZX Spectrum Next 8bpp</em>.</li>
+              <li>Nastav velikost 16×16. Vyber barvy palety a průhledný index.</li>
+              <li>Kresli sprite. Prostředním tlačítkem přebírej barvy.</li>
+              <li>Přidávej framy pro animaci přes <strong>New Frame</strong>.</li>
+              <li>Exportuj jako <strong>Next SPR</strong> — 256 bajtů per frame.</li>
+            </ol>
+
+            <h3>Next sprite (velký / víceblokový)</h3>
+            <ol>
+              <li>Přepni se do <strong>Sprite Editoru</strong>, vyber mód <em>ZX Spectrum Next 8bpp</em>.</li>
+              <li>Nastav šířku a výšku jako násobky 16 (např. 32×32). Badge zobrazí <em>"2×2 = 4× 16×16 sub-spritu"</em>.</li>
+              <li>Kresli na celém canvasu — editor interně řeší rozdělení na tile automaticky.</li>
+              <li>Exportuj jako <strong>Next SPR</strong> (sekvenčně, zleva doprava, shora dolů).</li>
+              <li>Alternativně použij <strong>ASM export</strong> s labely per tile pro sjasmplus nebo ASW.</li>
+            </ol>
+
+            <h3>Klasické sprity</h3>
+            <ol>
+              <li>Přepni se do <strong>Sprite Editoru</strong>.</li>
+              <li>Nastav šířku (násobek 8), výšku, zoom a režim (Monochrome nebo Color).</li>
+              <li>Vytvářej framy přes <strong>New Frame</strong>.</li>
+              <li>Nakresli framy a zkontroluj je přes <strong>Play</strong>.</li>
+              <li>Masku použij tehdy, když ji cílová rutina vyžaduje explicitně.</li>
+              <li>Exportuj jako <strong>BIN</strong> nebo <strong>ASM</strong>.</li>
+            </ol>
+
+            <h3>Typické workflow pro fonty</h3>
+            <ol>
+              <li>Přepni se do <strong>Font Editoru</strong>.</li>
+              <li>Vyber <strong>Standard 32..127</strong> nebo <strong>UDG A..U</strong>.</li>
+              <li>Naimportuj existující font, načti ZX 8×8 nebo kresli od nuly.</li>
+              <li>Upravuj znaky jeden po druhém přes náhledovou mřížku.</li>
+              <li>Podle potřeby používej posuny a rotace.</li>
+              <li>Pro použití ve Screen Editoru přejdi na nástroj Text a vyber <em>Font editor</em> z rozbalovacího menu Font.</li>
+              <li>Exportuj do BIN nebo ASM.</li>
+            </ol>
+
+            <p class="footer">Tato nápověda odpovídá aktuální verzi rozhraní včetně: Next Layer 2 screen módu (import/export NXI/SL2/L2), Next 8bpp sprite módu (SPR export, víceblokové velké sprity), konverze Classic↔Next (včetně automatické konverze barev textu), Transparent PAPER, přejmenování vrstev, prohazování INK ⇄ PAPER, Bresenhamovy interpolace ve všech kreslicích nástrojích, kontinuálního spraeje, živých textových vrstev s uškem pro tažení a přímou editací barev, ditheringu s více vzory, importu obrázků a konverze Next→Classic s Ordered Bayer ditheringem (slider síly, matice 2×2/4×4/8×8, předúprava jasem/kontrastem/saturací, živý náhled před/po), prohazování INK↔PAPER pravým tlačítkem v režimu Attr Only a ukazatele průběhu při načítání projektu.</p>
+          </section>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      // ── Search state (declared first so setLang can reference clearSearch) ──
+      const origHTML = new Map();
+      let currentLang = 'en';
+      let searchTimer = null;
+
+      function escapeRE(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+      function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+      function getActiveSections(){
+        const pane = document.getElementById(currentLang==='cz'?'pane-cz':'pane-en');
+        return pane ? Array.from(pane.querySelectorAll('section.panel')) : [];
+      }
+      function getActiveTocLinks(){
+        const pane = document.getElementById(currentLang==='cz'?'pane-cz':'pane-en');
+        return pane ? Array.from(pane.querySelectorAll('.toc a')) : [];
+      }
+
+      function clearSearch(){
+        origHTML.forEach((html, section) => { section.innerHTML = html; });
+        origHTML.clear();
+        getActiveSections().forEach(s => s.classList.remove('search-hidden'));
+        getActiveTocLinks().forEach(a => a.classList.remove('toc-hidden'));
+        const searchStatus = document.getElementById('searchStatus');
+        const searchClear  = document.getElementById('searchClear');
+        if(searchStatus) searchStatus.innerHTML = '';
+        if(searchClear)  searchClear.classList.remove('visible');
+      }
+
+      function highlightInElement(el, re){
+        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+          acceptNode(node){
+            const p = node.parentElement;
+            if(!p) return NodeFilter.FILTER_REJECT;
+            const tag = p.tagName.toUpperCase();
+            if(tag==='SCRIPT'||tag==='STYLE'||tag==='MARK') return NodeFilter.FILTER_REJECT;
+            return node.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+          }
+        });
+        const textNodes = [];
+        let n;
+        while((n = walker.nextNode())) textNodes.push(n);
+        textNodes.forEach(node => {
+          const text = node.nodeValue;
+          re.lastIndex = 0;
+          if(!re.test(text)) return;
+          re.lastIndex = 0;
+          const frag = document.createDocumentFragment();
+          let last = 0, m;
+          while((m = re.exec(text)) !== null){
+            if(m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+            const mark = document.createElement('mark');
+            mark.textContent = m[0];
+            frag.appendChild(mark);
+            last = m.index + m[0].length;
+          }
+          if(last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+          node.parentNode.replaceChild(frag, node);
+        });
+      }
+
+      function runSearch(query){
+        const searchStatus = document.getElementById('searchStatus');
+        const searchClear  = document.getElementById('searchClear');
+        if(searchClear) searchClear.classList.add('visible');
+        const sections = getActiveSections();
+        const tocLinks  = getActiveTocLinks();
+        const re = new RegExp(escapeRE(query), 'gi');
+
+        // Restore originals first
+        origHTML.forEach((html, section) => { section.innerHTML = html; });
+        origHTML.clear();
+
+        let totalHits = 0, visibleSections = 0;
+        sections.forEach(section => {
+          origHTML.set(section, section.innerHTML);
+          const matchCount = (section.textContent.match(re) || []).length;
+          if(matchCount === 0){
+            section.classList.add('search-hidden');
+          } else {
+            section.classList.remove('search-hidden');
+            totalHits += matchCount;
+            visibleSections++;
+            highlightInElement(section, re);
+          }
+        });
+
+        tocLinks.forEach(a => {
+          const href = a.getAttribute('href');
+          if(!href) return;
+          const target = document.getElementById(href.slice(1));
+          const parentSection = target ? target.closest('section.panel') : null;
+          a.classList.toggle('toc-hidden', parentSection ? parentSection.classList.contains('search-hidden') : false);
+        });
+
+        if(searchStatus){
+          if(totalHits === 0){
+            searchStatus.innerHTML = `<span class="no-hit">No results for "<strong>${escapeHtml(query)}</strong>"</span>`;
+          } else {
+            const s = visibleSections === 1 ? 'section' : 'sections';
+            searchStatus.innerHTML = `<span class="hit-count">${totalHits}</span> match${totalHits===1?'':'es'} in ${visibleSections} ${s}`;
+          }
+        }
+      }
+
+      // ── Language switch ──────────────────────────────────────────────────
+      const buttons = Array.from(document.querySelectorAll('.lang-btn'));
+      const panes = { en:['hero-en','pane-en'], cz:['hero-cz','pane-cz'] };
+
+      function setLang(lang){
+        currentLang = lang;
+        buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.lang===lang));
+        Object.entries(panes).forEach(([key,ids]) => {
+          ids.forEach(id => document.getElementById(id).classList.toggle('active', key===lang));
+        });
+        document.documentElement.lang = lang==='cz' ? 'cs' : 'en';
+        try { localStorage.setItem('zxpp-help-lang', lang); } catch(e){}
+        const q = (document.getElementById('searchInput')||{}).value||'';
+        if(q.trim()) runSearch(q.trim());
+        else {
+          clearSearch();
+          if(location.hash){
+            const t = document.getElementById(location.hash.slice(1));
+            if(t) t.scrollIntoView();
+          } else {
+            window.scrollTo({top:0,behavior:'instant'});
+          }
+        }
+      }
+
+      buttons.forEach(btn => btn.addEventListener('click', ()=>setLang(btn.dataset.lang)));
+      setLang('en');
+
+      // ── Search input wiring ──────────────────────────────────────────────
+      const searchInput = document.getElementById('searchInput');
+      const searchClear = document.getElementById('searchClear');
+
+      searchInput.addEventListener('input', () => {
+        const q = searchInput.value.trim();
+        clearTimeout(searchTimer);
+        if(!q){ clearSearch(); return; }
+        searchTimer = setTimeout(()=>runSearch(q), 180);
+      });
+
+      searchClear.addEventListener('click', ()=>{
+        searchInput.value = '';
+        clearSearch();
+        searchInput.focus();
+      });
+
+      const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+      function updateScrollTopBtn(){
+        if(!scrollTopBtn) return;
+        scrollTopBtn.classList.toggle('visible', window.scrollY > 320);
+      }
+
+      if(scrollTopBtn){
+        scrollTopBtn.addEventListener('click', ()=>{
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      window.addEventListener('scroll', updateScrollTopBtn, { passive:true });
+      updateScrollTopBtn();
+    })();
+  </script>
+  <button id="scrollTopBtn" class="scroll-top-btn" type="button" aria-label="Scroll to top" title="Back to top / Zpět nahoru">↑</button>
+</body>
+</html>
