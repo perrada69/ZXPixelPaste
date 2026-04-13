@@ -668,22 +668,6 @@
       padding: 14px;
       height: min(610px, 65vh);
       position: relative;
-      touch-action: none;
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: auto;
-      cursor: default;
-    }
-
-    .sprite-grid-wrap {
-      touch-action: none;
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: auto;
-      cursor: default;
-    }
-
-    .canvas-wrap.pan-active,
-    .sprite-grid-wrap.pan-active {
-      cursor: grabbing;
     }
 
     canvas {
@@ -1449,284 +1433,6 @@
       background: linear-gradient(180deg, #3f69b8, #31579a);
       border-color: #bdd3ff;
       transform: translateY(-1px);
-    }
-
-
-
-    canvas,
-    button,
-    .button-like,
-    .tab-btn,
-    .swatch,
-    .next-palette-swatch,
-    .glyph-tile,
-    .sprite-frame-card,
-    .item {
-      touch-action: manipulation;
-    }
-
-    #editorCanvas,
-    #spriteCanvas,
-    #fontCanvas,
-    #fontMaskEditCanvas,
-    #maskEditCanvas {
-      touch-action: none;
-    }
-
-    .canvas-wrap,
-    .sprite-grid-wrap,
-    .glyph-grid,
-    .layers,
-    .frame-list,
-    .sprite-frame-strip {
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-    }
-
-    @media (max-width: 760px) {
-      body {
-        overflow-x: hidden;
-      }
-
-      .app {
-        padding: 10px;
-        gap: 10px;
-      }
-
-      .topbar,
-      .topbar-actions,
-      .brand {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .brand {
-        gap: 8px;
-      }
-
-      .brand h1 {
-        font-size: 20px;
-        line-height: 1.15;
-      }
-
-      .brand .sub {
-        font-size: 12px;
-        line-height: 1.4;
-      }
-
-      .badge {
-        align-self: flex-start;
-      }
-
-      .tabs {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        width: 100%;
-      }
-
-      .tab-btn,
-      button,
-      .button-like {
-        min-height: 38px;
-        padding: 8px 10px;
-        font-size: 13px;
-      }
-
-      .tabs > button,
-      .about-btn,
-      .topbar-actions > button,
-      .row > button,
-      .row > .button-like,
-      .compact-grid > button,
-      .compact-grid > .button-like,
-      .triple > button,
-      .triple > .button-like,
-      .frame-toolbar > button,
-      .frame-toolbar > .button-like,
-      .code-actions > button,
-      .code-actions > .button-like {
-        min-height: 38px;
-      }
-
-      .panel,
-      .dialog {
-        border-radius: 14px;
-      }
-
-      .panel-header,
-      .panel-body,
-      .dialog-header,
-      .dialog-body {
-        padding-left: 12px;
-        padding-right: 12px;
-      }
-
-      .tool-group-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 6px;
-      }
-
-      .icon-tool {
-        min-height: 58px;
-        gap: 4px;
-        padding: 8px 4px 6px;
-        border-radius: 10px;
-      }
-
-      .icon-tool .tool-icon,
-      .icon-tool .tool-icon svg {
-        width: 20px;
-        height: 20px;
-      }
-
-      .icon-tool .tool-label {
-        font-size: 9px;
-        line-height: 1.05;
-      }
-
-      .compact-grid,
-      .triple,
-      .uniform-action-grid,
-      .font-action-grid,
-      .preview-pair,
-      .frame-toolbar {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .row {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .row > button,
-      .row > .button-like {
-        width: 100%;
-      }
-
-      .palette-wrap {
-        grid-template-columns: 1fr;
-      }
-
-      .palette-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-
-      .next-palette-grid {
-        grid-template-columns: repeat(8, minmax(0, 1fr));
-      }
-
-      .sprite-frame-strip,
-      .glyph-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .canvas-wrap,
-      .sprite-grid-wrap {
-        padding: 10px;
-      }
-
-      .canvas-wrap {
-        height: min(58vh, 420px);
-      }
-
-      .layers,
-      .frame-list,
-      .glyph-grid,
-      .sprite-frame-strip {
-        max-height: 40vh;
-      }
-
-      .text-editor-box {
-        min-width: min(260px, calc(100vw - 32px));
-        max-width: calc(100vw - 24px);
-      }
-
-      .dialog-backdrop {
-        padding: 10px;
-      }
-
-      input[type="text"],
-      input[type="number"],
-      select,
-      textarea {
-        font-size: 16px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .app {
-        padding: 8px;
-      }
-
-      .brand h1 {
-        font-size: 18px;
-      }
-
-      .panel-header h2,
-      .panel-header h3 {
-        font-size: 15px;
-      }
-
-      .tabs {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .topbar-actions {
-        gap: 8px;
-      }
-
-      .about-btn {
-        width: 100%;
-      }
-
-      .row {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .tool-group-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .icon-tool {
-        min-height: 54px;
-        padding: 7px 3px 6px;
-      }
-
-      .icon-tool .tool-label {
-        font-size: 8.5px;
-      }
-
-      .compact-grid,
-      .triple,
-      .uniform-action-grid,
-      .font-action-grid,
-      .preview-pair,
-      .frame-toolbar {
-        grid-template-columns: 1fr;
-      }
-
-      .row-between {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .sprite-frame-strip,
-      .glyph-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .next-palette-grid {
-        grid-template-columns: repeat(6, minmax(0, 1fr));
-      }
-
-      .item {
-        align-items: flex-start;
-      }
-
-      .layer-actions {
-        flex-wrap: wrap;
-        justify-content: flex-end;
-      }
     }
 
 
@@ -2934,13 +2640,6 @@
                     </div>
                   </div>
                 </label>
-                <label class="conv-radio-opt">
-                  <input type="radio" name="nextTo48kMethod" value="bw" style="margin-top:2px;flex-shrink:0;">
-                  <div class="conv-radio-opt-text">
-                    <span class="conv-radio-opt-title">Black &amp; White dithering</span>
-                    <span class="conv-radio-opt-desc">Monochrome import with white ink on black paper. Uses the same dither controls below.</span>
-                  </div>
-                </label>
               </div>
             </div>
             <div class="conv-section">
@@ -3136,13 +2835,6 @@
                         </select>
                       </div>
                     </div>
-                  </div>
-                </label>
-                <label class="conv-radio-opt">
-                  <input type="radio" name="imgImportMethod" value="bw" style="margin-top:2px;flex-shrink:0;">
-                  <div class="conv-radio-opt-text">
-                    <span class="conv-radio-opt-title">Black &amp; White dithering</span>
-                    <span class="conv-radio-opt-desc">Monochrome import with white ink on black paper. Uses the same dither controls below.</span>
                   </div>
                 </label>
               </div>
@@ -4213,36 +3905,6 @@
 
       function cancelFloatingSelection() {
         if (!state.floatingSelection) return;
-        const fs = state.floatingSelection;
-        if (fs.restoreOnCancel) {
-          const idx = activeLayerIndex();
-          if (idx >= 0) {
-            const next = cloneLayers(state.layers);
-            const layer = next[idx];
-            const restoreX = clamp(fs.originX ?? fs.x, 0, ZX_W - fs.w);
-            const restoreY = clamp(fs.originY ?? fs.y, 0, ZX_H - fs.h);
-            for (let yy = 0; yy < fs.h; yy++) for (let xx = 0; xx < fs.w; xx++) {
-              const srcIdx = yy * fs.w + xx;
-              if (fs.mask && !fs.mask[srcIdx]) continue;
-              const px = restoreX + xx, py = restoreY + yy;
-              if (px < 0 || py < 0 || px >= ZX_W || py >= ZX_H) continue;
-              const dstIdx = getIdx(px, py);
-              layer.pixels[dstIdx] = fs.pixels[srcIdx];
-              if (layer.colors && fs.colors) layer.colors[dstIdx] = fs.colors[srcIdx];
-            }
-            for (let ay = 0; ay < fs.attrsH; ay++) for (let ax = 0; ax < fs.attrsW; ax++) {
-              const srcAttrIdx = ay * fs.attrsW + ax;
-              if (fs.attrMask && !fs.attrMask[srcAttrIdx]) continue;
-              const dax = ((restoreX / 8) | 0) + ax, day = ((restoreY / 8) | 0) + ay;
-              if (dax >= 0 && day >= 0 && dax < ATTR_W && day < ATTR_H && fs.attrs[srcAttrIdx] !== TRANSPARENT_ATTR) {
-                const dstAttrIdx = getAttrIdx(dax, day);
-                layer.attrs[dstAttrIdx] = fs.attrs[srcAttrIdx];
-                if (layer.paperTransparent) layer.paperTransparent[dstAttrIdx] = fs.paperTransparent ? fs.paperTransparent[srcAttrIdx] : 0;
-              }
-            }
-            state.layers = next;
-          }
-        }
         state.floatingSelection = null;
         updateFloatBar();
         renderScreenCanvas();
@@ -4850,401 +4512,8 @@
           }
         }
       }
-
-      function floodFillSelection(layer, sx, sy, colorBit, attrV, attributesOnly, sel) {
-        if (!sel) return floodFill(layer, sx, sy, colorBit, attrV, attributesOnly);
-        const startRelX = sx - sel.x, startRelY = sy - sel.y;
-        if (!selectionHasPixel(sel, startRelX, startRelY)) return;
-        const isAllowed = (x, y) => selectionHasPixel(sel, x - sel.x, y - sel.y);
-        if (isNextScreenMode()) {
-          const stack = [[sx, sy]];
-          const seen = new Uint8Array(ZX_W * ZX_H);
-          const origPixels = new Uint8Array(layer.pixels);
-          const origColors = new Uint8Array(layer.colors || new Uint8Array(ZX_W * ZX_H));
-          const origLayer = { ...layer, pixels: origPixels, colors: origColors };
-          const targetColor = getVisibleColorIndexAt(sx, sy, origLayer);
-          const fillColor = colorBit ? currentNextInk() : currentNextPaper();
-          if (targetColor === fillColor) return;
-          while (stack.length) {
-            const [x, y] = stack.pop();
-            if (x < 0 || y < 0 || x >= ZX_W || y >= ZX_H) continue;
-            const idx = getIdx(x, y);
-            if (seen[idx]) continue;
-            seen[idx] = 1;
-            if (!isAllowed(x, y)) continue;
-            if (getVisibleColorIndexAt(x, y, origLayer) !== targetColor) continue;
-            layer.pixels[idx] = 1;
-            if (!layer.colors) layer.colors = new Uint8Array(ZX_W * ZX_H);
-            layer.colors[idx] = fillColor;
-            stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
-          }
-          return;
-        }
-        const stack = [[sx, sy]], seen = new Uint8Array(ZX_W * ZX_H), filled = new Uint8Array(ZX_W * ZX_H);
-        const touchedCells = new Set();
-        const origPixels = new Uint8Array(layer.pixels);
-        const origAttrs = new Uint8Array(layer.attrs);
-        const origLayer = { ...layer, pixels: origPixels, attrs: origAttrs };
-        const getOrigVisibleDisplayKey = (x, y) => getVisibleDisplayColorKeyAt(x, y, origLayer);
-        const targetVisibleKey = getOrigVisibleDisplayKey(sx, sy);
-
-        while (stack.length) {
-          const [x, y] = stack.pop();
-          if (x < 0 || y < 0 || x >= ZX_W || y >= ZX_H) continue;
-          const idx = getIdx(x, y);
-          if (seen[idx]) continue;
-          seen[idx] = 1;
-          if (!isAllowed(x, y)) continue;
-          if (!attributesOnly && getOrigVisibleDisplayKey(x, y) !== targetVisibleKey) continue;
-          filled[idx] = 1;
-          if (attributesOnly) {
-            if (attrV != null) layer.attrs[getAttrIdx((x / 8) | 0, (y / 8) | 0)] = attrV;
-          } else {
-            layer.pixels[idx] = colorBit;
-            if (attrV != null) touchedCells.add(((y / 8) | 0) * ATTR_W + ((x / 8) | 0));
-          }
-          stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
-        }
-
-        if (!attributesOnly && attrV != null) {
-          const selectedAttr = decodeAttrByte(attrV);
-          const selectedCI = (colorBit ? selectedAttr.ink : selectedAttr.paper) + (selectedAttr.bright ? 8 : 0);
-          const selectedFlash = selectedAttr.flash ? 1 : 0;
-
-          for (const cellKey of touchedCells) {
-            const ax = cellKey % ATTR_W, ay = (cellKey / ATTR_W) | 0;
-            const startX = ax * 8, startY = ay * 8;
-            const attrIdx = getAttrIdx(ax, ay);
-            const cellFilled = [];
-            const localColors = [];
-            let hasAnyLocalAttr = origAttrs[attrIdx] !== TRANSPARENT_ATTR;
-            const preserveCounts = new Uint16Array(16);
-
-            for (let yy = 0; yy < 8; yy++) {
-              for (let xx = 0; xx < 8; xx++) {
-                const px = startX + xx, py = startY + yy;
-                if (px >= ZX_W || py >= ZX_H) continue;
-                const pidx = getIdx(px, py);
-                const isFilled = !!filled[pidx];
-                const localCI = getLayerLocalColorIndexAt(origLayer, px, py, origPixels, origAttrs);
-                cellFilled.push(isFilled);
-                localColors.push(localCI);
-                if (!isFilled && localCI != null && localCI !== selectedCI) preserveCounts[localCI]++;
-              }
-            }
-
-            let preserveCI = -1;
-            let bestCount = -1;
-            for (let ci = 0; ci < 16; ci++) {
-              if (ci === selectedCI) continue;
-              if (preserveCounts[ci] > bestCount) {
-                bestCount = preserveCounts[ci];
-                preserveCI = ci;
-              }
-            }
-
-            if (preserveCI < 0) {
-              if (origAttrs[attrIdx] !== TRANSPARENT_ATTR) {
-                const oldAttr = decodeAttrByte(origAttrs[attrIdx]);
-                const oldInkCI = oldAttr.ink + (oldAttr.bright ? 8 : 0);
-                const oldPaperCI = oldAttr.paper + (oldAttr.bright ? 8 : 0);
-                preserveCI = (oldInkCI === selectedCI) ? oldPaperCI : oldInkCI;
-              } else {
-                preserveCI = (colorBit ? selectedAttr.paper : selectedAttr.ink) + (selectedAttr.bright ? 8 : 0);
-                if (layer.paperTransparent) layer.paperTransparent[attrIdx] = 1;
-              }
-            }
-
-            const options = [
-              {
-                fillBit: 1,
-                inkCI: selectedCI,
-                paperCI: preserveCI,
-                bright: ((selectedCI >= 8) || (preserveCI >= 8)) ? 1 : 0
-              },
-              {
-                fillBit: 0,
-                inkCI: preserveCI,
-                paperCI: selectedCI,
-                bright: ((selectedCI >= 8) || (preserveCI >= 8)) ? 1 : 0
-              }
-            ];
-
-            function scoreOption(opt) {
-              let score = 0;
-              for (let i = 0; i < cellFilled.length; i++) {
-                if (cellFilled[i]) continue;
-                const localCI = localColors[i];
-                if (localCI == null) continue;
-                const renderedCI = (opt.fillBit ? (origPixels[i] ? opt.inkCI : opt.paperCI) : (origPixels[i] ? opt.inkCI : opt.paperCI));
-                if (localCI !== opt.inkCI && localCI !== opt.paperCI) score += 3;
-              }
-              if (opt.fillBit !== colorBit) score += 1;
-              return score;
-            }
-
-            let chosen = options[0];
-            if (scoreOption(options[1]) < scoreOption(options[0])) chosen = options[1];
-
-            const originalTransparentPaper = layerPaperTransparentByAttrIndex(origLayer, attrIdx);
-            const isOverlayTPLayer = layer.autoOverlayKind === 'transparentPaper';
-
-            if (isOverlayTPLayer) {
-              const bright = (selectedCI >= 8) ? 1 : 0;
-              layer.attrs[attrIdx] = makeAttrByte(selectedCI & 7, chosen.paperCI & 7, bright, selectedFlash);
-              if (layer.paperTransparent) layer.paperTransparent[attrIdx] = 1;
-              let i2 = 0;
-              for (let yy = 0; yy < 8; yy++) {
-                for (let xx = 0; xx < 8; xx++, i2++) {
-                  const px = startX + xx, py = startY + yy;
-                  if (px >= ZX_W || py >= ZX_H) continue;
-                  const pidx = getIdx(px, py);
-                  if (cellFilled[i2]) {
-                    layer.pixels[pidx] = 1;
-                    if (layer.explicitPaper) layer.explicitPaper[pidx] = 0;
-                  } else if (localColors[i2] == null) {
-                    layer.pixels[pidx] = 0;
-                    if (layer.explicitPaper) layer.explicitPaper[pidx] = 0;
-                  }
-                }
-              }
-              continue;
-            }
-
-            const cellNeedsTransparentPaper = state.transparentPaper || originalTransparentPaper || cellFilled.some((isFilled, idx) => !isFilled && localColors[idx] == null);
-            layer.attrs[attrIdx] = makeAttrByte(chosen.inkCI & 7, chosen.paperCI & 7, chosen.bright, selectedFlash);
-            if (layer.paperTransparent) layer.paperTransparent[attrIdx] = cellNeedsTransparentPaper ? 1 : 0;
-
-            let i = 0;
-            for (let yy = 0; yy < 8; yy++) {
-              for (let xx = 0; xx < 8; xx++, i++) {
-                const px = startX + xx, py = startY + yy;
-                if (px >= ZX_W || py >= ZX_H) continue;
-                const pidx = getIdx(px, py);
-                let nextBit = 0;
-                let nextExplicitPaper = 0;
-
-                if (cellFilled[i]) {
-                  nextBit = chosen.fillBit;
-                  nextExplicitPaper = chosen.fillBit ? 0 : 1;
-                } else {
-                  const localCI = localColors[i];
-                  if (localCI == null) {
-                    nextBit = 0;
-                    nextExplicitPaper = 0;
-                  } else if (localCI === chosen.inkCI) {
-                    nextBit = 1;
-                    nextExplicitPaper = 0;
-                  } else if (localCI === chosen.paperCI) {
-                    nextBit = 0;
-                    nextExplicitPaper = 1;
-                  } else {
-                    nextBit = origPixels[pidx] ? 1 : 0;
-                    nextExplicitPaper = nextBit ? 0 : ((origLayer.explicitPaper && origLayer.explicitPaper[pidx]) ? 1 : 0);
-                  }
-                }
-
-                layer.pixels[pidx] = nextBit;
-                if (layer.explicitPaper) layer.explicitPaper[pidx] = cellNeedsTransparentPaper ? nextExplicitPaper : 0;
-              }
-            }
-          }
-        }
-      }
       function rasterizeText(text, x, y, drawPoint) { let cx = x; for (const raw of text.toUpperCase()) { const glyph = FONT_5X7[raw] || FONT_5X7['?']; for (let gy = 0; gy < glyph.length; gy++) for (let gx = 0; gx < 5; gx++) if (glyph[gy] & (1 << (4 - gx))) drawPoint(cx + gx, y + gy); cx += 6; } }
       function screenToPixel(clientX, clientY) { const rect = screenCanvas.getBoundingClientRect(); return { x: clamp(Math.floor((clientX - rect.left) / state.zoom), 0, ZX_W - 1), y: clamp(Math.floor((clientY - rect.top) / state.zoom), 0, ZX_H - 1) }; }
-      function isGestureActiveFor(target) {
-        return !!target?.closest?.('.canvas-wrap.gesture-active, .sprite-grid-wrap.gesture-active');
-      }
-      function clonePointerLikeEvent(e) {
-        return {
-          pointerId: e.pointerId,
-          pointerType: e.pointerType,
-          clientX: e.clientX,
-          clientY: e.clientY,
-          button: e.button,
-          buttons: e.buttons,
-          target: e.target,
-          preventDefault() { },
-          stopPropagation() { }
-        };
-      }
-      const TOUCH_DRAW_MOVE_THRESHOLD = 10;
-      const TOUCH_DRAW_TAP_MAX_MS = 220;
-      const pendingTouchDraw = {
-        screen: null,
-        sprite: null,
-        font: null,
-        fontMask: null,
-        spriteMask: null
-      };
-      function queuePendingTouchDraw(kind, e) {
-        pendingTouchDraw[kind] = {
-          event: clonePointerLikeEvent(e),
-          startX: e.clientX,
-          startY: e.clientY,
-          startedAt: performance.now()
-        };
-      }
-      function clearPendingTouchDraw(kind) {
-        pendingTouchDraw[kind] = null;
-      }
-      function shouldStartPendingTouchDraw(kind, e) {
-        const pending = pendingTouchDraw[kind];
-        if (!pending) return false;
-        const dx = e.clientX - pending.startX;
-        const dy = e.clientY - pending.startY;
-        return Math.hypot(dx, dy) >= TOUCH_DRAW_MOVE_THRESHOLD;
-      }
-      function flushPendingTouchDraw(kind, startFn) {
-        const pending = pendingTouchDraw[kind];
-        if (!pending) return false;
-        pendingTouchDraw[kind] = null;
-        startFn(pending.event);
-        return true;
-      }
-      function commitPendingTouchTap(kind, upEvent, startFn) {
-        const pending = pendingTouchDraw[kind];
-        if (!pending) return false;
-        const dx = upEvent.clientX - pending.startX;
-        const dy = upEvent.clientY - pending.startY;
-        const dt = performance.now() - pending.startedAt;
-        pendingTouchDraw[kind] = null;
-        if (Math.hypot(dx, dy) > TOUCH_DRAW_MOVE_THRESHOLD || dt > TOUCH_DRAW_TAP_MAX_MS) return false;
-        const tapEvent = clonePointerLikeEvent(upEvent);
-        tapEvent.button = pending.event.button;
-        tapEvent.buttons = pending.event.buttons;
-        startFn(tapEvent);
-        return true;
-      }
-
-      function setupScrollableCanvasViewport({ wrap, canvas, getZoom, setZoom, render, minZoom, maxZoom, syncControls }) {
-        if (!wrap || !canvas) return;
-        let mousePan = null;
-        let pinch = null;
-        let touchPan = null;
-        let spacePressed = false;
-
-        const clampZoom = z => clamp(Math.round(z), minZoom, maxZoom);
-        const syncAfterZoom = () => { if (typeof syncControls === 'function') syncControls(); };
-        const applyZoomAt = (targetZoom, clientX, clientY) => {
-          const oldZoom = getZoom();
-          const nextZoom = clampZoom(targetZoom);
-          if (nextZoom === oldZoom) return false;
-          const rect = canvas.getBoundingClientRect();
-          const mouseX = clientX - rect.left;
-          const mouseY = clientY - rect.top;
-          const pixelX = mouseX / Math.max(1, oldZoom);
-          const pixelY = mouseY / Math.max(1, oldZoom);
-          setZoom(nextZoom);
-          render();
-          const newZoom = getZoom();
-          const newMouseX = pixelX * newZoom;
-          const newMouseY = pixelY * newZoom;
-          wrap.scrollLeft += newMouseX - mouseX;
-          wrap.scrollTop += newMouseY - mouseY;
-          syncAfterZoom();
-          return true;
-        };
-
-        wrap.addEventListener('mousedown', e => {
-          const wantsPan = e.button === 1 || (e.button === 0 && spacePressed);
-          if (!wantsPan) return;
-          e.preventDefault();
-          mousePan = { x: e.clientX, y: e.clientY, left: wrap.scrollLeft, top: wrap.scrollTop };
-          wrap.classList.add('pan-active');
-        });
-        window.addEventListener('mousemove', e => {
-          if (!mousePan) return;
-          e.preventDefault();
-          wrap.scrollLeft = mousePan.left - (e.clientX - mousePan.x);
-          wrap.scrollTop = mousePan.top - (e.clientY - mousePan.y);
-        });
-        window.addEventListener('mouseup', () => {
-          mousePan = null;
-          wrap.classList.remove('pan-active');
-        });
-
-        wrap.addEventListener('wheel', e => {
-          if (!wrap.contains(e.target)) return;
-          e.preventDefault();
-          applyZoomAt(getZoom() + (e.deltaY < 0 ? 1 : -1), e.clientX, e.clientY);
-        }, { passive: false });
-
-        wrap.addEventListener('touchstart', e => {
-          if (e.touches.length === 2) {
-            const [t1, t2] = e.touches;
-            const dx = t2.clientX - t1.clientX, dy = t2.clientY - t1.clientY;
-            pinch = {
-              distance: Math.hypot(dx, dy) || 1,
-              zoom: getZoom(),
-              left: wrap.scrollLeft,
-              top: wrap.scrollTop,
-              centerX: (t1.clientX + t2.clientX) / 2,
-              centerY: (t1.clientY + t2.clientY) / 2
-            };
-            touchPan = null;
-            wrap.classList.add('gesture-active', 'pan-active');
-            e.preventDefault();
-          } else if (e.touches.length === 1 && wrap.classList.contains('gesture-active')) {
-            const t = e.touches[0];
-            touchPan = { x: t.clientX, y: t.clientY, left: wrap.scrollLeft, top: wrap.scrollTop };
-            e.preventDefault();
-          }
-        }, { passive: false });
-
-        wrap.addEventListener('touchmove', e => {
-          if (e.touches.length === 2) {
-            const [t1, t2] = e.touches;
-            const dx = t2.clientX - t1.clientX, dy = t2.clientY - t1.clientY;
-            const distance = Math.hypot(dx, dy) || 1;
-            const centerX = (t1.clientX + t2.clientX) / 2;
-            const centerY = (t1.clientY + t2.clientY) / 2;
-            if (!pinch) {
-              pinch = { distance, zoom: getZoom(), left: wrap.scrollLeft, top: wrap.scrollTop, centerX, centerY };
-            }
-            const targetZoom = clampZoom(pinch.zoom * (distance / pinch.distance));
-            const zoomChanged = targetZoom !== getZoom();
-            if (zoomChanged) applyZoomAt(targetZoom, centerX, centerY);
-            wrap.scrollLeft += (pinch.centerX - centerX);
-            wrap.scrollTop += (pinch.centerY - centerY);
-            pinch.centerX = centerX;
-            pinch.centerY = centerY;
-            e.preventDefault();
-            return;
-          }
-          if (e.touches.length === 1 && wrap.classList.contains('gesture-active')) {
-            const t = e.touches[0];
-            if (!touchPan) touchPan = { x: t.clientX, y: t.clientY, left: wrap.scrollLeft, top: wrap.scrollTop };
-            wrap.scrollLeft = touchPan.left - (t.clientX - touchPan.x);
-            wrap.scrollTop = touchPan.top - (t.clientY - touchPan.y);
-            e.preventDefault();
-          }
-        }, { passive: false });
-
-        wrap.addEventListener('touchend', e => {
-          if (e.touches.length < 2) pinch = null;
-          if (e.touches.length === 0) {
-            touchPan = null;
-            wrap.classList.remove('gesture-active', 'pan-active');
-          } else if (e.touches.length === 1 && wrap.classList.contains('gesture-active')) {
-            const t = e.touches[0];
-            touchPan = { x: t.clientX, y: t.clientY, left: wrap.scrollLeft, top: wrap.scrollTop };
-          }
-        });
-        wrap.addEventListener('touchcancel', () => {
-          pinch = null;
-          touchPan = null;
-          wrap.classList.remove('gesture-active', 'pan-active');
-        });
-
-        window.addEventListener('keydown', e => {
-          if (e.code === 'Space' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || '')) spacePressed = true;
-        });
-        window.addEventListener('keyup', e => {
-          if (e.code === 'Space') spacePressed = false;
-        });
-      }
 
       // ── Render ──────────────────────────────────────────────────────────────
       function cloneTextObjects(textObjects = state.textObjects) { return textObjects.map(obj => ({ ...obj })); }
@@ -5868,17 +5137,7 @@
             btn.className = 'icon-tool' + (state.tool === key ? ' active' : '');
             btn.innerHTML = `<span class="tool-icon" aria-hidden="true">${TOOL_ICONS[key]}</span><span class="tool-label">${toolShortLabel(key)}</span>`;
             btn.title = toolLabel(key);
-            btn.addEventListener('click', () => {
-              if (state.floatingSelection && state.tool === 'moveSelection' && key !== 'moveSelection') cancelFloatingSelection();
-              state.tool = key;
-              if (key !== 'text') { state.activeTextId = null; }
-              renderTools();
-              updateMoveSnap8Button();
-              updateSelectionActionButtons();
-              syncTextToolControls();
-              renderScreenCanvas();
-              setStatus('Tool: ' + toolLabel(key));
-            });
+            btn.addEventListener('click', () => { state.tool = key; if (key !== 'text') { state.activeTextId = null; } renderTools(); updateMoveSnap8Button(); syncTextToolControls(); renderScreenCanvas(); setStatus('Tool: ' + toolLabel(key)); });
             grid.appendChild(btn);
           });
           wrap.append(title, grid);
@@ -6053,17 +5312,6 @@
         const moveBtn = el('moveSelectionBtn');
         if (moveBtn) moveBtn.classList.toggle('active', state.tool === 'moveSelection');
       }
-      function deactivateMoveSelectionTool(options = {}) {
-        if (state.tool !== 'moveSelection') return false;
-        state.tool = options.nextTool || 'pencil';
-        if (state.drag && (state.drag.type === 'moveFloating' || state.drag.type === 'selection')) state.drag = null;
-        renderTools();
-        updateMoveSnap8Button();
-        updateSelectionActionButtons();
-        renderScreenCanvas();
-        if (options.status) setStatus(options.status);
-        return true;
-      }
       function updateMoveSnap8Button() {
         const btn = el('moveSnap8Btn');
         if (!btn) return;
@@ -6100,8 +5348,7 @@
       // ── Screen pointer events ───────────────────────────────────────────────
       const DRAW_TOOLS = new Set(['pencil', 'brush', 'erase', 'spray', 'fill', 'text', 'line', 'rect', 'fillRect', 'ellipse', 'fillEllipse', 'attrPaint', 'dither']);
 
-      function screenPointerDownCore(e) {
-        if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return;
+      function screenPointerDown(e) {
         if (e.pointerId != null && screenCanvas.setPointerCapture) {
           try { screenCanvas.setPointerCapture(e.pointerId); } catch (_) { }
         }
@@ -6143,12 +5390,7 @@
         }
 
         if (state.tool === 'picker') { if (isNextScreenMode()) { const picked = getVisibleColorIndexAt(p.x, p.y); state.nextInkColor = clamp(picked, 0, 255); syncScreenControls(); renderAll(); setStatus('Layer 2 color picked.'); } else { const a = decodeAttrByte(getVisibleAttrByteAt(p.x, p.y)); applyPickedAttr(a, 'Attributes picked.'); } return; }
-        if (state.tool === 'fill') {
-          const sel = state.selection;
-          const fillInsideSelection = !!sel && selectionHasPixel(sel, p.x - sel.x, p.y - sel.y);
-          mutateActiveLayer(l => fillInsideSelection ? floodFillSelection(l, p.x, p.y, isRight ? 0 : 1, currentAttrByte(), state.attributesOnly, sel) : floodFill(l, p.x, p.y, isRight ? 0 : 1, currentAttrByte(), state.attributesOnly), 'Flood fill complete.');
-          return;
-        }
+        if (state.tool === 'fill') { mutateActiveLayer(l => floodFill(l, p.x, p.y, isRight ? 0 : 1, currentAttrByte(), state.attributesOnly), 'Flood fill complete.'); return; }
         if (state.tool === 'spray') {
           pushHistory();
           const _sprayNext = cloneLayers(state.layers), _sprayBase = _sprayNext[activeLayerIndex()];
@@ -6180,13 +5422,7 @@
           setStatus('New text object created.');
           return;
         }
-        if (['selectRect', 'selectEllipse', 'selectFree'].includes(state.tool)) {
-          const clickedOutsideSelection = !!state.selection && !selectionHasPixel(state.selection, p.x - state.selection.x, p.y - state.selection.y);
-          if (clickedOutsideSelection) state.selection = null;
-          state.drag = { type: 'selection', start: p, current: p, points: [p], clearPreviousOnClick: clickedOutsideSelection };
-          renderScreenCanvas();
-          return;
-        }
+        if (['selectRect', 'selectEllipse', 'selectFree'].includes(state.tool)) { state.drag = { type: 'selection', start: p, current: p, points: [p] }; renderScreenCanvas(); return; }
         if (state.tool === 'dither') {
           pushHistory();
           const next = cloneLayers(state.layers), idx = activeLayerIndex(), baseLayer = next[idx];
@@ -6202,16 +5438,8 @@
         // ── Move selection: cut content and create floating selection ──────
         if (state.tool === 'moveSelection') {
           if (state.floatingSelection) {
-            // Already floating - start drag only when the pointer hits the floating content.
-            const fs = state.floatingSelection;
-            const relX = p.x - fs.x, relY = p.y - fs.y;
-            const insideBounds = relX >= 0 && relY >= 0 && relX < fs.w && relY < fs.h;
-            const hitFloating = insideBounds && (!fs.mask || !!fs.mask[relY * fs.w + relX]);
-            if (!hitFloating) {
-              renderScreenCanvas();
-              return;
-            }
-            state.drag = { type: 'moveFloating', start: p, current: p, baseX: fs.x, baseY: fs.y };
+            // Already floating - start drag on it
+            state.drag = { type: 'moveFloating', start: p, current: p, baseX: state.floatingSelection.x, baseY: state.floatingSelection.y };
             renderScreenCanvas();
           } else if (state.selection) {
             // Cut the selection area out and make it floating
@@ -6222,7 +5450,7 @@
             const isClassic = !isNextScreenMode();
             const srcX = isClassic ? startAx * 8 : x, srcY = isClassic ? startAy * 8 : y;
             const srcW = isClassic ? attrsW * 8 : w, srcH = isClassic ? attrsH * 8 : h;
-            const pixels = new Uint8Array(srcW * srcH), colors = new Uint8Array(srcW * srcH), attrs = new Uint8Array(attrsW * attrsH), paperTransparent = new Uint8Array(attrsW * attrsH);
+            const pixels = new Uint8Array(srcW * srcH), attrs = new Uint8Array(attrsW * attrsH), paperTransparent = new Uint8Array(attrsW * attrsH);
             const offsetX = x - srcX, offsetY = y - srcY;
             const mask = sel.mask ? new Uint8Array(srcW * srcH) : null;
             const attrMask = new Uint8Array(attrsW * attrsH);
@@ -6234,10 +5462,8 @@
                 selected = selectionHasPixel(sel, relX, relY);
                 mask[dst] = selected ? 1 : 0;
               }
+              pixels[dst] = selected ? layer.pixels[getIdx(srcX + xx, srcY + yy)] : 0;
               if (selected) {
-                const srcIdx = getIdx(srcX + xx, srcY + yy);
-                pixels[dst] = layer.pixels[srcIdx];
-                colors[dst] = layer.colors ? layer.colors[srcIdx] : 0;
                 const localAx = (((srcX + xx) / 8) | 0) - startAx, localAy = (((srcY + yy) / 8) | 0) - startAy;
                 attrMask[localAy * attrsW + localAx] = 1;
               }
@@ -6261,7 +5487,7 @@
               clearEmptyAttrCells(next[li], x, y, w, h);
             }
             state.layers = next;
-            state.floatingSelection = { pixels, colors, mask, attrs, paperTransparent, attrMask, attrsW, attrsH, x: srcX, y: srcY, w: srcW, h: srcH, originX: srcX, originY: srcY, restoreOnCancel: true };
+            state.floatingSelection = { pixels, colors: new Uint8Array(srcW * srcH), mask, attrs, paperTransparent, attrMask, attrsW, attrsH, x: srcX, y: srcY, w: srcW, h: srcH };
             state.drag = { type: 'moveFloating', start: p, current: p, baseX: srcX, baseY: srcY };
             updateFloatBar();
             setStatus('Floating - drag to move, Enter to commit, Esc to cancel.');
@@ -6311,26 +5537,7 @@
         }
       }
 
-      function screenPointerDown(e) {
-        if (e.pointerType === 'touch') {
-          if (isGestureActiveFor(e.target)) {
-            clearPendingTouchDraw('screen');
-            return;
-          }
-          queuePendingTouchDraw('screen', e);
-          return;
-        }
-        screenPointerDownCore(e);
-      }
-
       function screenPointerMove(e) {
-        if (e.pointerType === 'touch') {
-          if (isGestureActiveFor(e.target)) {
-            clearPendingTouchDraw('screen');
-            return;
-          }
-          if (!commitPendingTouchTap('screen', e, screenPointerDownCore)) clearPendingTouchDraw('screen');
-        }
         const p = screenToPixel(e.clientX, e.clientY);
         const prevHoverLayerId = state.hoverLayerId;
         state.hoverPixel = p || null;
@@ -6441,10 +5648,6 @@
       }
 
       function screenPointerUp(e) {
-        if (e?.pointerType === 'touch') {
-          if (isGestureActiveFor(e.target)) { clearPendingTouchDraw('screen'); state.drag = null; return; }
-          if (pendingTouchDraw.screen && shouldStartPendingTouchDraw('screen', e)) flushPendingTouchDraw('screen', screenPointerDownCore);
-        }
         if (e?.button === 2 || tempRightSwapActive) endTemporaryRightSwap();
         if (e?.pointerId != null && screenCanvas.releasePointerCapture && screenCanvas.hasPointerCapture?.(e.pointerId)) {
           try { screenCanvas.releasePointerCapture(e.pointerId); } catch (_) { }
@@ -6494,22 +5697,15 @@
             }
           }, `Shape drawn (${pts.length} px).`);
         } else if (state.drag.type === 'selection') {
-          const selectionWasOnlyCleared = state.drag.clearPreviousOnClick && state.drag.start.x === state.drag.current.x && state.drag.start.y === state.drag.current.y;
-          if (selectionWasOnlyCleared) {
-            state.selection = null;
-            setStatus('Selection cleared.');
-            renderAll();
+          if (state.tool === 'selectRect' || state.tool === 'selectEllipse') {
+            const x = Math.min(state.drag.start.x, state.drag.current.x), y = Math.min(state.drag.start.y, state.drag.current.y), w = Math.abs(state.drag.current.x - state.drag.start.x) + 1, h = Math.abs(state.drag.current.y - state.drag.start.y) + 1;
+            const kind = state.tool === 'selectRect' ? 'rect' : 'ellipse'; state.selection = { x, y, w, h, kind, mask: buildSelectionMask(kind, x, y, w, h) };
           } else {
-            if (state.tool === 'selectRect' || state.tool === 'selectEllipse') {
-              const x = Math.min(state.drag.start.x, state.drag.current.x), y = Math.min(state.drag.start.y, state.drag.current.y), w = Math.abs(state.drag.current.x - state.drag.start.x) + 1, h = Math.abs(state.drag.current.y - state.drag.start.y) + 1;
-              const kind = state.tool === 'selectRect' ? 'rect' : 'ellipse'; state.selection = { x, y, w, h, kind, mask: buildSelectionMask(kind, x, y, w, h) };
-            } else {
-              const xs = state.drag.points.map(p => p.x), ys = state.drag.points.map(p => p.y), x = Math.min(...xs), y = Math.min(...ys);
-              const w = Math.max(...xs) - x + 1, h = Math.max(...ys) - y + 1, path = state.drag.points.slice(); state.selection = { x, y, w, h, kind: 'free', path, mask: buildSelectionMask('free', x, y, w, h, path) };
-            }
-            setStatus('Selection updated.');
-            renderAll();
+            const xs = state.drag.points.map(p => p.x), ys = state.drag.points.map(p => p.y), x = Math.min(...xs), y = Math.min(...ys);
+            const w = Math.max(...xs) - x + 1, h = Math.max(...ys) - y + 1, path = state.drag.points.slice(); state.selection = { x, y, w, h, kind: 'free', path, mask: buildSelectionMask('free', x, y, w, h, path) };
           }
+          setStatus('Selection updated.');
+          renderAll();
         } else if (state.drag.type === 'draw') {
           if (state.drag.drawTool === 'dither') {
             const used = Math.round(state.drag.ditherDistance || 0);
@@ -6573,8 +5769,7 @@
           paperTransparent: new Uint8Array(clip.paperTransparent || new Uint8Array(clip.attrsW * clip.attrsH)),
           attrMask: clip.attrMask ? new Uint8Array(clip.attrMask) : new Uint8Array(clip.attrsW * clip.attrsH).fill(1),
           attrsW: clip.attrsW, attrsH: clip.attrsH,
-          x, y, w: clip.w, h: clip.h,
-          originX: x, originY: y, restoreOnCancel: false
+          x, y, w: clip.w, h: clip.h
         };
         state.tool = 'moveSelection';
         renderTools();
@@ -6604,7 +5799,11 @@
         NEXT_COLORS.forEach((c, i) => {
           let palLo = Number.isFinite(c?.palLo) ? (c.palLo & 0xFF) : null;
           let palHi = Number.isFinite(c?.palHi) ? (c.palHi & 0xFF) : null;
-          if (palLo == null || palHi == null) {
+          if (i < 16 && ZX_COLORS[i]) {
+            const forced = nextRgbToPalBytes(ZX_COLORS[i].rgb);
+            palLo = forced.palLo;
+            palHi = forced.palHi;
+          } else if (palLo == null || palHi == null) {
             const bytes = nextRgbToPalBytes(c?.rgb || [0, 0, 0], palHi ?? 0);
             palLo = bytes.palLo;
             palHi = bytes.palHi;
@@ -6624,7 +5823,7 @@
         ZX_TO_NEXT_INDEX = ZX_COLORS.map(c => nearestNextColor(c.rgb[0], c.rgb[1], c.rgb[2]));
         NEXT_TO_ZX_INDEX = NEXT_COLORS.map(c => nearestZXColor(c.rgb[0], c.rgb[1], c.rgb[2]));
       }
-      function zxColorToNextIndex(ci) { return ZX_TO_NEXT_INDEX[clamp(ci | 0, 0, 15)] ?? 0; }
+      function zxColorToNextIndex(ci) { return clamp(ci | 0, 0, 15); }
       function nextColorToZXIndex(ci) { return NEXT_TO_ZX_INDEX[clamp(ci | 0, 0, 255)] ?? 0; }
       function convertClassicLayerToNext(layer) {
         const pixels = new Uint8Array(ZX_W * ZX_H);
@@ -6984,26 +6183,6 @@
             pixels[getIdx(x, y)] = ditherPixelBit(x, y, t, strength, matrix);
           }
         }
-        return { pixels, attrs };
-      }
-
-      function convertImageToZXBWDithered(image, strength, matrix) {
-        const cv = document.createElement('canvas'); cv.width = ZX_W; cv.height = ZX_H;
-        const cx = cv.getContext('2d', { willReadFrequently: true });
-        cx.drawImage(image, 0, 0, ZX_W, ZX_H);
-        const data = cx.getImageData(0, 0, ZX_W, ZX_H).data;
-        const pixels = new Uint8Array(ZX_W * ZX_H);
-        const attrs = new Uint8Array(ATTR_W * ATTR_H).fill(makeAttrByte(7, 0, 0, 0));
-
-        for (let y = 0; y < ZX_H; y++) for (let x = 0; x < ZX_W; x++) {
-          const i = (y * ZX_W + x) * 4;
-          const r = data[i], g = data[i + 1], b = data[i + 2];
-          const luma = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-          const thresholdBias = (1 - Math.max(0, Math.min(1, strength))) * 0.2;
-          const t = Math.max(0, Math.min(1, 1 - luma + thresholdBias));
-          pixels[getIdx(x, y)] = ditherPixelBit(x, y, t, strength, matrix);
-        }
-
         return { pixels, attrs };
       }
 
@@ -8152,8 +7331,7 @@ attr grid: ${aw}x${ah}` : ''}`);
       screenCanvas.addEventListener('dblclick', e => { if (state.tool !== 'text') return; const p = screenToPixel(e.clientX, e.clientY); if (!p) return; const hit = textObjectAt(p.x, p.y); if (hit) { state.activeTextId = hit.id; beginTextEditing(hit); } });
 
       spriteCanvas.addEventListener('contextmenu', e => e.preventDefault());
-      function spritePointerDownCore(e) {
-        if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return;
+      spriteCanvas.addEventListener('pointerdown', e => {
         const p = spritePointerPos(e.clientX, e.clientY);
         if (isNextSpriteMode() && e.button === 1) {
           e.preventDefault();
@@ -8168,27 +7346,9 @@ attr grid: ${aw}x${ah}` : ''}`);
         _lastSpriteDrawPx = null;
         applySpritePixel(p.x, p.y, e.button !== 2);
         _lastSpriteDrawPx = p;
-      }
-      spriteCanvas.addEventListener('pointerdown', e => {
-        if (e.pointerType === 'touch') {
-          if (isGestureActiveFor(e.target)) {
-            clearPendingTouchDraw('sprite');
-            return;
-          }
-          queuePendingTouchDraw('sprite', e);
-          return;
-        }
-        spritePointerDownCore(e);
       });
       let _lastSpriteDrawPx = null;
       spriteCanvas.addEventListener('pointermove', e => {
-        if (e.pointerType === 'touch') {
-          if (isGestureActiveFor(e.target)) {
-            clearPendingTouchDraw('sprite');
-            return;
-          }
-          if (!commitPendingTouchTap('sprite', e, spritePointerDownCore)) clearPendingTouchDraw('sprite');
-        }
         if (!state.sprite.drag) return;
         const p = spritePointerPos(e.clientX, e.clientY);
         const draw = (e.buttons & 2) !== 2;
@@ -8210,20 +7370,7 @@ attr grid: ${aw}x${ah}` : ''}`);
         }
         _lastSpriteDrawPx = p;
       });
-      spriteCanvas.addEventListener('pointerup', e => {
-        if (e.pointerType === 'touch') {
-          if (isGestureActiveFor(e.target)) {
-            clearPendingTouchDraw('sprite');
-            _lastSpriteDrawPx = null;
-            state.sprite.drag = false;
-            renderSpriteAll();
-            refreshAsmPreview();
-            return;
-          }
-          if (pendingTouchDraw.sprite && shouldStartPendingTouchDraw('sprite', e)) flushPendingTouchDraw('sprite', spritePointerDownCore);
-        }
-        _lastSpriteDrawPx = null; state.sprite.drag = false; renderSpriteAll(); refreshAsmPreview();
-      });
+      spriteCanvas.addEventListener('pointerup', () => { _lastSpriteDrawPx = null; state.sprite.drag = false; renderSpriteAll(); refreshAsmPreview(); });
       spriteCanvas.addEventListener('pointerleave', () => { _lastSpriteDrawPx = null; if (state.sprite.drag) { state.sprite.drag = false; renderSpriteAll(); refreshAsmPreview(); } });
 
       // Mask edit canvas
@@ -8236,8 +7383,8 @@ attr grid: ${aw}x${ah}` : ''}`);
         renderMaskEditCanvas(); renderSpritePreviews();
       }
       maskEditCanvas.addEventListener('contextmenu', e => e.preventDefault());
-      maskEditCanvas.addEventListener('pointerdown', e => { if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return; if (!state.sprite.autoMask) return; pushSpriteHistory(); maskDragging = true; maskEditCanvas.setPointerCapture(e.pointerId); const p = maskEditPointerPos(e.clientX, e.clientY); applyMaskPixel(p.x, p.y, e.button !== 2); });
-      maskEditCanvas.addEventListener('pointermove', e => { if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return; if (!maskDragging || !state.sprite.autoMask) return; const p = maskEditPointerPos(e.clientX, e.clientY); applyMaskPixel(p.x, p.y, (e.buttons & 2) !== 2); });
+      maskEditCanvas.addEventListener('pointerdown', e => { if (!state.sprite.autoMask) return; pushSpriteHistory(); maskDragging = true; maskEditCanvas.setPointerCapture(e.pointerId); const p = maskEditPointerPos(e.clientX, e.clientY); applyMaskPixel(p.x, p.y, e.button !== 2); });
+      maskEditCanvas.addEventListener('pointermove', e => { if (!maskDragging || !state.sprite.autoMask) return; const p = maskEditPointerPos(e.clientX, e.clientY); applyMaskPixel(p.x, p.y, (e.buttons & 2) !== 2); });
       maskEditCanvas.addEventListener('pointerup', () => { maskDragging = false; });
       maskEditCanvas.addEventListener('pointerleave', () => { maskDragging = false; });
 
@@ -8307,36 +7454,22 @@ attr grid: ${aw}x${ah}` : ''}`);
       }
       el('zoomOutBtn').addEventListener('click', () => { applyZoom(state.zoom - 1); });
       el('zoomInBtn').addEventListener('click', () => { applyZoom(state.zoom + 1); });
-      setupScrollableCanvasViewport({
-        wrap: el('screenCanvasWrap'),
-        canvas: screenCanvas,
-        getZoom: () => state.zoom,
-        setZoom: z => applyZoom(z),
-        render: () => renderAll(),
-        minZoom: 1,
-        maxZoom: 24,
-        syncControls: () => syncScreenControls()
-      });
-      setupScrollableCanvasViewport({
-        wrap: spriteCanvas.closest('.sprite-grid-wrap'),
-        canvas: spriteCanvas,
-        getZoom: () => state.sprite.zoom,
-        setZoom: z => { state.sprite.zoom = z; },
-        render: () => renderSpriteAll(),
-        minZoom: 8,
-        maxZoom: 32,
-        syncControls: () => syncSpriteControls()
-      });
-      setupScrollableCanvasViewport({
-        wrap: fontCanvas.closest('.sprite-grid-wrap'),
-        canvas: fontCanvas,
-        getZoom: () => state.font.zoom,
-        setZoom: z => { state.font.zoom = z; },
-        render: () => renderFontAll(),
-        minZoom: 8,
-        maxZoom: 32,
-        syncControls: () => syncFontControls()
-      });
+      el('screenCanvasWrap').addEventListener('wheel', e => {
+        if (state.mode !== 'screen') return;
+        e.preventDefault();
+        const wrap = el('screenCanvasWrap');
+        const rect = screenCanvas.getBoundingClientRect();
+        // Pixel position under cursor before zoom
+        const mouseX = e.clientX - rect.left, mouseY = e.clientY - rect.top;
+        const pixelX = mouseX / state.zoom, pixelY = mouseY / state.zoom;
+        const oldZoom = state.zoom;
+        applyZoom(state.zoom + (e.deltaY < 0 ? 1 : -1));
+        renderAll();
+        // Scroll so the pixel under cursor stays under cursor
+        const newMouseX = pixelX * state.zoom, newMouseY = pixelY * state.zoom;
+        wrap.scrollLeft += newMouseX - mouseX;
+        wrap.scrollTop += newMouseY - mouseY;
+      }, { passive: false });
       // help link opens ./help.html in new tab (see #helpBtn anchor in HTML)
       el('brightBtn').addEventListener('click', () => {
         if (el('brightBtn').disabled) return;
@@ -8834,11 +7967,9 @@ attr grid: ${aw}x${ah}` : ''}`);
       }
 
       function renderConversionPreview(srcCanvas, dstCanvas, method, strength, matrix) {
-        const zx = method === 'bw'
-          ? convertImageToZXBWDithered(srcCanvas, strength, matrix)
-          : method === 'dither'
-            ? convertImageToZXDithered(srcCanvas, strength, matrix)
-            : convertImageToZXClassic(srcCanvas);
+        const zx = method === 'dither'
+          ? convertImageToZXDithered(srcCanvas, strength, matrix)
+          : convertImageToZXClassic(srcCanvas);
 
         // Draw result onto dstCanvas (ZX 256x192 pixels)
         const dw = dstCanvas.width, dh = dstCanvas.height;
@@ -9021,28 +8152,14 @@ attr grid: ${aw}x${ah}` : ''}`);
           viewButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.convView === normalized));
         }
 
-        function getMethod() {
-          return [...backdrop.querySelectorAll(`input[name="${methodName}"]`)].find(r => r.checked)?.value || 'direct';
-        }
-
         function getParams() {
-          const method = getMethod();
+          const method = [...backdrop.querySelectorAll(`input[name="${methodName}"]`)].find(r => r.checked)?.value || 'direct';
           const strength = (+(el(strengthId)?.value ?? 70)) / 100;
           const matrix = el(matrixId)?.value || 'bayer4';
           const brightness = +(el(brightnessId)?.value ?? 0);
           const contrast = +(el(contrastId)?.value ?? 0);
           const saturation = +(el(saturationId)?.value ?? 0);
           return { method, strength, matrix, brightness, contrast, saturation };
-        }
-
-        function syncMethodUI() {
-          const method = getMethod();
-          if (ditherExtra) ditherExtra.style.display = (method === 'dither' || method === 'bw') ? 'flex' : 'none';
-          if (autoAdjustBtn) {
-            autoAdjustBtn.disabled = !!busyMode;
-            autoAdjustBtn.title = '';
-            autoAdjustBtn.classList.remove('disabled');
-          }
         }
 
         function setSpinnerActive(active, text = '(working…)') {
@@ -9075,7 +8192,6 @@ attr grid: ${aw}x${ah}` : ''}`);
           if (busyMode === 'auto') setSpinnerActive(true, '(auto…)');
           else if (busyMode === 'import') setSpinnerActive(true, '(importing…)');
           else setSpinnerActive(false);
-          syncMethodUI();
         }
 
         function syncLabel(sliderId, labelId, suffix = '') {
@@ -9129,8 +8245,8 @@ attr grid: ${aw}x${ah}` : ''}`);
         });
 
         backdrop.addEventListener('change', ev => {
-          if (ev.target.name === methodName) {
-            syncMethodUI();
+          if (ev.target.name === methodName && ditherExtra) {
+            ditherExtra.style.display = ev.target.value === 'dither' ? 'flex' : 'none';
           }
         });
 
@@ -9188,7 +8304,6 @@ attr grid: ${aw}x${ah}` : ''}`);
           setPreviewView('split');
           applyAdjustmentValues(0, 0, 0);
           syncAllLabels();
-          syncMethodUI();
           backdrop.classList.add('open');
           backdrop._source = source;
           if (srcCanvas && source) {
@@ -9215,11 +8330,9 @@ attr grid: ${aw}x${ah}` : ''}`);
         onCancel: () => { if (el('screenModeSelect')) el('screenModeSelect').value = state.screenMode; },
         onOk: (adjCanvas, method, strength, matrix) => {
           pushHistory('Screen mode converted.');
-          const zx = method === 'bw'
-            ? convertImageToZXBWDithered(adjCanvas, strength, matrix)
-            : method === 'dither'
-              ? convertImageToZXDithered(adjCanvas, strength, matrix)
-              : convertImageToZXClassic(adjCanvas);
+          const zx = method === 'dither'
+            ? convertImageToZXDithered(adjCanvas, strength, matrix)
+            : convertImageToZXClassic(adjCanvas);
           state.layers.forEach((layer, i) => {
             if (i === 0) {
               layer.pixels = zx.pixels;
@@ -9278,9 +8391,7 @@ attr grid: ${aw}x${ah}` : ''}`);
           const src = el('nextImgImportBackdrop')._source;
           el('nextImgImportBackdrop')._source = null;
           state.importOverlay = { image: adjCanvas, alpha: .35 };
-          const label = method === 'bw'
-            ? ` (BW dithering ${Math.round(strength * 100)}%, ${matrix})`
-            : method === 'dither' ? ` (dithering ${Math.round(strength * 100)}%, ${matrix})` : '';
+          const label = method === 'dither' ? ` (dithering ${Math.round(strength * 100)}%, ${matrix})` : '';
           mutateActiveLayer(layer => {
             layer.pixels = next.pixels;
             layer.colors = next.colors;
@@ -9305,15 +8416,12 @@ attr grid: ${aw}x${ah}` : ''}`);
         onCancel: () => { el('imgImportBackdrop')._source = null; },
         onOk: (adjCanvas, method, strength, matrix) => {
           let zx;
-          if (method === 'bw') zx = convertImageToZXBWDithered(adjCanvas, strength, matrix);
-          else if (method === 'dither') zx = convertImageToZXDithered(adjCanvas, strength, matrix);
+          if (method === 'dither') zx = convertImageToZXDithered(adjCanvas, strength, matrix);
           else zx = convertImageToZXClassic(adjCanvas);
           const src = el('imgImportBackdrop')._source;
           el('imgImportBackdrop')._source = null;
           state.importOverlay = { image: src instanceof HTMLImageElement ? src : adjCanvas, alpha: .35 };
-          const label = method === 'bw'
-            ? ` (BW dithering ${Math.round(strength * 100)}%, ${matrix})`
-            : method === 'dither' ? ` (dithering ${Math.round(strength * 100)}%, ${matrix})` : '';
+          const label = method === 'dither' ? ` (dithering ${Math.round(strength * 100)}%, ${matrix})` : '';
           mutateActiveLayer(layer => { layer.pixels = zx.pixels; if (zx.colors) layer.colors = zx.colors; if (zx.attrs) layer.attrs = zx.attrs; }, 'Image imported' + label + '.');
         }
       });
@@ -9495,8 +8603,8 @@ attr grid: ${aw}x${ah}` : ''}`);
         pushHistory();
         const next = cloneLayers(state.layers);
         const nl = createLayer(`Selection ${state.layers.length + 1}`);
-        for (let yy = 0; yy < clip.h; yy++) for (let xx = 0; xx < clip.w; xx++) if (!clip.mask || clip.mask[yy * clip.w + xx]) { const dst = getIdx((clip.x ?? sel.x) + xx, (clip.y ?? sel.y) + yy), src = yy * clip.w + xx; nl.pixels[dst] = clip.pixels[src]; if (nl.colors && clip.colors) nl.colors[dst] = clip.colors[src]; }
-        for (let ay = 0; ay < clip.attrsH; ay++) for (let ax = 0; ax < clip.attrsW; ax++) { const dstAttrIdx = getAttrIdx((((clip.x ?? sel.x) / 8) | 0) + ax, (((clip.y ?? sel.y) / 8) | 0) + ay); const srcAttrIdx = ay * clip.attrsW + ax; nl.attrs[dstAttrIdx] = clip.attrs[srcAttrIdx]; if (nl.paperTransparent) nl.paperTransparent[dstAttrIdx] = clip.paperTransparent ? clip.paperTransparent[srcAttrIdx] : 0; }
+        for (let yy = 0; yy < clip.h; yy++) for (let xx = 0; xx < clip.w; xx++) if (!clip.mask || clip.mask[yy * clip.w + xx]) { const dst = getIdx(sel.x + xx, sel.y + yy), src = yy * clip.w + xx; nl.pixels[dst] = clip.pixels[src]; if (nl.colors && clip.colors) nl.colors[dst] = clip.colors[src]; }
+        for (let ay = 0; ay < clip.attrsH; ay++) for (let ax = 0; ax < clip.attrsW; ax++) { const dstAttrIdx = getAttrIdx(((sel.x / 8) | 0) + ax, ((sel.y / 8) | 0) + ay); const srcAttrIdx = ay * clip.attrsW + ax; nl.attrs[dstAttrIdx] = clip.attrs[srcAttrIdx]; if (nl.paperTransparent) nl.paperTransparent[dstAttrIdx] = clip.paperTransparent ? clip.paperTransparent[srcAttrIdx] : 0; }
         next.push(nl);
         state.layers = next;
         state.activeLayerId = nl.id;
@@ -9512,18 +8620,7 @@ attr grid: ${aw}x${ah}` : ''}`);
           }, 'Selection deleted.');
         }, 'Delete selection');
       });
-      el('moveSelectionBtn').addEventListener('click', () => {
-        if (state.tool === 'moveSelection') {
-          deactivateMoveSelectionTool({ status: 'Move selection tool OFF.' });
-          return;
-        }
-        state.tool = 'moveSelection';
-        renderTools();
-        updateMoveSnap8Button();
-        updateSelectionActionButtons();
-        renderScreenCanvas();
-        setStatus('Tool: Move selection - drag to move content, Enter to commit.');
-      });
+      el('moveSelectionBtn').addEventListener('click', () => { state.tool = 'moveSelection'; renderTools(); updateMoveSnap8Button(); updateSelectionActionButtons(); renderScreenCanvas(); setStatus('Tool: Move selection - drag to move content, Enter to commit.'); });
       el('moveSnap8Btn').addEventListener('click', () => { if (state.tool !== 'moveSelection') return; state.moveSnap8 = !state.moveSnap8; updateMoveSnap8Button(); renderScreenCanvas(); setStatus(`Move 8 px: ${state.moveSnap8 ? 'ON' : 'OFF'}.`); });
 
       // Floating selection UI buttons
@@ -10114,12 +9211,11 @@ UDG codes: 144..164`);
       function renderFontAll() { ensureFontGlyphs(); const g = activeFontGlyph(); if (!g) return; el('fontSizeBadge').textContent = `${state.font.width}×${state.font.height}`; el('fontActiveGlyphBadge').textContent = `${g.label} / ${g.code}`; updateFontToggleButtons(); renderFontGlyphGrid(); renderFontCanvas(); renderFontMaskEditCanvas(); renderFontPreview(); refreshFontAsmPreview(); }
       function syncFontControls() { el('fontWidthInput').value = state.font.width; el('fontHeightInput').value = state.font.height; el('fontZoomRange').value = state.font.zoom; el('fontNameInput').value = state.fontName; }
       function fontPointerPos(e, canvas, w, h, z) { const r = canvas.getBoundingClientRect(); const x = Math.floor((e.clientX - r.left) / z), y = Math.floor((e.clientY - r.top) / z); if (x < 0 || y < 0 || x >= w || y >= h) return null; return { x, y }; }
-      function fontPointerDownCore(e) { if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return; const p = fontPointerPos(e, fontCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; e.preventDefault(); pushFontHistory(); state.font.drag = { erase: e.button === 2 }; glyph.pixels[p.y * state.font.width + p.x] = e.button === 2 ? 0 : 1; renderFontAll(); }
-      function fontPointerDown(e) { if (e.pointerType === 'touch') { if (isGestureActiveFor(e.target)) { clearPendingTouchDraw('font'); return; } queuePendingTouchDraw('font', e); return; } fontPointerDownCore(e); }
-      function fontPointerMove(e) { if (e.pointerType === 'touch') { if (isGestureActiveFor(e.target)) { clearPendingTouchDraw('font'); return; } if (pendingTouchDraw.font && shouldStartPendingTouchDraw('font', e)) flushPendingTouchDraw('font', fontPointerDownCore); } if (!state.font.drag) return; const p = fontPointerPos(e, fontCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; glyph.pixels[p.y * state.font.width + p.x] = state.font.drag.erase ? 0 : 1; renderFontAll(); }
-      function fontPointerUp(e) { if (e?.pointerType === 'touch') { if (isGestureActiveFor(e.target)) { clearPendingTouchDraw('font'); state.font.drag = null; return; } if (!commitPendingTouchTap('font', e, fontPointerDownCore)) clearPendingTouchDraw('font'); } state.font.drag = null; }
-      function fontMaskPointerDown(e) { if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return; if (!state.font.autoMask) return; const p = fontPointerPos(e, fontMaskEditCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; e.preventDefault(); pushFontHistory(); glyph.mask = glyph.mask ? new Uint8Array(glyph.mask) : getEffectiveFontMask(glyph); state.font.maskDrag = { erase: e.button === 2 }; glyph.mask[p.y * state.font.width + p.x] = e.button === 2 ? 0 : 1; renderFontAll(); }
-      function fontMaskPointerMove(e) { if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return; if (!state.font.maskDrag || !state.font.autoMask) return; const p = fontPointerPos(e, fontMaskEditCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; glyph.mask[p.y * state.font.width + p.x] = state.font.maskDrag.erase ? 0 : 1; renderFontAll(); }
+      function fontPointerDown(e) { const p = fontPointerPos(e, fontCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; e.preventDefault(); pushFontHistory(); state.font.drag = { erase: e.button === 2 }; glyph.pixels[p.y * state.font.width + p.x] = e.button === 2 ? 0 : 1; renderFontAll(); }
+      function fontPointerMove(e) { if (!state.font.drag) return; const p = fontPointerPos(e, fontCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; glyph.pixels[p.y * state.font.width + p.x] = state.font.drag.erase ? 0 : 1; renderFontAll(); }
+      function fontPointerUp() { state.font.drag = null; }
+      function fontMaskPointerDown(e) { if (!state.font.autoMask) return; const p = fontPointerPos(e, fontMaskEditCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; e.preventDefault(); pushFontHistory(); glyph.mask = glyph.mask ? new Uint8Array(glyph.mask) : getEffectiveFontMask(glyph); state.font.maskDrag = { erase: e.button === 2 }; glyph.mask[p.y * state.font.width + p.x] = e.button === 2 ? 0 : 1; renderFontAll(); }
+      function fontMaskPointerMove(e) { if (!state.font.maskDrag || !state.font.autoMask) return; const p = fontPointerPos(e, fontMaskEditCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; glyph.mask[p.y * state.font.width + p.x] = state.font.maskDrag.erase ? 0 : 1; renderFontAll(); }
       function fontMaskPointerUp() { state.font.maskDrag = null; }
       // ── Init ────────────────────────────────────────────────────────────────
       function init() {
@@ -10133,11 +9229,6 @@ UDG codes: 144..164`);
         updateSpriteModeUI();
         syncFontControls();
         syncTextToolControls();
-        if (window.matchMedia('(max-width: 760px)').matches) {
-          state.zoom = 2;
-          state.sprite.zoom = 12;
-          state.font.zoom = 14;
-        }
         setSpriteExportSummary('No export generated yet.');
         setFontExportSummary('No export generated yet.');
         renderAll();
