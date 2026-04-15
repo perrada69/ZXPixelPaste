@@ -147,7 +147,9 @@
                 <a href="#en-screen-canvas">Canvas and color controls</a>
                 <a href="#en-screen-text">Text tool</a>
                 <a href="#en-screen-next">Next Layer 2 mode</a>
+                <a href="#en-screen-palette-tools">Palette Tools (Next)</a>
                 <a href="#en-screen-layers">Layers and text layers</a>
+                <a href="#en-screen-transform">Transform Layer</a>
                 <a href="#en-screen-selection">Selection panel</a>
                 <a href="#en-screen-files">Import / export / project files</a>
               </div>
@@ -253,6 +255,7 @@
                 <tr><td><strong>Dither mode</strong></td><td>Selects the dither pattern: Solid, Checker, Sparse, or Radial.</td><td>Choose from the dropdown next to the Dither length slider.</td></tr>
                 <tr><td><strong>Attr Only</strong></td><td>Edits only the 32×24 attribute map (classic mode only).</td><td>Use for recoloring without changing bitmap pixels. <strong>Left-click</strong> writes the current INK+PAPER. <strong>Right-click</strong> writes with INK and PAPER <em>swapped</em> — useful for quickly inverting a cell's colors without changing the editor palette.</td></tr>
                 <tr><td><strong>1×1 / 8×8</strong></td><td>Grid overlays (classic mode only).</td><td>Use 1×1 for pixel precision and 8×8 for attribute planning.</td></tr>
+                <tr><td><strong>Canvas resize handle</strong></td><td>A thin drag strip located immediately <em>below</em> the canvas area. Drag it up or down to change the visible height of the canvas viewport (range: 100–1200 px). Useful on smaller screens or when working at high zoom levels where the canvas would otherwise scroll out of view.</td><td>Hover over the strip (a horizontal bar appears) and drag vertically.</td></tr>
               </tbody>
             </table>
 
@@ -350,6 +353,51 @@
 
             <div class="tip"><strong>NXI workflow:</strong> draw in Next mode → <strong>Export NXI</strong> → load from NextBASIC with <code>LOAD "screen.nxi" LAYER 2</code> or from Z80 with a standard Layer 2 loader. The NXI format bundles pixels and palette together so the colors are exactly as you designed them.</div>
 
+            <h4 id="en-screen-palette-tools">Palette Tools (Next)</h4>
+            <p>In <strong>ZX Spectrum Next Layer 2</strong> mode, the button <strong>🎨 Open Palette Tools</strong> appears above the 256-color palette. It opens a dedicated dialog for editing the working Next palette and for remapping classic ZX SCR colors to Next indices.</p>
+
+            <table>
+              <thead><tr><th>Area / control</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Palette Editor tab</strong></td><td>Main tab for editing the current <strong>256-color Next palette</strong> used by the editor.</td></tr>
+                <tr><td><strong>Preview — click pixel for info</strong></td><td>Shows the current screen preview with the currently active palette. Clicking a pixel displays color information for that pixel.</td></tr>
+                <tr><td><strong>Show used only</strong></td><td>Filters the palette grid so you only see slots currently used on the canvas.</td></tr>
+                <tr><td><strong>🔍 Scan canvas</strong></td><td>Scans the current Next canvas and marks used palette slots. Useful before enabling <em>Show used only</em>.</td></tr>
+                <tr><td><strong>Palette slot click</strong></td><td>Click any slot in the 256-color grid to open a popup editor for that slot.</td></tr>
+                <tr><td><strong>RGB mode</strong></td><td>Edit the selected slot directly with <strong>R, G, B sliders</strong> in the 0–7 Next range.</td></tr>
+                <tr><td><strong>Grid mode</strong></td><td>Instead of sliders, choose a color from a compact preset color grid and copy that color into the edited slot.</td></tr>
+                <tr><td><strong>✓ Apply (slot popup)</strong></td><td>Confirms the edited color for the selected palette slot in the dialog’s working palette.</td></tr>
+                <tr><td><strong>🗑 Clear (slot popup)</strong></td><td>Clears/resets the currently edited slot in the working palette.</td></tr>
+                <tr><td><strong>💾 Save JSON</strong></td><td>Saves the current palette as a JSON file with all 256 entries, including palette bytes and RGB values.</td></tr>
+                <tr><td><strong>📂 Load JSON</strong></td><td>Loads a palette from a JSON file into the dialog’s working palette. The change is not final until you confirm the dialog.</td></tr>
+                <tr><td><strong>📤 Export NXP</strong></td><td>Exports the palette in <strong>NXP</strong> binary form for ZX Next workflows that expect a raw palette file.</td></tr>
+                <tr><td><strong>📥 Import NXP</strong></td><td>Imports an <strong>NXP</strong> / raw palette file into the working palette.</td></tr>
+                <tr><td><strong>↺ Reset palette</strong></td><td>Restores the default Next palette inside the dialog.</td></tr>
+                <tr><td><strong>✓ Apply (dialog)</strong></td><td>Commits all Palette Tools changes back into the editor palette. Until then, edits remain only in the dialog’s working copy.</td></tr>
+                <tr><td><strong>✕ Cancel</strong></td><td>Closes the dialog and discards unapplied palette edits.</td></tr>
+              </tbody>
+            </table>
+
+            <h4>SCR Recolor tab</h4>
+            <p>The second tab, <strong>📺 SCR Recolor</strong>, is meant for remapping classic <strong>ZX Spectrum SCR / ULA colors</strong> to Next palette entries. It is available from the same Palette Tools dialog and works as a conversion helper for Next mode.</p>
+
+            <table>
+              <thead><tr><th>Area / control</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><strong>📂 Load SCR</strong></td><td>Loads a classic SCR file and analyzes which ULA colors are present.</td></tr>
+                <tr><td><strong>🎨 Load default ZX colors</strong></td><td>Initializes the mapping with the standard 16 ZX colors even without loading an SCR file.</td></tr>
+                <tr><td><strong>ULA color grid</strong></td><td>Shows the 16 classic ZX colors (normal + bright). Selecting one highlights its mapping row.</td></tr>
+                <tr><td><strong>Color mapping table</strong></td><td>Each ULA color can be assigned to a specific Next palette color. This lets you define how classic colors should translate into Layer 2.</td></tr>
+                <tr><td><strong>Next color picker</strong></td><td>After selecting a ULA color, choose the replacement Next color from the Next grid.</td></tr>
+                <tr><td><strong>✓ Apply Recolor</strong></td><td>Applies the current ULA → Next mapping to the loaded SCR preview / conversion workflow.</td></tr>
+                <tr><td><strong>↺ Reset mapping</strong></td><td>Restores the default remapping table.</td></tr>
+                <tr><td><strong>Import / status boxes</strong></td><td>Show import summary, used colors, and workflow messages while building the remap.</td></tr>
+              </tbody>
+            </table>
+
+            <div class="note"><strong>Important:</strong> Palette Tools are available only in <strong>Next Layer 2</strong> screen mode. Palette edits change how indexed colors are interpreted; they do not repaint pixels by themselves. The final palette is saved into <strong>PAL</strong> and <strong>NXI</strong> exports.</div>
+
+
             <div class="note"><strong>Classic ↔ Next conversion:</strong> use <em>Convert to Next</em> to move a finished classic screen into full-color Next mode for further editing. Use <em>Convert to Classic</em> to go the other way — colors will be quantized to the nearest ZX attribute pair per 8×8 cell, so some color detail will be lost. Text object colors are converted automatically in both directions.</div>
 
             <!-- ── LAYERS ── -->
@@ -371,8 +419,28 @@
                 <tr><td><strong>Click on layer name</strong></td><td>Bitmap</td><td>Activates the layer for drawing.</td></tr>
                 <tr><td><strong>Click on text layer</strong></td><td>Text</td><td>Selects the text object and switches to the Text tool.</td></tr>
                 <tr><td><strong>Double-click on text layer</strong></td><td>Text</td><td>Opens the text editor box immediately.</td></tr>
+                <tr><td><strong>Transform (⟳)</strong></td><td>Bitmap</td><td>Opens the Transform Layer dialog for the selected bitmap layer. Allows non-destructive rotation, scaling, and panning with a live preview before applying.</td></tr>
               </tbody>
             </table>
+
+            <h4 id="en-screen-transform">Transform Layer</h4>
+            <p>The <strong>Transform Layer</strong> dialog opens via the <strong>⟳</strong> button next to a bitmap layer in the Layers panel. It provides non-destructive rotation, independent X/Y scaling, and free panning of the layer content, with a live preview that is applied only when you confirm with <strong>Apply</strong>.</p>
+            <table>
+              <thead><tr><th>Control</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Rotation</strong></td><td>Enter an angle in degrees (−3600 … +3600) or drag the range slider (−180 … +180). Quick-pick chips: 0°, ±45°, ±90°, 135°, 180°.</td></tr>
+                <tr><td><strong>Scale X / Scale Y</strong></td><td>Independent scale factors (0.05× … 32×). Drag the sliders or type directly. Quick-pick chips: ¼×, ½×, ¾×, 1×, 1.5×, 2×, 3×, 4×.</td></tr>
+                <tr><td><strong>🔒 Lock X:Y</strong></td><td>When active, X and Y scale always change together proportionally (uniform scaling). Click to toggle.</td></tr>
+                <tr><td><strong>Attribute behaviour (classic mode)</strong></td><td><em>Scale attrs with pixels</em> — attribute cells are transformed together with the bitmap. <em>Discard attrs</em> — attribute data is ignored; only transformed pixel data is kept.</td></tr>
+                <tr><td><strong>Live preview</strong></td><td>Shows the result of the current settings on the full 256×192 canvas in real time. The preview is non-destructive — nothing is changed in the layer until you click Apply.</td></tr>
+                <tr><td><strong>Pan (drag in preview)</strong></td><td>Drag inside the live preview canvas to offset the layer content. The current offset is shown as <em>Pan: X, Y</em>.</td></tr>
+                <tr><td><strong>⊞ Snap 8×8</strong></td><td>When active, panning snaps to multiples of 8 pixels — useful for keeping content attribute-cell aligned.</td></tr>
+                <tr><td><strong>Apply</strong></td><td>Commits the transform permanently into the layer bitmap (and attribute data, depending on the attribute mode setting). Can be undone with Undo.</td></tr>
+                <tr><td><strong>Reset</strong></td><td>Resets all transform controls (angle, scale, pan) back to their defaults without modifying the layer.</td></tr>
+                <tr><td><strong>Close</strong></td><td>Closes the dialog. If Apply was not clicked, no changes are made to the layer.</td></tr>
+              </tbody>
+            </table>
+            <div class="tip"><strong>Non-destructive workflow:</strong> pixels outside the canvas boundary during a transform are temporarily preserved inside the dialog session — you can pan or re-scale and they reappear. Only after clicking Apply are pixels outside the 256×192 canvas clipped permanently.</div>
 
             <div class="note"><strong>Layer ordering:</strong> text layers are always displayed above the bitmap layer they belong to (the layer that was active when the text was created). Bitmap layer order is controlled by Up/Down buttons. You can have multiple text layers interleaved with bitmap layers.</div>
 
@@ -615,7 +683,7 @@
               <li>Export in BIN or ASM format.</li>
             </ol>
 
-            <p class="footer">This help page reflects the current interface including: Next Layer 2 screen mode (NXI/SL2/L2 import-export), Next 8bpp sprite mode (SPR export, multi-tile large sprites), classic↔Next conversion (including automatic text color conversion), Transparent PAPER, layer renaming, INK ⇄ PAPER swapping, Bresenham interpolation in all drawing tools, continuous spray, live text layers with drag handle and inline color editing, dithering with multiple patterns, image import and Next→Classic conversion with Ordered Bayer dithering (strength slider, 2×2/4×4/8×8 matrix, brightness/contrast/saturation pre-processing, live before/after preview), Attr Only right-click INK↔PAPER swap, and project loading progress overlay.</p>
+            <p class="footer">This help page reflects the current interface including: Next Layer 2 screen mode (NXI/SL2/L2 import-export), Next 8bpp sprite mode (SPR export, multi-tile large sprites), classic↔Next conversion (including automatic text color conversion), Transparent PAPER, layer renaming, INK ⇄ PAPER swapping, Bresenham interpolation in all drawing tools, continuous spray, live text layers with drag handle and inline color editing, dithering with multiple patterns, image import and Next→Classic conversion with Ordered Bayer dithering (strength slider, 2×2/4×4/8×8 matrix, brightness/contrast/saturation pre-processing, live before/after preview), Attr Only right-click INK↔PAPER swap, project loading progress overlay, Transform Layer dialog (rotation, scale, pan, Snap 8×8, attribute behaviour, live preview), and canvas resize handle.</p>
           </section>
         </main>
       </div>
@@ -635,7 +703,9 @@
                 <a href="#cz-screen-canvas">Canvas a barvy</a>
                 <a href="#cz-screen-text">Textový nástroj</a>
                 <a href="#cz-screen-next">Next Layer 2 mód</a>
+                <a href="#cz-screen-palette-tools">Palette Tools (Next)</a>
                 <a href="#cz-screen-layers">Vrstvy a textové vrstvy</a>
+                <a href="#cz-screen-transform">Transform Layer</a>
                 <a href="#cz-screen-selection">Selection panel</a>
                 <a href="#cz-screen-files">Import / export / projektové soubory</a>
               </div>
@@ -741,6 +811,7 @@
                 <tr><td><strong>Dither mód</strong></td><td>Vybírá vzor ditheringu: Solid, Checker, Sparse nebo Radial.</td><td>Vyber z rozbalovacího menu vedle slideru.</td></tr>
                 <tr><td><strong>Attr Only</strong></td><td>Upravuje jen atributovou mapu 32×24 (jen klasický mód).</td><td>Použij pro přebarvení bez změny bitmapy. <strong>Levé tlačítko</strong> zapíše aktuální INK+PAPER. <strong>Pravé tlačítko</strong> zapíše atribut s <em>prohozeným INK a PAPER</em> — hodí se pro rychlé otočení barev buňky bez změny nastavení editoru.</td></tr>
                 <tr><td><strong>1×1 / 8×8</strong></td><td>Mřížky (jen klasický mód).</td><td>1×1 pro přesné pixely, 8×8 pro plánování atributů.</td></tr>
+                <tr><td><strong>Posuvník výšky canvasu</strong></td><td>Tenký táhnutelný proužek umístěný těsně <em>pod</em> canvasem. Tažením nahoru nebo dolů měníš viditelnou výšku výřezu canvasu (rozsah: 100–1200 px). Hodí se na menších obrazovkách nebo při vysokém přiblížení, kdy by canvas jinak „přetékl" mimo viditelnou oblast.</td><td>Najeď na proužek (objeví se vodorovný pruh) a táhni svisle.</td></tr>
               </tbody>
             </table>
 
@@ -838,6 +909,51 @@
 
             <div class="tip"><strong>NXI workflow:</strong> nakresli v Next módu → <strong>Export NXI</strong> → načti v NextBASIC pomocí <code>LOAD "screen.nxi" LAYER 2</code> nebo Z80 loaderem.</div>
 
+            <h4 id="cz-screen-palette-tools">Palette Tools (Next)</h4>
+            <p>V módu <strong>ZX Spectrum Next Layer 2</strong> se nad 256barevnou paletou objeví tlačítko <strong>🎨 Open Palette Tools</strong>. Otevírá samostatný dialog pro editaci pracovní Next palety a pro přemapování klasických barev <strong>SCR / ULA</strong> na Next indexy.</p>
+
+            <table>
+              <thead><tr><th>Část / ovládání</th><th>Co dělá</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Tab Palette Editor</strong></td><td>Hlavní karta pro úpravu aktuální <strong>256barevné Next palety</strong>, kterou používá editor.</td></tr>
+                <tr><td><strong>Preview — click pixel for info</strong></td><td>Zobrazuje náhled aktuální obrazovky s právě aktivní paletou. Kliknutím na pixel získáš informaci o jeho barvě.</td></tr>
+                <tr><td><strong>Show used only</strong></td><td>Odfiltruje mřížku palety tak, aby zůstaly viditelné jen sloty aktuálně použité na canvasu.</td></tr>
+                <tr><td><strong>🔍 Scan canvas</strong></td><td>Projede aktuální Next canvas a označí použité sloty palety. Hodí se před zapnutím <em>Show used only</em>.</td></tr>
+                <tr><td><strong>Klik na slot palety</strong></td><td>Klikni na libovolný slot v 256barevné mřížce a otevře se popup editor daného slotu.</td></tr>
+                <tr><td><strong>RGB mód</strong></td><td>Vybraný slot upravíš přímo pomocí sliderů <strong>R, G, B</strong> v Next rozsahu 0–7.</td></tr>
+                <tr><td><strong>Grid mód</strong></td><td>Místo sliderů můžeš vybrat barvu z kompaktní předvolené mřížky a tu zkopírovat do editovaného slotu.</td></tr>
+                <tr><td><strong>✓ Apply (popup slotu)</strong></td><td>Potvrdí upravenou barvu vybraného slotu do pracovní palety v dialogu.</td></tr>
+                <tr><td><strong>🗑 Clear (popup slotu)</strong></td><td>Vymaže / resetuje právě editovaný slot v pracovní paletě.</td></tr>
+                <tr><td><strong>💾 Save JSON</strong></td><td>Uloží aktuální paletu do JSON souboru se všemi 256 položkami včetně paletových bajtů a RGB hodnot.</td></tr>
+                <tr><td><strong>📂 Load JSON</strong></td><td>Načte paletu z JSON souboru do pracovní palety dialogu. Změna není finální, dokud ji nepotvrdíš.</td></tr>
+                <tr><td><strong>📤 Export NXP</strong></td><td>Exportuje paletu v binárním formátu <strong>NXP</strong> pro workflow ZX Next, která očekávají raw paletový soubor.</td></tr>
+                <tr><td><strong>📥 Import NXP</strong></td><td>Načte do pracovní palety soubor <strong>NXP</strong> nebo jiný raw paletový dump.</td></tr>
+                <tr><td><strong>↺ Reset palette</strong></td><td>Obnoví v dialogu výchozí Next paletu.</td></tr>
+                <tr><td><strong>✓ Apply (dialog)</strong></td><td>Propíše všechny změny z Palette Tools zpět do editorové palety. Do té doby jsou úpravy jen v pracovní kopii dialogu.</td></tr>
+                <tr><td><strong>✕ Cancel</strong></td><td>Zavře dialog a zahodí všechny nepotvrzené úpravy palety.</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Tab SCR Recolor</h4>
+            <p>Druhá karta, <strong>📺 SCR Recolor</strong>, slouží k přemapování klasických <strong>ZX Spectrum SCR / ULA barev</strong> na barvy z Next palety. Je dostupná ve stejném dialogu Palette Tools a funguje jako převodní pomocník pro Next mód.</p>
+
+            <table>
+              <thead><tr><th>Část / ovládání</th><th>Co dělá</th></tr></thead>
+              <tbody>
+                <tr><td><strong>📂 Load SCR</strong></td><td>Načte klasický SCR soubor a zjistí, které ULA barvy jsou v něm použité.</td></tr>
+                <tr><td><strong>🎨 Load default ZX colors</strong></td><td>Inicializuje mapování standardní sadou 16 ZX barev i bez načtení SCR souboru.</td></tr>
+                <tr><td><strong>ULA color grid</strong></td><td>Zobrazuje 16 klasických ZX barev (normální + bright). Výběrem barvy zvýrazníš odpovídající řádek mapování.</td></tr>
+                <tr><td><strong>Color mapping table</strong></td><td>Každé ULA barvě lze přiřadit konkrétní barvu Next palety. Tím určíš, jak se mají klasické barvy převádět do Layer 2.</td></tr>
+                <tr><td><strong>Next color picker</strong></td><td>Po výběru ULA barvy zvolíš její náhradu v mřížce Next barev.</td></tr>
+                <tr><td><strong>✓ Apply Recolor</strong></td><td>Aplikuje aktuální mapování ULA → Next na načtený SCR náhled / převodní workflow.</td></tr>
+                <tr><td><strong>↺ Reset mapping</strong></td><td>Vrátí výchozí tabulku přemapování.</td></tr>
+                <tr><td><strong>Import / status boxy</strong></td><td>Zobrazují shrnutí importu, použité barvy a stavové zprávy během vytváření mapování.</td></tr>
+              </tbody>
+            </table>
+
+            <div class="note"><strong>Důležité:</strong> Palette Tools jsou dostupné jen v režimu <strong>Next Layer 2</strong>. Úpravy palety mění interpretaci indexovaných barev; samy o sobě nepřemalují pixely. Výsledná paleta se ukládá do exportů <strong>PAL</strong> a <strong>NXI</strong>.</div>
+
+
             <div class="note"><strong>Konverze Classic ↔ Next:</strong> při konverzi se automaticky konvertují i barvy textových objektů — ZX ink (0–15) na nejbližší Next paletový index a zpět.</div>
 
             <!-- ── VRSTVY ── -->
@@ -859,8 +975,28 @@
                 <tr><td><strong>Klik na název vrstvy</strong></td><td>Bitmapa</td><td>Aktivuje vrstvu pro kreslení.</td></tr>
                 <tr><td><strong>Klik na textovou vrstvu</strong></td><td>Text</td><td>Vybere textový objekt a přepne na nástroj Text.</td></tr>
                 <tr><td><strong>Dvojklik na textovou vrstvu</strong></td><td>Text</td><td>Okamžitě otevře textový editor.</td></tr>
+                <tr><td><strong>Transform (⟳)</strong></td><td>Bitmapa</td><td>Otevře dialog Transform Layer pro vybranou bitmapovou vrstvu. Umožňuje nedestruktivní rotaci, škálování a posun obsahu vrstvy s živým náhledem před potvrzením.</td></tr>
               </tbody>
             </table>
+
+            <h4 id="cz-screen-transform">Transform Layer</h4>
+            <p>Dialog <strong>Transform Layer</strong> se otevírá tlačítkem <strong>⟳</strong> u bitmapové vrstvy v panelu Vrstvy. Umožňuje nedestruktivní rotaci, nezávislé škálování v ose X a Y a volný posun obsahu vrstvy. Živý náhled zobrazuje výsledek v reálném čase — do vrstvy se zapíše teprve po kliknutí na <strong>Apply</strong>.</p>
+            <table>
+              <thead><tr><th>Prvek</th><th>Co dělá</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Rotation</strong></td><td>Zadej úhel ve stupních (−3600 … +3600) nebo táhni posuvník (−180 … +180). Rychlé volby: 0°, ±45°, ±90°, 135°, 180°.</td></tr>
+                <tr><td><strong>Scale X / Scale Y</strong></td><td>Nezávislé koeficienty škálování (0,05× … 32×). Táhni posuvníky nebo zadej hodnotu ručně. Rychlé volby: ¼×, ½×, ¾×, 1×, 1,5×, 2×, 3×, 4×.</td></tr>
+                <tr><td><strong>🔒 Lock X:Y</strong></td><td>Když je zapnuto, mění se X a Y vždy společně (proporcionální škálování). Kliknutím přepínáš.</td></tr>
+                <tr><td><strong>Attribute behaviour (klasický mód)</strong></td><td><em>Scale attrs with pixels</em> — atributové buňky se transformují spolu s bitmapou. <em>Discard attrs</em> — atributová data se ignorují; zachovají se jen transformované pixely.</td></tr>
+                <tr><td><strong>Živý náhled</strong></td><td>Zobrazuje výsledek aktuálního nastavení na celém canvasu 256×192 v reálném čase. Náhled je nedestruktivní — vrstva se nemění, dokud neklikneš na Apply.</td></tr>
+                <tr><td><strong>Pan (tah v náhledu)</strong></td><td>Táhni v ploše živého náhledu pro posun obsahu vrstvy. Aktuální offset se zobrazuje jako <em>Pan: X, Y</em>.</td></tr>
+                <tr><td><strong>⊞ Snap 8×8</strong></td><td>Pokud je zapnuto, posun se uchytí na násobky 8 pixelů — vhodné pro zachování zarovnání na atributové buňky ZX Spectra.</td></tr>
+                <tr><td><strong>Apply</strong></td><td>Zapíše transformaci trvale do bitmapy vrstvy (a atributových dat dle zvoleného nastavení atributů). Operaci lze vrátit přes Undo.</td></tr>
+                <tr><td><strong>Reset</strong></td><td>Vrátí všechna nastavení transformace (úhel, škálování, posun) na výchozí hodnoty bez jakékoli změny vrstvy.</td></tr>
+                <tr><td><strong>Close</strong></td><td>Zavře dialog. Pokud nebyl stisknut Apply, vrstva zůstane beze změny.</td></tr>
+              </tbody>
+            </table>
+            <div class="tip"><strong>Nedestruktivní workflow:</strong> pixely, které při transformaci přesáhnou hranici canvasu, jsou v rámci dialogu dočasně zachovány — po posunutí nebo změně škálování se znovu zobrazí. Teprve po kliknutí na Apply se pixely mimo 256×192 trvale oříznou.</div>
 
             <div class="note"><strong>Pořadí vrstev:</strong> textové vrstvy se vždy zobrazují nad bitmapovou vrstvou, ke které patří (ta byla aktivní při vytvoření textu). Pořadí bitmapových vrstev ovládáš tlačítky Nahoru/Dolů. Textové vrstvy lze mít prokládané s bitmapovými vrstvami.</div>
 

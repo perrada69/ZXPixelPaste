@@ -214,6 +214,139 @@
       line-height: 1.55;
     }
 
+
+    .news-btn {
+      min-height: 40px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #2a3d21, #1b2a17);
+      border-color: #79b36a;
+      color: #eefbe8;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .08);
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+
+    .news-btn:hover {
+      background: linear-gradient(180deg, #35502a, #22361d);
+      border-color: #9dd08f;
+      transform: translateY(-1px);
+    }
+
+    .news-dialog {
+      display: grid;
+      gap: 16px;
+      color: var(--text);
+    }
+
+    .news-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 14px 16px;
+      border: 1px solid rgba(121, 179, 106, .24);
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(34, 48, 34, .92), rgba(13, 16, 22, .96));
+    }
+
+    .news-summary {
+      display: grid;
+      gap: 4px;
+    }
+
+    .news-kicker {
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #b8d9ae;
+    }
+
+    .news-title {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.15;
+      color: var(--text);
+    }
+
+    .news-subtitle {
+      margin: 0;
+      color: #d9ead1;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .news-count-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 84px;
+      min-height: 36px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(121, 179, 106, .28);
+      background: rgba(10, 14, 18, .55);
+      color: #eaf7e4;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .news-list {
+      display: grid;
+      gap: 10px;
+      max-height: min(58vh, 620px);
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .news-item {
+      display: grid;
+      grid-template-columns: minmax(118px, 140px) minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(21, 27, 37, .96), rgba(11, 15, 22, .96));
+    }
+
+    .news-date {
+      color: #b8d9ae;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+
+    .news-text {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      min-width: 0;
+      word-break: break-word;
+    }
+
+    .news-actions {
+      display: flex;
+      justify-content: center;
+    }
+
+    .news-more-btn {
+      min-width: 180px;
+    }
+
+    .news-empty {
+      padding: 18px;
+      border: 1px dashed rgba(121, 179, 106, .28);
+      border-radius: 14px;
+      background: rgba(14, 18, 26, .92);
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.55;
+    }
+
     .tab-btn,
     button,
     .button-like {
@@ -994,6 +1127,165 @@
       display: flex;
     }
 
+    /* ── Palette Tools dialog ── */
+    #paletteToolsBackdrop {
+      z-index: 60;
+      align-items: flex-start;
+      padding: 24px 16px;
+    }
+    .palette-tools-dialog {
+      width: min(1100px, 100%);
+      max-height: calc(100vh - 48px);
+      background: linear-gradient(180deg, #161b25, #0f131a);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-rows: auto 1fr;
+      overflow: hidden;
+    }
+    .palette-tools-dialog-body {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 0;
+      overflow: hidden;
+    }
+    .ptd-left {
+      border-right: 1px solid var(--border);
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      overflow-y: auto;
+      align-content: start;
+    }
+    .ptd-right {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      overflow-y: auto;
+      align-content: start;
+    }
+    .ptd-preview-canvas {
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      image-rendering: pixelated;
+      display: block;
+      cursor: crosshair;
+    }
+    .ptd-zoom-wrap {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .ptd-zoom-wrap.visible {
+      display: flex;
+    }
+    .ptd-zoom-label {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    #ptdZoomCanvas {
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #3a4a6a;
+      image-rendering: pixelated;
+      display: block;
+      background: #0a0c12;
+    }
+    .ptd-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+    }
+    .recolor-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 7px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #15181f;
+      cursor: pointer;
+      transition: .1s;
+    }
+    .recolor-row:hover { background: #1c2130; }
+    .recolor-row.active { border-color: #79a2ff; background: #1a2e55; }
+    .recolor-row.unused { opacity: .3; cursor: default; }
+    .recolor-row.highlighted { border-color: #ffb84d; background: #2a1f00; }
+    .recolor-swatch {
+      width: 16px; height: 16px;
+      border-radius: 3px;
+      border: 1px solid rgba(255,255,255,.2);
+      flex-shrink: 0;
+    }
+    .recolor-label {
+      font-size: 11px;
+      color: var(--muted);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .recolor-arrow { font-size: 11px; color: var(--muted); }
+    .recolor-next-label { font-size: 11px; color: var(--text); min-width: 26px; text-align: right; }
+    .ptd-color-grid {
+      display: grid;
+      grid-template-columns: repeat(64, 10px);
+      gap: 1px;
+      cursor: pointer;
+    }
+    .ptd-color-cell {
+      width: 10px; height: 10px;
+      border-radius: 1px;
+      box-sizing: border-box;
+      border: 1px solid transparent;
+    }
+    .ptd-color-cell.selected { border: 2px solid #fff; }
+    .ptd-ula-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 4px;
+    }
+    .ptd-tab {
+      padding: 5px 12px;
+      font-size: 12px;
+      min-height: unset;
+      border-radius: 8px;
+      opacity: .6;
+    }
+    .ptd-tab.active {
+      background: var(--accent-2);
+      border-color: #78a0ff;
+      opacity: 1;
+    }
+    .ptd-pal-slot {
+      aspect-ratio: 1;
+      border-radius: 2px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: transform .08s;
+    }
+    .ptd-pal-slot:hover { transform: scale(1.3); z-index: 1; position: relative; border-color: rgba(255,255,255,.6); }
+    .ptd-pal-slot.used-slot { border-color: rgba(255,255,255,.35); }
+    .ptd-mode-btn {
+      padding: 3px 7px;
+      font-size: 10px;
+      min-height: unset;
+      border-radius: 6px;
+      opacity: .5;
+    }
+    .ptd-mode-btn.active {
+      background: var(--accent-2);
+      border-color: #78a0ff;
+      opacity: 1;
+    }
+
     .dialog {
       width: min(860px, 100%);
       background: linear-gradient(180deg, #161b25, #0f131a);
@@ -1049,12 +1341,18 @@
       cursor: crosshair;
     }
 
-    #spritePreviewCanvas,
-    #spriteMaskCanvas,
+    #spriteMaskCompositeCanvas,
     #spriteAnimCanvas {
       border: 1px solid var(--border);
       background: #000;
       border-radius: 12px;
+    }
+
+    .sprite-mask-composite-note {
+      max-width: 180px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
     }
 
     .mask-disabled {
@@ -1781,6 +2079,7 @@
           <button id="modeSpriteBtn" class="tab-btn">Sprite Editor</button>
           <button id="modeFontBtn" class="tab-btn">Font Editor</button>
         </div>
+        <button id="newsBtn" class="news-btn">What's new</button>
         <button id="aboutBtn" class="about-btn">About</button>
       </div>
     </div>
@@ -1856,6 +2155,44 @@
             <button id="commitFloatBtn">✓ Enter = Confirm</button>
             <button id="cancelFloatBtn">✕ Esc = Cancel</button>
           </div>
+          <!-- Hover attr + selected ink/paper nad canvasem -->
+          <div style="display:flex;flex-direction:column;gap:4px;padding-bottom:6px;">
+            <div id="hoverAttrBox"
+              style="display:flex;align-items:center;gap:6px;padding:3px 8px;border:1px solid var(--border);border-radius:8px;background:#0d1016;min-height:28px;flex-wrap:nowrap;overflow:hidden">
+              <span style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap">Hover attr</span>
+              <div style="display:flex;align-items:center;gap:4px">
+                <span style="font-size:10px;color:var(--muted)">I</span>
+                <span id="hoverInkSwatch" style="width:14px;height:14px;border-radius:4px;border:1px solid rgba(255,255,255,.18);background:#000"></span>
+                <span id="hoverInkLabel" style="font-size:10px;color:var(--text);min-width:28px">-</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:4px">
+                <span style="font-size:10px;color:var(--muted)">P</span>
+                <span id="hoverPaperSwatch" style="width:14px;height:14px;border-radius:4px;border:1px solid rgba(255,255,255,.18);background:#000"></span>
+                <span id="hoverPaperLabel" style="font-size:10px;color:var(--text);min-width:28px">-</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:4px">
+                <span style="font-size:10px;color:var(--muted)">L</span>
+                <span id="hoverLayerLabel" style="font-size:10px;color:var(--text);min-width:0;max-width:120px;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom">-</span>
+              </div>
+              <div id="hoverAttrConflict"
+                style="display:none;align-items:center;gap:3px;padding:2px 6px;border-radius:5px;background:rgba(214,91,102,.2);border:1px solid rgba(214,91,102,.45)">
+                <span style="font-size:11px">⚠</span>
+                <span id="hoverAttrConflictLabel" style="font-size:10px;color:#d65b66;white-space:nowrap"></span>
+              </div>
+            </div>
+            <div id="classicSelectedInfo" class="palette-selection-info">
+              <div id="screenSelectedInkInfo" class="palette-selection-pill"><strong>Selected INK</strong><span
+                  id="screenSelectedInkSwatch" class="palette-selection-swatch"></span><span
+                  id="screenSelectedInkLabel">-</span></div>
+              <div id="screenSelectedPaperInfo" class="palette-selection-pill"><strong>Selected PAPER</strong><span
+                  id="screenSelectedPaperSwatch" class="palette-selection-swatch"></span><span
+                  id="screenSelectedPaperLabel">-</span></div>
+            </div>
+            <div id="nextSelectedInfo" class="palette-selection-info hidden">
+              <div id="nextInkChip" class="palette-selection-pill"><strong>Color A</strong><span id="nextInkChipSwatch" class="palette-selection-swatch"></span><span id="nextInkChipLabel">-</span></div>
+              <div id="nextPaperChip" class="palette-selection-pill"><strong>Color B</strong><span id="nextPaperChipSwatch" class="palette-selection-swatch"></span><span id="nextPaperChipLabel">-</span></div>
+            </div>
+          </div>
           <div class="canvas-wrap" id="screenCanvasWrap" onmousedown="if(event.button===1) event.preventDefault()">
             <canvas id="editorCanvas"></canvas>
             <div id="textEditorBox" class="text-editor-box hidden">
@@ -1869,6 +2206,121 @@
               </div>
               <textarea id="screenTextEditor" class="screen-text-editor" spellcheck="false"></textarea>
             </div>
+          </div>
+
+          <!-- Resize handle — tahnutím zmenšíš/zvětšíš výšku canvas wrapu -->
+          <div id="canvasResizeHandle" style="
+            width:100%;height:10px;cursor:ns-resize;display:flex;align-items:center;justify-content:center;
+            margin:2px 0;user-select:none;flex-shrink:0;
+          " title="Táhni pro změnu výšky canvasu">
+            <div style="width:48px;height:4px;border-radius:2px;background:var(--border);transition:background .15s;"
+              onmouseenter="this.style.background='#79a2ff'" onmouseleave="this.style.background='var(--border)'"></div>
+          </div>
+
+          <!-- Slidery + options v jedné řadě — přesunuto nad Next adjustments -->
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:2px 0;">
+            <label
+              style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px;white-space:nowrap;flex:1;min-width:120px">
+              Brush <input id="brushSizeRange" type="range" min="1" max="8" step="1" value="1" style="width:80px">
+              <span id="brushSizeVal" style="color:var(--text);min-width:16px;text-align:right">1</span>
+            </label>
+            <label
+              style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px;white-space:nowrap;flex:1;min-width:120px">
+              Spray r. <input id="spraySizeRange" type="range" min="1" max="20" step="1" value="4" style="width:80px">
+              <span id="spraySizeVal" style="color:var(--text);min-width:16px;text-align:right">4</span>
+            </label>
+            <label
+              style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px;white-space:nowrap;flex:1;min-width:120px">
+              Density <input id="sprayDensityRange" type="range" min="1" max="80" step="1" value="20"
+                style="width:80px"> <span id="sprayDensityVal"
+                style="color:var(--text);min-width:20px;text-align:right">20</span>
+            </label>
+            <label
+              style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px;white-space:nowrap;flex:1;min-width:140px">
+              Dither len. <input id="ditherAmountRange" type="range" min="0" max="255" step="1" value="160"
+                style="width:90px"> <span id="ditherAmountVal"
+                style="color:var(--text);min-width:28px;text-align:right">160</span>
+            </label>
+            <label
+              style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px;white-space:nowrap">
+              Dither
+              <select id="ditherModeSelect" style="min-height:unset;padding:3px 6px;font-size:12px;width:auto">
+                <option value="solid" selected>Solid</option>
+                <option value="checker">Checker</option>
+                <option value="sparse">Sparse</option>
+                <option value="radial">Radial</option>
+              </select>
+            </label>
+            <button id="grid1Btn" class="toggle-btn on"
+              style="padding:3px 8px;font-size:12px;min-height:unset">1×1</button>
+            <button id="grid8Btn" class="toggle-btn on"
+              style="padding:3px 8px;font-size:12px;min-height:unset">8×8</button>
+          </div>
+
+          <!-- Next preview adjustments — těsně pod slidery, jen v Next módu -->
+          <div id="textToolPanel" class="text-tool-panel hidden">
+            <div class="text-tool-row">
+              <label>Font
+                <select id="textFontSelect">
+                  <option value="builtin5x7">Tiny 5×7</option>
+                  <option value="zx8">ZX ROM 8×8</option>
+                  <option value="editor">Font editor</option>
+                </select>
+              </label>
+              <button id="textBoldBtn" class="toggle-btn text-style-btn">Bold</button>
+              <button id="textItalicBtn" class="toggle-btn text-style-btn">Italic</button>
+              <button id="textDeleteBtn" class="text-style-btn btn-del">Delete text</button>
+            </div>
+            <div class="text-tool-row" style="align-items:center;gap:10px">
+              <label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;white-space:nowrap">
+                Size
+                <input id="textScaleRange" type="range" min="0.5" max="8" step="0.05" value="1" style="width:110px">
+                <span id="textScaleVal" style="color:var(--text);min-width:32px;text-align:right">1×</span>
+              </label>
+              <button id="textScale05Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">½×</button>
+              <button id="textScale1Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">1×</button>
+              <button id="textScale2Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">2×</button>
+              <button id="textScale4Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">4×</button>
+            </div>
+            <div class="text-tool-row" style="align-items:center;gap:10px">
+              <label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;white-space:nowrap">
+                Rotation
+                <input id="textAngleRange" type="range" min="0" max="359" step="1" value="0" style="width:100px">
+                <input id="textAngleInput" type="number" min="0" max="359" step="1" value="0"
+                  style="width:52px;min-height:unset;padding:3px 6px;font-size:12px">°
+              </label>
+              <button id="textAngleResetBtn" class="mini-btn" style="font-size:11px;padding:3px 8px">↺ 0°</button>
+              <button id="textAngle90Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">90°</button>
+              <button id="textAngle180Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">180°</button>
+              <button id="textAngle270Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">270°</button>
+            </div>
+            <div class="hint">Text tool: click on the canvas to create new text. Click an existing text object to select it, drag to move it, double-click to edit it directly.</div>
+          </div>
+
+          <!-- Next preview adjustments — těsně pod slidery, jen v Next módu -->
+          <div id="nextAdjustmentsBlock" class="hidden next-adjustments-panel" style="margin-top:4px">
+            <div class="next-adjustments-head">
+              <div class="section-title">Next preview adjustments</div>
+              <div class="row">
+                <button id="nextApplyAdjustBtn" type="button" class="next-reset-btn next-apply-btn">Apply to layer</button>
+                <button id="nextAdjustResetBtn" type="button" class="next-reset-btn">Reset</button>
+              </div>
+            </div>
+            <div class="next-adjustments-grid">
+              <label>
+                <div class="next-slider-label"><strong>Brightness</strong><span id="nextBrightnessVal" class="next-slider-value">0</span></div>
+                <input id="nextBrightnessRange" type="range" min="-100" max="100" value="0">
+              </label>
+              <label>
+                <div class="next-slider-label"><strong>Contrast</strong><span id="nextContrastVal" class="next-slider-value">0</span></div>
+                <input id="nextContrastRange" type="range" min="-100" max="100" value="0">
+              </label>
+              <label>
+                <div class="next-slider-label"><strong>Saturation</strong><span id="nextSaturationVal" class="next-slider-value">0</span></div>
+                <input id="nextSaturationRange" type="range" min="-100" max="100" value="0">
+              </label>
+            </div>
+            <div class="hint">Applies to the preview in Screen Editor in ZX Spectrum Next Layer 2 mode. L2 / SL2 / NXI exports save the actual palette data; preview adjustments are only a preview until you apply them to the layer. The "Apply to layer" button permanently saves the adjustments to the active Next layer.</div>
           </div>
 
           <div style="display:grid;gap:6px;padding-top:8px">
@@ -1901,166 +2353,24 @@
                   <option value="smart" selected>Smart remap</option>
                 </select>
               </label>
-              <div id="hoverAttrBox"
-                style="display:flex;align-items:center;gap:6px;padding:3px 8px;border:1px solid var(--border);border-radius:8px;background:#0d1016;min-height:28px;flex-wrap:nowrap;overflow:hidden">
-                <span
-                  style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap">Hover
-                  attr</span>
-                <div style="display:flex;align-items:center;gap:4px">
-                  <span style="font-size:10px;color:var(--muted)">I</span>
-                  <span id="hoverInkSwatch"
-                    style="width:14px;height:14px;border-radius:4px;border:1px solid rgba(255,255,255,.18);background:#000"></span>
-                  <span id="hoverInkLabel" style="font-size:10px;color:var(--text);min-width:28px">-</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:4px">
-                  <span style="font-size:10px;color:var(--muted)">P</span>
-                  <span id="hoverPaperSwatch"
-                    style="width:14px;height:14px;border-radius:4px;border:1px solid rgba(255,255,255,.18);background:#000"></span>
-                  <span id="hoverPaperLabel" style="font-size:10px;color:var(--text);min-width:28px">-</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:4px">
-                  <span style="font-size:10px;color:var(--muted)">L</span>
-                  <span id="hoverLayerLabel"
-                    style="font-size:10px;color:var(--text);min-width:0;max-width:120px;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom">-</span>
-                </div>
-              </div>
             </div>
-            <div id="classicSelectedInfo" class="palette-selection-info">
-              <div id="screenSelectedInkInfo" class="palette-selection-pill"><strong>Selected INK</strong><span
-                  id="screenSelectedInkSwatch" class="palette-selection-swatch"></span><span
-                  id="screenSelectedInkLabel">-</span></div>
-              <div id="screenSelectedPaperInfo" class="palette-selection-pill"><strong>Selected PAPER</strong><span
-                  id="screenSelectedPaperSwatch" class="palette-selection-swatch"></span><span
-                  id="screenSelectedPaperLabel">-</span></div>
+            <!-- Palette Tools trigger — Next mode only, above palette -->
+            <div id="paletteToolsInline" class="hidden">
+              <button id="openPaletteToolsBtn" class="btn-import" style="width:100%;padding:8px;font-size:13px;">🎨 Open Palette Tools</button>
             </div>
+
             <div id="nextColorWrap" class="hidden next-palette-panel next-palette-under-canvas">
               <div class="next-palette-header">
                 <div class="next-palette-info">
-                  <div id="nextInkChip" class="next-palette-chip"><strong>Color A</strong><span id="nextInkChipSwatch"
-                      class="next-palette-chip-swatch"></span><span id="nextInkChipLabel">255</span></div>
-                  <div id="nextPaperChip" class="next-palette-chip"><strong>Color B</strong><span
-                      id="nextPaperChipSwatch" class="next-palette-chip-swatch"></span><span
-                      id="nextPaperChipLabel">0</span></div>
                 </div>
                 <div class="hint">Left-click in the palette = Color A (paint), right-click = Color B (paper/erase),
                   middle-click on the canvas = pick the color under the cursor.</div>
               </div>
               <div id="nextPaletteGrid" class="next-palette-grid"></div>
-              <div class="next-adjustments-panel">
-                <div class="next-adjustments-head">
-                  <div class="section-title">Next preview adjustments</div>
-                  <div class="row">
-                    <button id="nextApplyAdjustBtn" type="button" class="next-reset-btn next-apply-btn">Apply to
-                      layer</button> <button id="nextAdjustResetBtn" type="button" class="next-reset-btn">Reset</button>
-                  </div>
-                </div>
-                <div class="next-adjustments-grid">
-                  <label>
-                    <div class="next-slider-label"><strong>Brightness</strong><span id="nextBrightnessVal"
-                        class="next-slider-value">0</span></div>
-                    <input id="nextBrightnessRange" type="range" min="-100" max="100" value="0">
-                  </label>
-                  <label>
-                    <div class="next-slider-label"><strong>Contrast</strong><span id="nextContrastVal"
-                        class="next-slider-value">0</span></div>
-                    <input id="nextContrastRange" type="range" min="-100" max="100" value="0">
-                  </label>
-                  <label>
-                    <div class="next-slider-label"><strong>Saturation</strong><span id="nextSaturationVal"
-                        class="next-slider-value">0</span></div>
-                    <input id="nextSaturationRange" type="range" min="-100" max="100" value="0">
-                  </label>
-                </div>
-                <div class="hint">Applies to the preview in Screen Editor in ZX Spectrum Next Layer 2 mode. L2 / SL2 /
-                  NXI exports save the actual palette data; preview adjustments are only a preview until you apply them
-                  to the layer. The "Apply to layer" button permanently saves the adjustments to the active Next layer.
-                </div>
-              </div>
             </div>
 
-            <!-- Slidery + options v jedné řadě -->
-            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-              <label
-                style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px;white-space:nowrap;flex:1;min-width:120px">
-                Brush <input id="brushSizeRange" type="range" min="1" max="8" step="1" value="1" style="width:80px">
-                <span id="brushSizeVal" style="color:var(--text);min-width:16px;text-align:right">1</span>
-              </label>
-              <label
-                style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px;white-space:nowrap;flex:1;min-width:120px">
-                Spray r. <input id="spraySizeRange" type="range" min="1" max="20" step="1" value="4" style="width:80px">
-                <span id="spraySizeVal" style="color:var(--text);min-width:16px;text-align:right">4</span>
-              </label>
-              <label
-                style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px;white-space:nowrap;flex:1;min-width:120px">
-                Density <input id="sprayDensityRange" type="range" min="1" max="80" step="1" value="20"
-                  style="width:80px"> <span id="sprayDensityVal"
-                  style="color:var(--text);min-width:20px;text-align:right">20</span>
-              </label>
-              <label
-                style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px;white-space:nowrap;flex:1;min-width:140px">
-                Dither len. <input id="ditherAmountRange" type="range" min="0" max="255" step="1" value="160"
-                  style="width:90px"> <span id="ditherAmountVal"
-                  style="color:var(--text);min-width:28px;text-align:right">160</span>
-              </label>
-              <label
-                style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px;white-space:nowrap">
-                Dither
-                <select id="ditherModeSelect" style="min-height:unset;padding:3px 6px;font-size:12px;width:auto">
-                  <option value="solid" selected>Solid</option>
-                  <option value="checker">Checker</option>
-                  <option value="sparse">Sparse</option>
-                  <option value="radial">Radial</option>
-                </select>
-              </label>
-              <button id="grid1Btn" class="toggle-btn on"
-                style="padding:3px 8px;font-size:12px;min-height:unset">1×1</button>
-              <button id="grid8Btn" class="toggle-btn on"
-                style="padding:3px 8px;font-size:12px;min-height:unset">8×8</button>
+            <!-- Palette Tools trigger — Next mode only -->
 
-            </div>
-            <div id="textToolPanel" class="text-tool-panel hidden">
-              <div class="text-tool-row">
-                <label>Font
-                  <select id="textFontSelect">
-                    <option value="builtin5x7">Tiny 5×7</option>
-                    <option value="zx8">ZX ROM 8×8</option>
-                    <option value="editor">Font editor</option>
-                  </select>
-                </label>
-                <button id="textBoldBtn" class="toggle-btn text-style-btn">Bold</button>
-                <button id="textItalicBtn" class="toggle-btn text-style-btn">Italic</button>
-                <button id="textDeleteBtn" class="text-style-btn btn-del">Delete text</button>
-              </div>
-              <div class="text-tool-row" style="align-items:center;gap:10px">
-                <label
-                  style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;white-space:nowrap">
-                  Velikost
-                  <input id="textScaleRange" type="range" min="0.5" max="8" step="0.05" value="1" style="width:110px">
-                  <span id="textScaleVal" style="color:var(--text);min-width:32px;text-align:right">1×</span>
-                </label>
-                <button id="textScale05Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">½×</button>
-                <button id="textScale1Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">1×</button>
-                <button id="textScale2Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">2×</button>
-                <button id="textScale4Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">4×</button>
-              </div>
-              <div class="text-tool-row" style="align-items:center;gap:10px">
-                <label
-                  style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;white-space:nowrap">
-                  Rotace
-                  <input id="textAngleRange" type="range" min="0" max="359" step="1" value="0" style="width:100px">
-                  <input id="textAngleInput" type="number" min="0" max="359" step="1" value="0"
-                    style="width:52px;min-height:unset;padding:3px 6px;font-size:12px">°
-                </label>
-                <button id="textAngleResetBtn" class="mini-btn" style="font-size:11px;padding:3px 8px">↺ 0°</button>
-                <button id="textAngle90Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">90°</button>
-                <button id="textAngle180Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">180°</button>
-                <button id="textAngle270Btn" class="mini-btn" style="font-size:11px;padding:3px 8px">270°</button>
-              </div>
-              <div class="hint">Text tool: klik do obrazu vytvoří nový text. Klik na existující text ho vybere, tažením
-                ho přesuneš, dvojklik otevře přímou editaci v obrazu.</div>
-            </div>
-
-          </div>
         </div>
       </section>
 
@@ -2322,15 +2632,10 @@
             </svg>Help</a>
         </div>
         <div class="panel-body stack">
-          <div class="preview-pair">
-            <div class="stack">
-              <div class="smallcaps">Sprite</div>
-              <canvas id="spritePreviewCanvas" width="180" height="180"></canvas>
-            </div>
-            <div id="maskPreviewWrap" class="stack">
-              <div class="smallcaps" id="maskPreviewLabel">Mask (+1 px grow)</div>
-              <canvas id="spriteMaskCanvas" width="180" height="180"></canvas>
-            </div>
+          <div id="maskCompositePreviewWrap" class="section hidden">
+            <div class="smallcaps">Mask fit preview</div>
+            <canvas id="spriteMaskCompositeCanvas" width="180" height="180"></canvas>
+            <div class="sprite-mask-composite-note">Cihly = pozadí, přes masku se schová podklad a pak se vykreslí sprite.</div>
           </div>
           <div class="section">
             <div class="smallcaps">Animation preview</div>
@@ -2570,6 +2875,138 @@
     </div>
   </div>
 
+  <!-- Palette Tools dialog -->
+  <div id="paletteToolsBackdrop" class="dialog-backdrop">
+    <div class="palette-tools-dialog">
+      <div class="dialog-header">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <strong>Palette Tools</strong>
+          <div style="display:flex;gap:4px;">
+            <button id="ptdTabPalette" class="ptd-tab active">🎨 Palette Editor</button>
+            <button id="ptdTabScr" class="ptd-tab">📺 SCR Recolor</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+          <button id="ptdSavePaletteBtn" class="btn-export" style="padding:6px 12px;font-size:12px;min-height:unset;">💾 Save JSON</button>
+          <button id="ptdExportNxpBtn" class="btn-export" style="padding:6px 12px;font-size:12px;min-height:unset;">📤 Export NXP</button>
+          <label class="button-like btn-import" for="ptdLoadPaletteInput" style="padding:6px 12px;font-size:12px;min-height:unset;">📂 Load JSON</label>
+          <input id="ptdLoadPaletteInput" class="hidden" type="file" accept=".json,application/json">
+          <label class="button-like btn-import" for="ptdImportNxpInput" style="padding:6px 12px;font-size:12px;min-height:unset;">📥 Import NXP</label>
+          <input id="ptdImportNxpInput" class="hidden" type="file" accept=".nxp,.bin,application/octet-stream">
+          <button id="ptdResetPaletteBtn" style="padding:6px 12px;font-size:12px;min-height:unset;">↺ Reset palette</button>
+          <button id="paletteToolsApplyBtn" class="primary btn-export" style="padding:6px 14px;font-size:13px;">✓ Apply</button>
+          <button id="paletteToolsCloseBtn" style="padding:6px 14px;font-size:13px;">✕ Cancel</button>
+        </div>
+      </div>
+      <div class="palette-tools-dialog-body">
+        <!-- LEFT: preview (shared between tabs) -->
+        <div class="ptd-left">
+          <div class="ptd-section-title">Preview — click pixel for info</div>
+          <canvas id="ptdPreviewCanvas" class="ptd-preview-canvas" width="256" height="192"></canvas>
+          <div id="ptdZoomWrap" class="ptd-zoom-wrap">
+            <div class="ptd-zoom-label">Zoom — <span id="ptdZoomCoords">–</span></div>
+            <canvas id="ptdZoomCanvas" width="128" height="96"></canvas>
+          </div>
+          <div id="ptdPixelInfo" class="info-box" style="font-size:11px;padding:6px 8px;margin-top:4px;min-height:32px;">Click a pixel to inspect its color.</div>
+          <div class="ptd-section-title" style="margin-top:8px;">Palette I/O status</div>
+          <div id="ptdPaletteIOStatus" class="info-box hidden" style="font-size:11px;margin-top:2px;"></div>
+        </div>
+
+        <!-- RIGHT: tab content -->
+        <div class="ptd-right">
+
+          <!-- TAB: Palette Editor -->
+          <div id="ptdPaletteEditorTab">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+              <div class="ptd-section-title" style="margin:0;">256-color Next palette</div>
+              <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);margin-left:auto;">
+                <input type="checkbox" id="ptdShowUsedOnly"> Show used only
+              </label>
+              <button id="ptdScanBtn" style="padding:4px 10px;font-size:11px;min-height:unset;">🔍 Scan canvas</button>
+            </div>
+            <div id="ptdPalGrid" style="display:grid;grid-template-columns:repeat(32,1fr);gap:1px;"></div>
+            <!-- Slot color popup — positioned by JS -->
+            <div id="ptdSlotPopup" style="display:none;position:fixed;z-index:200;background:linear-gradient(180deg,#1a2030,#0f131a);border:1px solid #79a2ff;border-radius:12px;padding:14px;box-shadow:0 8px 32px rgba(0,0,0,.6);min-width:240px;max-width:360px;">
+              <!-- Header -->
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <div id="ptdSlotSwatch" style="width:28px;height:28px;border-radius:5px;border:1px solid rgba(255,255,255,.25);flex-shrink:0;"></div>
+                <div style="flex:1;min-width:0;">
+                  <div id="ptdSlotTitle" style="font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+                  <div id="ptdSlotHex" style="font-size:10px;color:var(--muted);font-family:monospace;"></div>
+                </div>
+                <!-- Mode toggle -->
+                <div style="display:flex;gap:3px;flex-shrink:0;">
+                  <button id="ptdModeRgb" class="ptd-mode-btn active" title="RGB sliders">⊞ RGB</button>
+                  <button id="ptdModeGrid" class="ptd-mode-btn" title="Color grid">▦ Grid</button>
+                </div>
+                <button id="ptdSlotPopupClose" style="background:none;border:none;color:var(--muted);font-size:16px;padding:0 2px;cursor:pointer;line-height:1;flex-shrink:0;">✕</button>
+              </div>
+              <!-- RGB sliders panel -->
+              <div id="ptdPanelRgb" style="display:grid;gap:7px;">
+                <label style="display:grid;gap:2px;font-size:11px;color:var(--muted);">
+                  R (0–7) <div style="display:flex;gap:6px;align-items:center;">
+                    <input type="range" id="ptdSlotR" min="0" max="7" step="1" style="flex:1;">
+                    <span id="ptdSlotRVal" style="min-width:12px;text-align:right;font-size:11px;color:var(--text);">0</span>
+                  </div>
+                </label>
+                <label style="display:grid;gap:2px;font-size:11px;color:var(--muted);">
+                  G (0–7) <div style="display:flex;gap:6px;align-items:center;">
+                    <input type="range" id="ptdSlotG" min="0" max="7" step="1" style="flex:1;">
+                    <span id="ptdSlotGVal" style="min-width:12px;text-align:right;font-size:11px;color:var(--text);">0</span>
+                  </div>
+                </label>
+                <label style="display:grid;gap:2px;font-size:11px;color:var(--muted);">
+                  B (0–7) <div style="display:flex;gap:6px;align-items:center;">
+                    <input type="range" id="ptdSlotB" min="0" max="7" step="1" style="flex:1;">
+                    <span id="ptdSlotBVal" style="min-width:12px;text-align:right;font-size:11px;color:var(--text);">0</span>
+                  </div>
+                </label>
+              </div>
+              <!-- Color grid panel -->
+              <div id="ptdPanelGrid" style="display:none;">
+                <div style="font-size:10px;color:var(--muted);margin-bottom:5px;">Click to select — current shown with white border</div>
+                <div id="ptdSlotColorGrid" style="display:grid;grid-template-columns:repeat(30,10px);gap:1px;"></div>
+              </div>
+              <!-- Footer buttons -->
+              <div style="display:flex;gap:6px;margin-top:10px;">
+                <button id="ptdSlotConfirm" class="primary btn-export" style="flex:1;padding:6px;font-size:12px;">✓ Apply</button>
+                <button id="ptdSlotClear" class="btn-del" style="flex:1;padding:6px;font-size:12px;">🗑 Clear</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: SCR Recolor -->
+          <div id="ptdScrRecolorTab" class="hidden">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+              <div class="ptd-section-title" style="margin:0;">SCR Recolor — ULA → Next</div>
+              <input id="ptdScrImportInput" class="hidden" type="file" accept=".scr,.bin,application/octet-stream">
+              <label class="button-like btn-import" for="ptdScrImportInput" style="padding:5px 10px;font-size:11px;min-height:unset;margin-left:auto;">📂 Load SCR</label>
+              <button id="ptdLoadDefaultUlaBtn" style="padding:5px 10px;font-size:11px;min-height:unset;">🎨 Load default ZX colors</button>
+            </div>
+            <div class="hint" style="font-size:11px;margin-bottom:8px;">Load a classic 48K/128K SCR file, or use "Load default ZX colors" to start remapping without an SCR. Each ULA color (0–15) will be mapped to a Next palette color.</div>
+            <div id="ptdUlaGrid" class="ptd-ula-grid" style="margin-bottom:8px;"></div>
+            <div id="ptdImportInfo" class="info-box hidden" style="font-size:11px;white-space:pre-wrap;line-height:1.4;margin-bottom:8px;"></div>
+            <div id="ptdRecolorWrap" class="hidden">
+              <div class="ptd-section-title" style="margin-bottom:6px;">Color mapping</div>
+              <div id="ptdRecolorTable" style="display:grid;gap:3px;grid-template-columns: repeat(2, 1fr);"></div>
+              <div id="ptdPickerWrap" style="display:none;margin-top:6px;padding:8px;background:#0d1016;border:1px solid var(--border);border-radius:10px;">
+                <div style="font-size:11px;color:var(--muted);margin-bottom:5px;">Pick Next color for <strong id="ptdPickerLabel"></strong></div>
+                <div id="ptdNextGrid" class="ptd-color-grid"></div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:8px;">
+                <button id="ptdApplyRecolorBtn" class="primary btn-export" style="flex:1;">✓ Apply Recolor</button>
+                <button id="ptdResetMappingBtn" style="flex:1;">↺ Reset mapping</button>
+              </div>
+              <div id="ptdRecolorStatus" class="info-box hidden" style="font-size:11px;margin-top:6px;"></div>
+            </div>
+            <div id="ptdNoScrHint" class="hint" style="font-size:12px;">Load an SCR file to start the recolor workflow.</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="renameLayerBackdrop" class="dialog-backdrop">
     <div class="dialog rename-dialog">
       <div class="dialog-header">
@@ -2609,8 +3046,395 @@
     </div>
   </div>
 
+  <div id="layerTransformBackdrop" class="dialog-backdrop">
+    <div class="dialog layer-transform-dialog">
+      <div class="dialog-header layer-transform-header">
+        <strong id="layerTransformTitle">Transform Layer</strong>
+        <div class="layer-transform-header-right">
+          <span id="layerTransformLayerBadge" class="badge">Layer</span>
+          <button id="layerTransformCloseBtn" type="button" class="layer-transform-close-btn">✕</button>
+        </div>
+      </div>
+      <div class="dialog-body">
+        <div class="layer-transform-layout">
+          <div class="layer-transform-controls">
+            <section class="layer-transform-section">
+              <div class="layer-transform-section-title">Rotation</div>
+              <div class="layer-transform-angle-row">
+                <input id="layerTransformAngle" class="layer-transform-number" type="number" min="-3600" max="3600" step="0.1" value="0">
+                <span class="layer-transform-unit">°</span>
+                <input id="layerTransformAngleRange" type="range" min="-180" max="180" step="0.1" value="0">
+              </div>
+              <div class="layer-transform-chip-row">
+                <button type="button" class="layer-transform-chip" data-transform-angle="0">0°</button>
+                <button type="button" class="layer-transform-chip" data-transform-angle="45">45°</button>
+                <button type="button" class="layer-transform-chip" data-transform-angle="90">90°</button>
+                <button type="button" class="layer-transform-chip" data-transform-angle="135">135°</button>
+                <button type="button" class="layer-transform-chip" data-transform-angle="180">180°</button>
+                <button type="button" class="layer-transform-chip" data-transform-angle="-90">-90°</button>
+                <button type="button" class="layer-transform-chip" data-transform-angle="-45">-45°</button>
+              </div>
+            </section>
+
+            <section class="layer-transform-section">
+              <div class="layer-transform-scale-head">
+                <div class="layer-transform-section-title">Scale</div>
+                <button id="layerTransformUniformBtn" type="button" class="layer-transform-lock-btn on">🔒 Lock X:Y</button>
+              </div>
+              <div class="layer-transform-scale-row">
+                <span class="layer-transform-axis">X</span>
+                <input id="layerTransformScaleXRange" type="range" min="0.05" max="4" step="0.01" value="1">
+                <input id="layerTransformScaleX" class="layer-transform-scale-number" type="number" min="0.05" max="32" step="0.05" value="1">
+                <span class="layer-transform-scale-suffix">×</span>
+              </div>
+              <div class="layer-transform-scale-row">
+                <span class="layer-transform-axis">Y</span>
+                <input id="layerTransformScaleYRange" type="range" min="0.05" max="4" step="0.01" value="1">
+                <input id="layerTransformScaleY" class="layer-transform-scale-number" type="number" min="0.05" max="32" step="0.05" value="1">
+                <span class="layer-transform-scale-suffix">×</span>
+              </div>
+              <div class="layer-transform-chip-row">
+                <button type="button" class="layer-transform-chip" data-transform-scale="0.25">¼×</button>
+                <button type="button" class="layer-transform-chip" data-transform-scale="0.5">½×</button>
+                <button type="button" class="layer-transform-chip" data-transform-scale="0.75">¾×</button>
+                <button type="button" class="layer-transform-chip" data-transform-scale="1">1×</button>
+                <button type="button" class="layer-transform-chip" data-transform-scale="1.5">1.5×</button>
+                <button type="button" class="layer-transform-chip" data-transform-scale="2">2×</button>
+                <button type="button" class="layer-transform-chip" data-transform-scale="3">3×</button>
+                <button type="button" class="layer-transform-chip" data-transform-scale="4">4×</button>
+              </div>
+            </section>
+
+            <section class="layer-transform-section">
+              <div class="layer-transform-section-title">Attribute behaviour (classic mode)</div>
+              <input id="layerTransformAttrsMode" type="hidden" value="preserve">
+              <button id="layerTransformAttrsPreserveBtn" type="button" class="layer-transform-option-card active" data-attrs-mode="preserve">
+                <span class="layer-transform-option-radio" aria-hidden="true"></span>
+                <span class="layer-transform-option-copy">
+                  <strong>Scale attrs with pixels</strong>
+                  <span>Attr cells are transformed together with the layer.</span>
+                </span>
+              </button>
+              <button id="layerTransformAttrsIgnoreBtn" type="button" class="layer-transform-option-card" data-attrs-mode="ignore">
+                <span class="layer-transform-option-radio" aria-hidden="true"></span>
+                <span class="layer-transform-option-copy">
+                  <strong>Discard attrs</strong>
+                  <span>Ignore attr data and keep only transformed pixels.</span>
+                </span>
+              </button>
+            </section>
+
+            <div class="info-box layer-transform-info-box" id="layerTransformInfo">Center: active pixel bounding box. Pixels outside canvas are preserved for later transforms of this layer.</div>
+            <div class="hint" id="layerTransformStatus">Ready.</div>
+
+            <div class="layer-transform-actions">
+              <button id="layerTransformApplyBtn" type="button" class="layer-transform-apply-btn">Apply</button>
+              <button id="layerTransformResetBtn" type="button">Reset</button>
+              <button id="layerTransformCancelBtn" type="button">Close</button>
+            </div>
+          </div>
+
+          <div class="layer-transform-preview-wrap">
+            <div class="layer-transform-preview-card">
+              <div class="layer-transform-preview-top">
+                <div>
+                  <div class="smallcaps">Live preview</div>
+                  <div class="hint">Preview is non-destructive until Apply.</div>
+                </div>
+                <div id="layerTransformPreviewMeta" class="badge">256×192</div>
+              </div>
+              <canvas id="layerTransformPreviewCanvas" class="layer-transform-preview-canvas" width="256" height="192"></canvas>
+              <div class="layer-transform-pan-hint">
+                <button id="layerTransformSnap8Btn" type="button" class="layer-transform-chip on" title="Posun se uchytí na násobky 8 pixelů (attr buňka ZX Spectra)">⊞ Snap 8×8</button>
+                <span id="layerTransformPanCoords" style="color:var(--muted)">Pan: 0, 0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Shared conversion dialog styles -->
   <style>
+    .layer-transform-dialog {
+      width: min(1180px, 96vw);
+      max-height: min(920px, 92vh);
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(180deg, #141922, #0d1118);
+    }
+    .layer-transform-dialog .dialog-body {
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .layer-transform-header {
+      align-items: center;
+    }
+    .layer-transform-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .layer-transform-close-btn {
+      min-width: 38px;
+      min-height: 38px;
+      padding: 0;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .layer-transform-layout {
+      display: grid;
+      grid-template-columns: 520px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+    .layer-transform-controls {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+    .layer-transform-section {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(19,24,33,.96), rgba(13,17,24,.98));
+    }
+    .layer-transform-section-title {
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text);
+      font-weight: 700;
+    }
+    .layer-transform-angle-row {
+      display: grid;
+      grid-template-columns: 96px auto minmax(0,1fr);
+      align-items: center;
+      gap: 10px;
+    }
+    .layer-transform-number,
+    .layer-transform-scale-number {
+      min-height: 54px;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      background: #080b11;
+      border-color: rgba(139,160,210,.35);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+    }
+    .layer-transform-scale-number {
+      min-height: 42px;
+      font-size: 16px;
+      width: 96px;
+    }
+    .layer-transform-unit,
+    .layer-transform-scale-suffix,
+    .layer-transform-axis {
+      color: var(--text);
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .layer-transform-axis {
+      width: 12px;
+      text-align: center;
+    }
+    .layer-transform-scale-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .layer-transform-scale-row {
+      display: grid;
+      grid-template-columns: 14px minmax(0,1fr) 96px auto;
+      align-items: center;
+      gap: 10px;
+    }
+    .layer-transform-lock-btn {
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #334116;
+      border-color: #78bf5b;
+      color: #dff6d2;
+      font-weight: 700;
+    }
+    .layer-transform-lock-btn.on {
+      background: linear-gradient(180deg, #40611f, #2f4f13);
+      border-color: #92dd72;
+      color: #f2ffe9;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.07);
+    }
+    .layer-transform-chip-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .layer-transform-chip {
+      min-height: 38px;
+      padding: 8px 14px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #1d2431, #141922);
+      border-color: #516582;
+      color: #eef3ff;
+      font-weight: 700;
+    }
+    .layer-transform-chip:hover {
+      background: linear-gradient(180deg, #253044, #1a2130);
+    }
+    .layer-transform-option-card {
+      display: grid;
+      grid-template-columns: 20px minmax(0,1fr);
+      gap: 12px;
+      align-items: center;
+      text-align: left;
+      padding: 14px 16px;
+      border: 1px solid rgba(170,185,220,.35);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
+    }
+    .layer-transform-option-card.active {
+      border-color: #7dc0ff;
+      box-shadow: inset 0 0 0 1px rgba(125,192,255,.18);
+      background: linear-gradient(180deg, rgba(51,84,140,.22), rgba(25,34,52,.22));
+    }
+    .layer-transform-option-radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.75);
+      position: relative;
+      box-sizing: border-box;
+    }
+    .layer-transform-option-card.active .layer-transform-option-radio::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: #69d0ff;
+    }
+    .layer-transform-option-copy {
+      display: grid;
+      gap: 4px;
+    }
+    .layer-transform-option-copy strong {
+      color: var(--text);
+      font-size: 16px;
+    }
+    .layer-transform-option-copy span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .layer-transform-info-box {
+      border-radius: 16px;
+      background: rgba(10,13,18,.9);
+    }
+    .layer-transform-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+    .layer-transform-apply-btn {
+      background: linear-gradient(180deg, #587c2a, #41621a);
+      border-color: #9fd768;
+      color: #f2ffe9;
+      font-weight: 700;
+    }
+    .layer-transform-apply-btn:hover {
+      background: linear-gradient(180deg, #678f31, #4b6f1e);
+    }
+    .layer-transform-preview-wrap {
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+      align-content: start;
+    }
+    .layer-transform-preview-card {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(18,23,31,.98), rgba(10,12,18,.98));
+    }
+    .layer-transform-preview-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .layer-transform-preview-canvas {
+      width: 100%;
+      max-height: min(72vh, 720px);
+      display: block;
+      background-color: #050608;
+      background-image:
+        linear-gradient(45deg, rgba(255,255,255,.05) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05)),
+        linear-gradient(45deg, rgba(255,255,255,.05) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05));
+      background-position: 0 0, 8px 8px;
+      background-size: 16px 16px;
+      border: 1px solid rgba(123,162,255,.25);
+      border-radius: 16px;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+      cursor: grab;
+      touch-action: none;
+    }
+    .layer-transform-preview-canvas.panning {
+      cursor: grabbing;
+    }
+    .layer-transform-pan-hint {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+    #layerTransformSnap8Btn {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      opacity: .55;
+      transition: opacity .15s, background .15s;
+    }
+    #layerTransformSnap8Btn.on {
+      opacity: 1;
+    }
+    @media (max-width: 980px) {
+      .layer-transform-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 720px) {
+      .layer-transform-angle-row {
+        grid-template-columns: 80px auto minmax(0,1fr);
+      }
+      .layer-transform-scale-row {
+        grid-template-columns: 14px minmax(0,1fr) 82px auto;
+      }
+      .layer-transform-scale-number {
+        width: 82px;
+      }
+      .layer-transform-actions {
+        justify-content: stretch;
+      }
+      .layer-transform-actions > button {
+        flex: 1 1 140px;
+      }
+    }
+
     .conv-dialog {
       max-width: 960px;
       width: min(960px, 96vw);
@@ -3493,7 +4317,7 @@
         spriteAsmPreviewMode: 'all',
         layers: [], activeLayerId: null, tool: 'pencil', screenMode: 'classic', nextInkColor: 255, nextPaperColor: 0, nextBrightness: 0, nextContrast: 0, nextSaturation: 0, ink: 7, paper: 0, bright: false, flash: false, zoom: 3, showGrid: false, showAttrGrid: false, showAttrs: true, gridManualOff: false, attrGridManualOff: false,
         brushSize: 1, spraySize: 4, sprayDensity: 20, attributesOnly: false, transparentPaper: false, transparentPaperMode: 'smart', selection: null, clipboard: null, textValue: 'ZX', textFont: 'builtin5x7', textBold: false, textItalic: false, textAngle: 0, textScale: 1,
-        textObjects: [], activeTextId: null, textEditingId: null, status: 'Ready.', importOverlay: null, ditherMode: 'solid', ditherAmount: 160, history: [], future: [], drag: null, hoverPixel: null, hoverLayerId: null, renameLayerId: null, renameSpriteFrameIndex: null, moveSnap8: false,
+        textObjects: [], activeTextId: null, textEditingId: null, status: 'Ready.', importOverlay: null, ditherMode: 'solid', ditherAmount: 160, history: [], future: [], drag: null, hoverPixel: null, hoverLayerId: null, renameLayerId: null, renameSpriteFrameIndex: null, transformLayerId: null, layerTransformSession: null, moveSnap8: false,
         floatingSelection: null,  // { pixels, attrs, attrsW, attrsH, x, y, w, h }
         spriteHistory: [], spriteFuture: [],
         fontHistory: [], fontFuture: [],
@@ -3535,8 +4359,7 @@
       const screenTextEditor = el('screenTextEditor');
       const spriteCanvas = el('spriteCanvas'), spriteCtx = spriteCanvas.getContext('2d');
       const maskEditCanvas = el('maskEditCanvas'), maskEditCtx = maskEditCanvas.getContext('2d');
-      const spritePreviewCanvas = el('spritePreviewCanvas'), spritePreviewCtx = spritePreviewCanvas.getContext('2d');
-      const spriteMaskCanvas = el('spriteMaskCanvas'), spriteMaskCtx = spriteMaskCanvas.getContext('2d');
+      const spriteMaskCompositeCanvas = el('spriteMaskCompositeCanvas'), spriteMaskCompositeCtx = spriteMaskCompositeCanvas.getContext('2d');
       const spriteAnimCanvas = el('spriteAnimCanvas'), spriteAnimCtx = spriteAnimCanvas.getContext('2d');
       const fontCanvas = el('fontCanvas'), fontCtx = fontCanvas.getContext('2d');
       const fontMaskEditCanvas = el('fontMaskEditCanvas'), fontMaskEditCtx = fontMaskEditCanvas.getContext('2d');
@@ -3647,15 +4470,38 @@
         const paperLabel = el('hoverPaperLabel');
         const layerLabel = el('hoverLayerLabel');
         if (!inkSwatch || !paperSwatch || !inkLabel || !paperLabel || !layerLabel) return;
-        const attr = getHoveredAttr();
         const hoveredLayer = getHoveredLayer();
         state.hoverLayerId = hoveredLayer ? hoveredLayer.id : null;
+        layerLabel.textContent = hoveredLayer ? hoveredLayer.name : '-';
+
+        if (isNextScreenMode()) {
+          // V Next modu zobrazíme barvu pixelu pod kurzorem (Color A slot)
+          if (!state.hoverPixel) {
+            inkSwatch.style.background = '#000';
+            paperSwatch.style.background = '#000';
+            inkLabel.textContent = '-';
+            paperLabel.textContent = '-';
+            const conflictBox = el('hoverAttrConflict');
+            if (conflictBox) conflictBox.style.display = 'none';
+            return;
+          }
+          const ci = getVisibleColorIndexAt(state.hoverPixel.x, state.hoverPixel.y);
+          const nc = NEXT_COLORS[ci];
+          inkSwatch.style.background = nc ? `rgb(${nc.rgb[0]},${nc.rgb[1]},${nc.rgb[2]})` : '#000';
+          paperSwatch.style.background = '#000';
+          inkLabel.textContent = nc ? `#${ci} ${nc.name}` : '-';
+          paperLabel.textContent = '-';
+          const conflictBox = el('hoverAttrConflict');
+          if (conflictBox) conflictBox.style.display = 'none';
+          return;
+        }
+
+        const attr = getHoveredAttr();
         if (!attr) {
           inkSwatch.style.background = '#000';
           paperSwatch.style.background = '#000';
           inkLabel.textContent = '-';
           paperLabel.textContent = '-';
-          layerLabel.textContent = '-';
           return;
         }
         const brightOffset = attr.bright ? 8 : 0;
@@ -3665,7 +4511,22 @@
         paperSwatch.style.background = rgbToCss(paperColor.rgb);
         inkLabel.textContent = inkColor.name;
         paperLabel.textContent = paperColor.name;
-        layerLabel.textContent = hoveredLayer ? hoveredLayer.name : '-';
+        // --- 48K attribute conflict warning ---
+        const conflictBox   = el('hoverAttrConflict');
+        const conflictLabel = el('hoverAttrConflictLabel');
+        if (conflictBox && conflictLabel) {
+          const diffs = [];
+          if (attr.ink   !== state.ink)         diffs.push('INK');
+          if (attr.paper !== state.paper)       diffs.push('PAPER');
+          if (!!attr.bright !== !!state.bright) diffs.push('BRIGHT');
+          if (!!attr.flash  !== !!state.flash)  diffs.push('FLASH');
+          if (diffs.length) {
+            conflictLabel.textContent = 'Overwrites: ' + diffs.join(', ');
+            conflictBox.style.display = 'flex';
+          } else {
+            conflictBox.style.display = 'none';
+          }
+        }
       }
 
       function currentSpriteAttrByte() { return makeAttrByte(state.ink, state.paper, state.bright ? 1 : 0, 0); }
@@ -3928,8 +4789,8 @@
         const s = String(text || '').trim().toLowerCase().replace(/[^a-z0-9_]+/g, '_').replace(/^_+|_+$/g, '');
         return s || fallback;
       }
-      function createLayer(name, isBase = false) { return { id: makeId(), name, visible: true, pixels: new Uint8Array(ZX_W * ZX_H), colors: new Uint8Array(ZX_W * ZX_H).fill(currentNextInk()), attrs: new Uint8Array(ATTR_W * ATTR_H).fill(isBase ? makeAttrByte(7, 0, 0, 0) : TRANSPARENT_ATTR), paperTransparent: new Uint8Array(ATTR_W * ATTR_H), explicitPaper: new Uint8Array(ZX_W * ZX_H), autoOverlayFor: null, autoOverlayKind: null }; }
-      function cloneLayer(l) { return { id: l.id, name: l.name, visible: l.visible, pixels: new Uint8Array(l.pixels), colors: new Uint8Array(l.colors || new Uint8Array(ZX_W * ZX_H)), attrs: new Uint8Array(l.attrs), paperTransparent: new Uint8Array(l.paperTransparent || new Uint8Array(ATTR_W * ATTR_H)), explicitPaper: new Uint8Array(l.explicitPaper || new Uint8Array(ZX_W * ZX_H)), autoOverlayFor: l.autoOverlayFor || null, autoOverlayKind: l.autoOverlayKind || null }; }
+      function createLayer(name, isBase = false) { return { id: makeId(), name, visible: true, pixels: new Uint8Array(ZX_W * ZX_H), colors: new Uint8Array(ZX_W * ZX_H).fill(currentNextInk()), attrs: new Uint8Array(ATTR_W * ATTR_H).fill(isBase ? makeAttrByte(7, 0, 0, 0) : TRANSPARENT_ATTR), paperTransparent: new Uint8Array(ATTR_W * ATTR_H), explicitPaper: new Uint8Array(ZX_W * ZX_H), autoOverlayFor: null, autoOverlayKind: null, transformBuffer: null }; }
+      function cloneLayer(l) { return { id: l.id, name: l.name, visible: l.visible, pixels: new Uint8Array(l.pixels), colors: new Uint8Array(l.colors || new Uint8Array(ZX_W * ZX_H)), attrs: new Uint8Array(l.attrs), paperTransparent: new Uint8Array(l.paperTransparent || new Uint8Array(ATTR_W * ATTR_H)), explicitPaper: new Uint8Array(l.explicitPaper || new Uint8Array(ZX_W * ZX_H)), autoOverlayFor: l.autoOverlayFor || null, autoOverlayKind: l.autoOverlayKind || null, transformBuffer: cloneLayerTransformBuffer(l.transformBuffer) }; }
       function cloneLayers(ls) { return ls.map(cloneLayer); }
       function activeLayerIndex() { return state.layers.findIndex(l => l.id === state.activeLayerId); }
       function activeLayer() { return state.layers[activeLayerIndex()] || state.layers[0]; }
@@ -3937,8 +4798,81 @@
       function dialog(title, html) { el('dialogTitle').textContent = title; el('dialogBody').innerHTML = html; el('dialogBackdrop').classList.add('open'); }
       function closeDialog() { el('dialogBackdrop').classList.remove('open'); }
 
+      const CHANGELOG_PAGE_SIZE = 8;
+      const changelogItems = [
+        { date: '2026-04-15', text: "Palette tools in the Next section. Option to redefine the palette for Next and classic ZX Spectrum images. A new \"Transform Layer\" tool has been added, along with numerous bug fixes and many minor improvements. Updated Sprite Editor (48k/128k) – added a preview with a mask." },
+        { date: '2026-04-13', text: "Option to use the Fill tool on a selection." },
+        { date: '2026-04-12', text: 'First public release.' },
+      ];
+      let changelogVisibleCount = CHANGELOG_PAGE_SIZE;
+
+      function escapeHtml(value) {
+        return String(value ?? '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function formatNewsDate(value) {
+        const date = new Date(`${value}T00:00:00`);
+        if (Number.isNaN(date.getTime())) return value;
+        return date.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' });
+      }
+
+      function buildNewsItemsHtml() {
+        if (!changelogItems.length) {
+          return '<div class="news-empty">No news items available yet.</div>';
+        }
+        return changelogItems.slice(0, changelogVisibleCount).map(item => `
+          <article class="news-item">
+            <div class="news-date">${escapeHtml(formatNewsDate(item.date))}</div>
+            <div class="news-text">${escapeHtml(item.text)}</div>
+          </article>
+        `).join('');
+      }
+
+      function updateNewsDialogContent() {
+        const list = el('newsList');
+        if (!list) return;
+        list.innerHTML = buildNewsItemsHtml();
+        const moreBtn = el('newsLoadMoreBtn');
+        if (!moreBtn) return;
+        const hasMore = changelogVisibleCount < changelogItems.length;
+        moreBtn.classList.toggle('hidden', !hasMore);
+        moreBtn.disabled = !hasMore;
+      }
+
+      function openNewsDialog() {
+        changelogVisibleCount = Math.min(CHANGELOG_PAGE_SIZE, changelogItems.length || CHANGELOG_PAGE_SIZE);
+        dialog("What's new", `
+          <div class="news-dialog">
+            <div class="news-toolbar">
+              <div class="news-summary">
+                <div class="news-kicker">Update history</div>
+                <h3 class="news-title">Latest changes in ZX PixelPaste</h3>
+                <p class="news-subtitle">Entries are stored in a simple <code>date - description</code> structure and shown incrementally for longer lists.</p>
+              </div>
+              <div class="news-count-badge">${changelogItems.length} item${changelogItems.length === 1 ? '' : 's'}</div>
+            </div>
+            <div id="newsList" class="news-list">${buildNewsItemsHtml()}</div>
+            <div class="news-actions">
+              <button id="newsLoadMoreBtn" class="news-more-btn btn-export ${changelogItems.length <= changelogVisibleCount ? 'hidden' : ''}">Load more</button>
+            </div>
+          </div>
+        `);
+        const moreBtn = el('newsLoadMoreBtn');
+        if (moreBtn) {
+          moreBtn.addEventListener('click', () => {
+            changelogVisibleCount = Math.min(changelogVisibleCount + CHANGELOG_PAGE_SIZE, changelogItems.length);
+            updateNewsDialogContent();
+          });
+        }
+      }
+
       function openAboutDialog() {
-        dialog('About application', `
+        dialog("About application", `
           <div class="about-dialog">
             <div class="about-hero">
               <div class="about-kicker">ZX graphics studio</div>
@@ -3959,7 +4893,7 @@
                 <div class="about-card-value"><a class="about-contact" href="mailto:bursa@kchpbt.cz" ><span style="color: #ccc;">bursa@kchpbt.cz</span></a></div>
               </div>
             </div>
-            <div class="about-footer-note">If you encounter any bugs, please report them to the email address provided. The app is still under development...</div>
+            <div class="about-footer-note">If you encounter any bugs, please report them to the email address provided. The app is still under development... Latest changes are available in the What&#39;s new dialog.</div>
           </div>
         `);
       }
@@ -5890,6 +6824,378 @@
       function iconSvg(paths, filled = false) { return `<svg viewBox="0 0 24 24" aria-hidden="true" class="${filled ? 'fill-icon' : ''}">${paths}</svg>`; }
 
 
+      function createLayerTransformBuffer(w, h, offsetX, offsetY) {
+        const safeW = Math.max(1, w | 0), safeH = Math.max(1, h | 0);
+        return {
+          w: safeW, h: safeH, offsetX: Number(offsetX) || 0, offsetY: Number(offsetY) || 0,
+          pixels: new Uint8Array(safeW * safeH),
+          colors: new Uint8Array(safeW * safeH).fill(currentNextInk()),
+          attrsW: Math.max(1, Math.ceil(safeW / 8)),
+          attrsH: Math.max(1, Math.ceil(safeH / 8)),
+          attrs: new Uint8Array(Math.max(1, Math.ceil(safeW / 8)) * Math.max(1, Math.ceil(safeH / 8))).fill(TRANSPARENT_ATTR),
+          paperTransparent: new Uint8Array(Math.max(1, Math.ceil(safeW / 8)) * Math.max(1, Math.ceil(safeH / 8))),
+          explicitPaper: new Uint8Array(safeW * safeH)
+        };
+      }
+
+      function cloneLayerTransformBuffer(buf) {
+        if (!buf) return null;
+        return {
+          w: buf.w | 0, h: buf.h | 0, offsetX: Number(buf.offsetX) || 0, offsetY: Number(buf.offsetY) || 0,
+          pixels: new Uint8Array(buf.pixels || []),
+          colors: new Uint8Array(buf.colors || new Uint8Array((buf.w | 0) * (buf.h | 0))),
+          attrsW: Math.max(1, buf.attrsW | 0), attrsH: Math.max(1, buf.attrsH | 0),
+          attrs: new Uint8Array(buf.attrs || []),
+          paperTransparent: new Uint8Array(buf.paperTransparent || new Uint8Array(Math.max(1, (buf.attrsW | 0) * (buf.attrsH | 0)))),
+          explicitPaper: new Uint8Array(buf.explicitPaper || new Uint8Array((buf.w | 0) * (buf.h | 0)))
+        };
+      }
+
+      function getLayerTransformSource(layer) {
+        if (!layer) return null;
+        // Vždy bere aktuální layer.pixels — transformBuffer může být zastaralý
+        // (vrstva mohla být upravena po poslední transformaci)
+        const buf = createLayerTransformBuffer(ZX_W, ZX_H, 0, 0);
+        buf.pixels.set(layer.pixels || new Uint8Array(ZX_W * ZX_H));
+        if (layer.colors) buf.colors.set(layer.colors); else buf.colors.fill(currentNextInk());
+        if (layer.attrs) buf.attrs.set(layer.attrs);
+        if (layer.paperTransparent) buf.paperTransparent.set(layer.paperTransparent);
+        if (layer.explicitPaper) buf.explicitPaper.set(layer.explicitPaper);
+        return buf;
+      }
+
+      function getTransformSourceBounds(buf) {
+        if (!buf || !buf.pixels) return { x: 0, y: 0, w: 1, h: 1 };
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        for (let y = 0; y < buf.h; y++) {
+          const row = y * buf.w;
+          for (let x = 0; x < buf.w; x++) {
+            if (!buf.pixels[row + x]) continue;
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x > maxX) maxX = x;
+            if (y > maxY) maxY = y;
+          }
+        }
+        if (!Number.isFinite(minX)) return { x: 0, y: 0, w: buf.w || 1, h: buf.h || 1 };
+        return { x: minX, y: minY, w: (maxX - minX) + 1, h: (maxY - minY) + 1 };
+      }
+
+      function buildLayerTransformPreviewImage(layer, layerBuffer) {
+        const img = _tmpCtx.createImageData(ZX_W, ZX_H);
+        const u32 = new Uint32Array(img.data.buffer);
+        const nextMode = isNextScreenMode();
+        const lut = nextMode ? _nextLUT : _zxLUT;
+        const bg = nextMode ? lut[currentNextPaper()] : 0xFF000000;
+        u32.fill(bg >>> 0);
+        if (nextMode) {
+          const colors = layerBuffer.colors || new Uint8Array(layerBuffer.w * layerBuffer.h).fill(currentNextInk());
+          for (let y = 0; y < layerBuffer.h; y++) {
+            for (let x = 0; x < layerBuffer.w; x++) {
+              const srcIdx = y * layerBuffer.w + x;
+              if (!layerBuffer.pixels[srcIdx]) continue;
+              const wx = Math.round((layerBuffer.offsetX || 0) + x);
+              const wy = Math.round((layerBuffer.offsetY || 0) + y);
+              if (wx < 0 || wy < 0 || wx >= ZX_W || wy >= ZX_H) continue;
+              u32[getIdx(wx, wy)] = lut[colors[srcIdx] ?? currentNextInk()];
+            }
+          }
+          return img;
+        }
+        const attrs = layer.attrs || new Uint8Array(ATTR_W * ATTR_H).fill(TRANSPARENT_ATTR);
+        const paperTransparent = layer.paperTransparent || new Uint8Array(ATTR_W * ATTR_H);
+        const explicitPaper = layer.explicitPaper || new Uint8Array(ZX_W * ZX_H);
+        for (let y = 0; y < layerBuffer.h; y++) {
+          for (let x = 0; x < layerBuffer.w; x++) {
+            const srcIdx = y * layerBuffer.w + x;
+            const wx = Math.round((layerBuffer.offsetX || 0) + x);
+            const wy = Math.round((layerBuffer.offsetY || 0) + y);
+            if (wx < 0 || wy < 0 || wx >= ZX_W || wy >= ZX_H) continue;
+            const attrIdx = getAttrIdx((wx / 8) | 0, (wy / 8) | 0);
+            const av = attrs[attrIdx] === TRANSPARENT_ATTR ? makeAttrByte(7, 0, 0, 0) : attrs[attrIdx];
+            const bright = (av >> 6) & 1;
+            const bit = layerBuffer.pixels[srcIdx] ? 1 : 0;
+            if (!bit && paperTransparent[attrIdx] && !explicitPaper[getIdx(wx, wy)]) continue;
+            const colorIndex = bit ? ((av & 7) + (bright << 3)) : ((((av >> 3) & 7) + (bright << 3)));
+            u32[getIdx(wx, wy)] = lut[colorIndex];
+          }
+        }
+        return img;
+      }
+
+      function transformLayerBuffer(source, opts = {}) {
+        if (!source) return null;
+        const angleDeg = Number(opts.angle) || 0;
+        const scaleX = Math.max(0.05, Math.abs(Number(opts.scaleX) || 1));
+        const scaleY = Math.max(0.05, Math.abs(Number(opts.scaleY) || 1));
+        const attrsMode = opts.attrsMode === 'ignore' ? 'ignore' : 'preserve';
+        const bounds = getTransformSourceBounds(source);
+        const pivotWorldX = (source.offsetX || 0) + bounds.x + (bounds.w - 1) / 2;
+        const pivotWorldY = (source.offsetY || 0) + bounds.y + (bounds.h - 1) / 2;
+        const rad = angleDeg * Math.PI / 180;
+        const cos = Math.cos(rad), sin = Math.sin(rad);
+        const transformPoint = (wx, wy) => {
+          const dx = wx - pivotWorldX;
+          const dy = wy - pivotWorldY;
+          return {
+            x: pivotWorldX + (dx * scaleX * cos - dy * scaleY * sin),
+            y: pivotWorldY + (dx * scaleX * sin + dy * scaleY * cos)
+          };
+        };
+        const corners = [
+          transformPoint((source.offsetX || 0), (source.offsetY || 0)),
+          transformPoint((source.offsetX || 0) + source.w - 1, (source.offsetY || 0)),
+          transformPoint((source.offsetX || 0), (source.offsetY || 0) + source.h - 1),
+          transformPoint((source.offsetX || 0) + source.w - 1, (source.offsetY || 0) + source.h - 1)
+        ];
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        for (const p of corners) {
+          if (p.x < minX) minX = p.x;
+          if (p.y < minY) minY = p.y;
+          if (p.x > maxX) maxX = p.x;
+          if (p.y > maxY) maxY = p.y;
+        }
+        const outOffsetX = Math.floor(minX);
+        const outOffsetY = Math.floor(minY);
+        const outW = Math.max(1, Math.ceil(maxX) - outOffsetX + 1);
+        const outH = Math.max(1, Math.ceil(maxY) - outOffsetY + 1);
+        const out = createLayerTransformBuffer(outW, outH, outOffsetX, outOffsetY);
+        const invCos = Math.cos(-rad), invSin = Math.sin(-rad);
+        for (let y = 0; y < outH; y++) {
+          for (let x = 0; x < outW; x++) {
+            const worldX = outOffsetX + x;
+            const worldY = outOffsetY + y;
+            const dx = worldX - pivotWorldX;
+            const dy = worldY - pivotWorldY;
+            const unrotX = dx * invCos - dy * invSin;
+            const unrotY = dx * invSin + dy * invCos;
+            const srcWorldX = pivotWorldX + unrotX / scaleX;
+            const srcWorldY = pivotWorldY + unrotY / scaleY;
+            const srcLocalX = Math.round(srcWorldX - (source.offsetX || 0));
+            const srcLocalY = Math.round(srcWorldY - (source.offsetY || 0));
+            if (srcLocalX < 0 || srcLocalY < 0 || srcLocalX >= source.w || srcLocalY >= source.h) continue;
+            const srcIdx = srcLocalY * source.w + srcLocalX;
+            const dstIdx = y * outW + x;
+            out.pixels[dstIdx] = source.pixels[srcIdx] ? 1 : 0;
+            out.colors[dstIdx] = source.colors ? source.colors[srcIdx] : currentNextInk();
+            out.explicitPaper[dstIdx] = source.explicitPaper ? source.explicitPaper[srcIdx] : 0;
+          }
+        }
+        if (attrsMode === 'preserve') {
+          for (let ay = 0; ay < out.attrsH; ay++) {
+            for (let ax = 0; ax < out.attrsW; ax++) {
+              const worldCX = outOffsetX + ax * 8 + 3.5;
+              const worldCY = outOffsetY + ay * 8 + 3.5;
+              const dx = worldCX - pivotWorldX;
+              const dy = worldCY - pivotWorldY;
+              const unrotX = dx * invCos - dy * invSin;
+              const unrotY = dx * invSin + dy * invCos;
+              const srcWorldX = pivotWorldX + unrotX / scaleX;
+              const srcWorldY = pivotWorldY + unrotY / scaleY;
+              const srcAx = Math.floor((srcWorldX - (source.offsetX || 0)) / 8);
+              const srcAy = Math.floor((srcWorldY - (source.offsetY || 0)) / 8);
+              const dstAttrIdx = ay * out.attrsW + ax;
+              if (srcAx < 0 || srcAy < 0 || srcAx >= source.attrsW || srcAy >= source.attrsH) {
+                out.attrs[dstAttrIdx] = TRANSPARENT_ATTR;
+                continue;
+              }
+              const srcAttrIdx = srcAy * source.attrsW + srcAx;
+              out.attrs[dstAttrIdx] = source.attrs ? source.attrs[srcAttrIdx] : TRANSPARENT_ATTR;
+              out.paperTransparent[dstAttrIdx] = source.paperTransparent ? source.paperTransparent[srcAttrIdx] : 0;
+            }
+          }
+        }
+        return { buffer: out, bounds, pivotWorldX, pivotWorldY };
+      }
+
+      function applyTransformedBufferToLayer(layer, transformed, attrsMode = 'preserve') {
+        if (!layer || !transformed || !transformed.buffer) return;
+        const out = transformed.buffer;
+        layer.pixels = new Uint8Array(ZX_W * ZX_H);
+        layer.colors = new Uint8Array(ZX_W * ZX_H).fill(currentNextInk());
+        layer.explicitPaper = new Uint8Array(ZX_W * ZX_H);
+        for (let y = 0; y < out.h; y++) {
+          for (let x = 0; x < out.w; x++) {
+            const wx = Math.round((out.offsetX || 0) + x);
+            const wy = Math.round((out.offsetY || 0) + y);
+            if (wx < 0 || wy < 0 || wx >= ZX_W || wy >= ZX_H) continue;
+            const srcIdx = y * out.w + x;
+            const dstIdx = getIdx(wx, wy);
+            layer.pixels[dstIdx] = out.pixels[srcIdx] ? 1 : 0;
+            layer.colors[dstIdx] = out.colors[srcIdx] ?? currentNextInk();
+            layer.explicitPaper[dstIdx] = out.explicitPaper[srcIdx] ? 1 : 0;
+          }
+        }
+        if (attrsMode === 'preserve') {
+          layer.attrs = new Uint8Array(ATTR_W * ATTR_H).fill(TRANSPARENT_ATTR);
+          layer.paperTransparent = new Uint8Array(ATTR_W * ATTR_H);
+          for (let ay = 0; ay < out.attrsH; ay++) {
+            for (let ax = 0; ax < out.attrsW; ax++) {
+              const wx = Math.floor((out.offsetX || 0) / 8) + ax;
+              const wy = Math.floor((out.offsetY || 0) / 8) + ay;
+              if (wx < 0 || wy < 0 || wx >= ATTR_W || wy >= ATTR_H) continue;
+              const srcAttrIdx = ay * out.attrsW + ax;
+              const dstAttrIdx = getAttrIdx(wx, wy);
+              layer.attrs[dstAttrIdx] = out.attrs[srcAttrIdx];
+              layer.paperTransparent[dstAttrIdx] = out.paperTransparent[srcAttrIdx] ? 1 : 0;
+            }
+          }
+        }
+        layer.transformBuffer = cloneLayerTransformBuffer(out);
+      }
+
+      function clampLayerTransformValue(value, min, max, fallback) {
+        const num = Number(value);
+        if (!Number.isFinite(num)) return fallback;
+        return Math.min(max, Math.max(min, num));
+      }
+
+      function syncLayerTransformControls(sourceId) {
+        const angleInput = el('layerTransformAngle');
+        const angleRange = el('layerTransformAngleRange');
+        const scaleXInput = el('layerTransformScaleX');
+        const scaleYInput = el('layerTransformScaleY');
+        const scaleXRange = el('layerTransformScaleXRange');
+        const scaleYRange = el('layerTransformScaleYRange');
+        const session = state.layerTransformSession;
+        if (!angleInput || !angleRange || !scaleXInput || !scaleYInput || !scaleXRange || !scaleYRange) return;
+        let angle = clampLayerTransformValue(angleInput.value, -3600, 3600, 0);
+        let scaleX = clampLayerTransformValue(scaleXInput.value, 0.05, 32, 1);
+        let scaleY = clampLayerTransformValue(scaleYInput.value, 0.05, 32, 1);
+        if (sourceId === 'layerTransformAngleRange') angle = clampLayerTransformValue(angleRange.value, -180, 180, 0);
+        if (sourceId === 'layerTransformScaleXRange') scaleX = clampLayerTransformValue(scaleXRange.value, 0.05, 4, 1);
+        if (sourceId === 'layerTransformScaleYRange') scaleY = clampLayerTransformValue(scaleYRange.value, 0.05, 4, 1);
+        if (session && session.uniform && ['layerTransformScaleX','layerTransformScaleY','layerTransformScaleXRange','layerTransformScaleYRange'].includes(sourceId)) {
+          if (sourceId === 'layerTransformScaleY' || sourceId === 'layerTransformScaleYRange') scaleX = scaleY;
+          else scaleY = scaleX;
+        }
+        angleInput.value = String(Math.round(angle * 10) / 10);
+        angleRange.value = String(Math.min(180, Math.max(-180, angle)));
+        scaleXInput.value = String(Math.round(scaleX * 100) / 100);
+        scaleYInput.value = String(Math.round(scaleY * 100) / 100);
+        scaleXRange.value = String(Math.min(4, Math.max(0.05, scaleX)));
+        scaleYRange.value = String(Math.min(4, Math.max(0.05, scaleY)));
+      }
+
+      function setLayerTransformAttrsMode(mode) {
+        const normalized = mode === 'ignore' ? 'ignore' : 'preserve';
+        el('layerTransformAttrsMode').value = normalized;
+        el('layerTransformAttrsPreserveBtn').classList.toggle('active', normalized === 'preserve');
+        el('layerTransformAttrsIgnoreBtn').classList.toggle('active', normalized === 'ignore');
+      }
+
+      function updateLayerTransformPreview() {
+        const session = state.layerTransformSession;
+        const layer = state.layers.find(l => l.id === state.transformLayerId);
+        const statusEl = el('layerTransformStatus');
+        if (!session || !layer) return;
+        syncLayerTransformControls();
+        const angle = Number(el('layerTransformAngle').value);
+        const scaleX = Number(el('layerTransformScaleX').value);
+        const scaleY = Number(el('layerTransformScaleY').value);
+        const attrsMode = el('layerTransformAttrsMode').value === 'ignore' ? 'ignore' : 'preserve';
+        // Build a panned copy of source (only offsetX/Y are shifted, pixels unchanged)
+        const panX = session.panX || 0;
+        const panY = session.panY || 0;
+        // Vždy bere aktuální stav vrstvy — opravuje bug se zastaralým náhledem
+        const freshSource = getLayerTransformSource(layer);
+        const pannedFresh = panX === 0 && panY === 0 ? freshSource : Object.assign({}, freshSource, {
+          offsetX: (freshSource.offsetX || 0) + panX,
+          offsetY: (freshSource.offsetY || 0) + panY
+        });
+        const result = transformLayerBuffer(pannedFresh, { angle, scaleX, scaleY, attrsMode });
+        session.preview = result;
+        session.pannedSource = panX === 0 && panY === 0 ? null : pannedFresh;
+        // Dočasně aplikovat transform na vrstvu, složit VŠECHNY vrstvy, obnovit
+        const prevTransformBuffer = layer.transformBuffer;
+        const prevPixels = layer.pixels, prevColors = layer.colors, prevAttrs = layer.attrs, prevPT = layer.paperTransparent, prevEP = layer.explicitPaper;
+        applyTransformedBufferToLayer(layer, result, attrsMode);
+        const merged = mergeVisibleLayers();
+        layer.transformBuffer = prevTransformBuffer;
+        layer.pixels = prevPixels; layer.colors = prevColors; layer.attrs = prevAttrs; layer.paperTransparent = prevPT; layer.explicitPaper = prevEP;
+        // Sestavit ImageData stejně jako renderScreenCanvas
+        const imgData = _tmpCtx.createImageData(ZX_W, ZX_H);
+        const u32 = new Uint32Array(imgData.data.buffer);
+        const nextMode = isNextScreenMode();
+        const lut = nextMode ? _nextLUT : _zxLUT;
+        if (nextMode) {
+          const paperIdx = currentNextPaper();
+          for (let i = 0; i < ZX_W * ZX_H; i++) {
+            u32[i] = merged.pixels[i] ? lut[merged.colors ? merged.colors[i] : currentNextInk()] : lut[paperIdx];
+          }
+        } else {
+          const mpx = merged.pixels, mat = merged.attrs;
+          for (let y = 0; y < ZX_H; y++) {
+            const rowBase = y * ZX_W, attrRow = (y >> 3) * ATTR_W;
+            for (let x = 0; x < ZX_W; x++) {
+              const av = mat[attrRow + (x >> 3)];
+              const bright = (av >> 6) & 1;
+              u32[rowBase + x] = mpx[rowBase + x] ? lut[(av & 7) + (bright << 3)] : lut[((av >> 3) & 7) + (bright << 3)];
+            }
+          }
+        }
+        _tmpCtx.putImageData(imgData, 0, 0);
+        const previewCanvas = el('layerTransformPreviewCanvas');
+        const pctx = previewCanvas.getContext('2d');
+        pctx.imageSmoothingEnabled = false;
+        pctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+        pctx.drawImage(_tmpCanvas, 0, 0, previewCanvas.width, previewCanvas.height);
+        const previewMeta = el('layerTransformPreviewMeta');
+        if (previewMeta) previewMeta.textContent = `${result.buffer.w}×${result.buffer.h} · ${angle}° · ${scaleX.toFixed(2)}×/${scaleY.toFixed(2)}×`;
+        if (statusEl) statusEl.textContent = `Preview buffer ${result.buffer.w}×${result.buffer.h}, offset ${result.buffer.offsetX}, ${result.buffer.offsetY}.`;
+        const panCoords = el('layerTransformPanCoords');
+        if (panCoords) panCoords.textContent = `Pan: ${panX >= 0 ? '+' : ''}${panX}, ${panY >= 0 ? '+' : ''}${panY}`;
+      }
+
+      function openLayerTransformDialog(layer) {
+        if (!layer) return;
+        state.transformLayerId = layer.id;
+        state.layerTransformSession = { layerId: layer.id, source: getLayerTransformSource(layer), preview: null, uniform: true, panX: 0, panY: 0, snap8: true };
+        el('layerTransformTitle').textContent = 'Transform Layer';
+        el('layerTransformLayerBadge').textContent = layer.name;
+        el('layerTransformAngle').value = '0';
+        el('layerTransformAngleRange').value = '0';
+        el('layerTransformScaleX').value = '1';
+        el('layerTransformScaleY').value = '1';
+        el('layerTransformScaleXRange').value = '1';
+        el('layerTransformScaleYRange').value = '1';
+        setLayerTransformAttrsMode('preserve');
+        el('layerTransformUniformBtn').classList.add('on');
+        el('layerTransformSnap8Btn').classList.add('on');
+        syncLayerTransformControls();
+        // Skryj sekci "Attribute behaviour" v Next modu
+        const attrSection = el('layerTransformAttrsPreserveBtn')?.closest('section');
+        if (attrSection) attrSection.style.display = isNextScreenMode() ? 'none' : '';
+        el('layerTransformBackdrop').classList.add('open');
+        updateLayerTransformPreview();
+      }
+
+      function closeLayerTransformDialog() {
+        state.transformLayerId = null;
+        state.layerTransformSession = null;
+        el('layerTransformBackdrop').classList.remove('open');
+      }
+
+      function applyLayerTransformDialog() {
+        const session = state.layerTransformSession;
+        const layer = state.layers.find(l => l.id === state.transformLayerId);
+        if (!session || !layer) return closeLayerTransformDialog();
+        syncLayerTransformControls();
+        const attrsMode = el('layerTransformAttrsMode').value === 'ignore' ? 'ignore' : 'preserve';
+        const sourceForApply = session.pannedSource || session.source;
+        const preview = session.preview || transformLayerBuffer(sourceForApply, {
+          angle: Number(el('layerTransformAngle').value),
+          scaleX: Number(el('layerTransformScaleX').value),
+          scaleY: Number(el('layerTransformScaleY').value),
+          attrsMode
+        });
+        pushHistory();
+        applyTransformedBufferToLayer(layer, preview, attrsMode);
+        closeLayerTransformDialog();
+        setStatus(`Layer transformed: angle ${Number(el('layerTransformAngle').value) || 0}°, scale ${Number(el('layerTransformScaleX').value) || 1} × ${Number(el('layerTransformScaleY').value) || 1}.`);
+        renderAll();
+      }
+
       function renderLayers() {
         const host = el('layersList');
         host.innerHTML = '';
@@ -5948,9 +7254,16 @@
             renameBtn.setAttribute('aria-label', `Rename ${layer.name}`);
             renameBtn.textContent = '✎';
             renameBtn.addEventListener('click', (e) => { e.stopPropagation(); openRenameLayerDialog(layer); });
+            const transformBtn = document.createElement('button');
+            transformBtn.className = 'mini-btn layer-rename-btn';
+            transformBtn.type = 'button';
+            transformBtn.title = `Transform ${layer.name}`;
+            transformBtn.setAttribute('aria-label', `Transform ${layer.name}`);
+            transformBtn.textContent = '⟳';
+            transformBtn.addEventListener('click', (e) => { e.stopPropagation(); openLayerTransformDialog(layer); });
 
             left.append(vis, badge, name);
-            actions.append(renameBtn);
+            actions.append(renameBtn, transformBtn);
             item.append(left, actions);
 
           } else {
@@ -7362,22 +8675,52 @@
           ctx.fillRect(ox + x * scale, oy + y * scale, scale, scale);
         }
       }
+      function drawMaskCompositeToCanvas(ctx, frame, size) {
+        frame = normalizeSpriteFrame(frame);
+        const w = state.sprite.width, h = state.sprite.height;
+        const scale = Math.max(2, Math.floor(size / Math.max(w, h)));
+        const ox = Math.floor((size - w * scale) / 2), oy = Math.floor((size - h * scale) / 2);
+        const mask = getEffectiveMask(frame);
+        ctx.imageSmoothingEnabled = false;
+        ctx.clearRect(0, 0, size, size);
+        ctx.fillStyle = '#2a140d';
+        ctx.fillRect(0, 0, size, size);
+        const brickW = Math.max(12, Math.floor(scale * 2));
+        const brickH = Math.max(8, Math.floor(scale));
+        for (let y = 0; y < size; y += brickH) {
+          const offset = ((Math.floor(y / brickH) & 1) ? Math.floor(brickW / 2) : 0);
+          for (let x = -offset; x < size; x += brickW) {
+            ctx.fillStyle = ((Math.floor(y / brickH) + Math.floor((x + offset) / brickW)) & 1) ? '#a86443' : '#8f5238';
+            ctx.fillRect(x, y, brickW - 1, brickH - 1);
+          }
+        }
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+          if (mask[y * w + x]) {
+            ctx.fillStyle = '#05070b';
+            ctx.fillRect(ox + x * scale, oy + y * scale, scale, scale);
+          }
+        }
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+          const colorIndex = getSpritePixelColorIndex(frame, x, y);
+          if (colorIndex != null) {
+            ctx.fillStyle = rgbToCss(spriteColorRgb(colorIndex));
+            ctx.fillRect(ox + x * scale, oy + y * scale, scale, scale);
+          }
+        }
+      }
       function renderSpritePreviews() {
         ensureSpriteFrames();
         const frame = normalizeSpriteFrame(activeSpriteFrame());
-        drawSpriteToCanvas(spritePreviewCtx, frame, 180);
-        const maskWrap = el('maskPreviewWrap');
+        const maskCompositeWrap = el('maskCompositePreviewWrap');
         const maskEdit = el('maskEditSection');
         if (state.sprite.autoMask && !isNextSpriteMode()) {
-          maskWrap.classList.remove('mask-disabled');
-          maskWrap.classList.remove('hidden');
+          maskCompositeWrap.classList.remove('hidden');
           maskEdit.classList.remove('hidden');
-          drawMaskToCanvas(spriteMaskCtx, frame, 180);
+          drawMaskCompositeToCanvas(spriteMaskCompositeCtx, frame, 180);
         } else {
-          maskWrap.classList.add('mask-disabled');
-          maskWrap.classList.add('hidden');
+          maskCompositeWrap.classList.add('hidden');
           maskEdit.classList.add('hidden');
-          spriteMaskCtx.clearRect(0, 0, spriteMaskCanvas.width, spriteMaskCanvas.height);
+          spriteMaskCompositeCtx.clearRect(0, 0, spriteMaskCompositeCanvas.width, spriteMaskCompositeCanvas.height);
         }
       }
       function renderSpriteAnimation() { ensureSpriteFrames(); const frame = state.sprite.frames[state.sprite.animIndex % state.sprite.frames.length] || activeSpriteFrame(); drawSpriteToCanvas(spriteAnimCtx, frame, 220); }
@@ -8055,6 +9398,7 @@ attr grid: ${aw}x${ah}` : ''}`);
         if (el('nextColorWrap')) el('nextColorWrap').classList.toggle('hidden', !nextMode);
         if (el('classicColorBar')) el('classicColorBar').style.display = nextMode ? 'none' : 'flex';
         if (el('classicSelectedInfo')) el('classicSelectedInfo').style.display = nextMode ? 'none' : 'flex';
+        if (el('nextSelectedInfo')) el('nextSelectedInfo').style.display = nextMode ? 'flex' : 'none';
         if (el('brightBtn')) el('brightBtn').parentElement.style.display = nextMode ? 'none' : 'flex';
         if (el('transparentPaperBtn')) el('transparentPaperBtn').style.display = nextMode ? 'none' : '';
         if (el('transparentPaperModeWrap')) el('transparentPaperModeWrap').style.display = nextMode ? 'none' : (state.transparentPaper ? 'flex' : 'none');
@@ -8068,6 +9412,11 @@ attr grid: ${aw}x${ah}` : ''}`);
         if (el('importNxiLabel')) el('importNxiLabel').classList.toggle('hidden', !nextMode);
         const scrLabel = document.querySelector('label[for="scrImportInput"]');
         if (scrLabel) scrLabel.textContent = nextMode ? 'Import L2' : 'Import SCR';
+        if (el('paletteToolsInline')) el('paletteToolsInline').classList.toggle('hidden', !nextMode);
+        if (el('nextAdjustmentsBlock')) el('nextAdjustmentsBlock').classList.toggle('hidden', !nextMode);
+        // Hide result/recolor sections when switching away from Next mode
+        if (!nextMode && el('scrToNextResult')) el('scrToNextResult').classList.add('hidden');
+        if (!nextMode && el('recolorSection')) el('recolorSection').classList.add('hidden');
         const hint = el('statusText');
       }
 
@@ -8353,6 +9702,7 @@ attr grid: ${aw}x${ah}` : ''}`);
       el('flashBtn').addEventListener('click', () => { state.flash = !state.flash; renderPalette(); });
       el('spriteBrightBtn').addEventListener('click', () => { if (el('spriteBrightBtn').disabled) return; state.bright = !state.bright; normalizeClassicBrightInkSelection(!!state.bright); renderPalette(); renderSpritePalette(); renderSpriteCanvas(); renderSpritePreviews(); renderSpriteAnimation(); refreshAsmPreview(); });
       el('dialogCloseBtn').addEventListener('click', closeDialog);
+      el('newsBtn').addEventListener('click', openNewsDialog);
       el('aboutBtn').addEventListener('click', openAboutDialog);
       el('dialogBackdrop').addEventListener('click', e => { if (e.target === el('dialogBackdrop')) closeDialog(); });
       el('confirmYesBtn').addEventListener('click', () => { el('confirmBackdrop').classList.remove('open'); if (_confirmYesCb) { _confirmYesCb(); _confirmYesCb = null; } });
@@ -9348,7 +10698,910 @@ attr grid: ${aw}x${ah}` : ''}`);
         e.target.value = '';
       });
 
+      // ── Palette Tools dialog ───────────────────────────────────────────────
+      const recolorMapping = Array.from({length: 16}, (_, i) => i);
+      let recolorActiveRow = -1;
+      let recolorUsedSet = new Set();
+      let _recolorSourceColors = null;
+      const recolorApplied = new Map(); // ulaIdx → nextIdx that was applied
+
+      // Parse classic 6912-byte SCR → per-pixel Next color index (0–15)
+      function parseScrToNextPerPixel(buf) {
+        const pixels = new Uint8Array(ZX_W * ZX_H).fill(1);
+        const colors = new Uint8Array(ZX_W * ZX_H);
+        const attrs = new Uint8Array(ATTR_W * ATTR_H);
+        attrs.set(buf.subarray(6144, 6144 + ATTR_W * ATTR_H));
+        for (let y = 0; y < ZX_H; y++) {
+          const srcOff = zxScrY(y);
+          for (let bx = 0; bx < 32; bx++) {
+            const byte = buf[srcOff + bx];
+            const attr = decodeAttrByte(attrs[getAttrIdx(bx, (y / 8) | 0)]);
+            const inkIdx = attr.ink + (attr.bright ? 8 : 0);
+            const paperIdx = attr.paper + (attr.bright ? 8 : 0);
+            for (let b = 0; b < 8; b++) {
+              const idx = getIdx(bx * 8 + b, y);
+              colors[idx] = ((byte >> (7 - b)) & 1) ? inkIdx : paperIdx;
+            }
+          }
+        }
+        return { pixels, colors };
+      }
+
+      // Build a flat color index array from the current merged visible layers (Next mode)
+      // Working palette helpers — changes stay local until Apply or Cancel
+      function ptdSnapshotPalette() {
+        _ptdWorkingPalette = NEXT_COLORS.map(c => ({ ...c, rgb: [...c.rgb] }));
+      }
+      function ptdWorkingRgb(idx) {
+        return _ptdWorkingPalette ? _ptdWorkingPalette[idx].rgb : NEXT_COLORS[idx].rgb;
+      }
+      function ptdApplyWorkingPalette() {
+        if (!_ptdWorkingPalette) return;
+        for (let i = 0; i < 256; i++) {
+          const { palLo, palHi, name } = _ptdWorkingPalette[i];
+          setNextPaletteEntry(i, palLo, palHi, name);
+        }
+        refreshNextPaletteCaches();
+        renderAll();
+        _ptdWorkingPalette = null;
+      }
+      function ptdDiscardWorkingPalette() {
+        _ptdWorkingPalette = null;
+      }
+      function ptdSetWorkingEntry(idx, palLo, palHi, name) {
+        if (!_ptdWorkingPalette) return;
+        const rgb = nextPalBytesToRgb(palLo, palHi);
+        _ptdWorkingPalette[idx] = { name: name || _ptdWorkingPalette[idx].name || `next ${idx}`, palLo, palHi, rgb };
+      }
+
+      function ptdGetCanvasColors() {
+        const merged = mergeVisibleLayers();
+        const out = new Uint8Array(ZX_W * ZX_H);
+        const paperIdx = clamp(state.nextPaperColor || 0, 0, 255);
+        for (let i = 0; i < ZX_W * ZX_H; i++) {
+          out[i] = merged.pixels[i]
+            ? (merged.colors ? clamp(merged.colors[i], 0, 255) : currentNextInk())
+            : paperIdx;
+        }
+        return out;
+      }
+
+      function ptdRenderPreview() {
+        const canvas = el('ptdPreviewCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const src = isNextScreenMode() ? ptdGetCanvasColors() : _recolorSourceColors;
+        if (!src) { ctx.clearRect(0, 0, 256, 192); return; }
+        const imgData = ctx.createImageData(256, 192);
+        const d = imgData.data;
+        // Use working palette if available, otherwise live NEXT_COLORS
+        const pal = _ptdWorkingPalette || NEXT_COLORS;
+        for (let i = 0; i < 256 * 192; i++) {
+          const ci = src[i];
+          const nextIdx = (ci < 16) ? recolorMapping[ci] : ci;
+          const [r, g, b] = pal[nextIdx].rgb;
+          d[i*4]=r; d[i*4+1]=g; d[i*4+2]=b; d[i*4+3]=255;
+        }
+        ctx.putImageData(imgData, 0, 0);
+      }
+
+      function ptdRenderUlaGrid(usedSet, pixelCount) {
+        const grid = el('ptdUlaGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        for (let ci = 0; ci < 16; ci++) {
+          const [r, g, b] = ZX_COLORS[ci].rgb;
+          const used = usedSet.has(ci);
+          const lum = 0.299*r + 0.587*g + 0.114*b;
+          const cell = document.createElement('div');
+          cell.style.cssText = `border-radius:6px;border:2px solid ${used?'rgba(255,255,255,0.5)':'rgba(255,255,255,0.08)'};background:rgb(${r},${g},${b});color:${lum>100?'#111':'#eee'};font-size:9px;padding:4px 3px;text-align:center;opacity:${used?1:0.25};cursor:${used?'pointer':'default'};`;
+          cell.title = `${ci}: ${ZX_COLORS[ci].name}${used?' · '+pixelCount[ci]+' px':''}`;
+          cell.textContent = ZX_COLORS[ci].name.replace('bright ','');
+          if (used) {
+            cell.addEventListener('click', () => ptdHighlightRow(ci));
+          }
+          grid.appendChild(cell);
+        }
+      }
+
+      function ptdHighlightRow(ulaIdx) {
+        recolorActiveRow = ulaIdx;
+        ptdRenderRecolorTable();
+        ptdOpenPicker(ulaIdx);
+        // Scroll row into view in right panel
+        const table = el('ptdRecolorTable');
+        if (table) {
+          const rows = table.querySelectorAll('[data-ula]');
+          rows.forEach(r => { if (+r.dataset.ula === ulaIdx) r.scrollIntoView({block:'nearest'}); });
+        }
+      }
+
+      function ptdRenderRecolorTable() {
+        const table = el('ptdRecolorTable');
+        if (!table) return;
+        table.innerHTML = '';
+        for (let ulaIdx = 0; ulaIdx < 16; ulaIdx++) {
+          const used = recolorUsedSet.has(ulaIdx);
+          const zxColor = ZX_COLORS[ulaIdx];
+          const [ur, ug, ub] = zxColor.rgb;
+          const nextIdx = recolorMapping[ulaIdx];
+          const [nr, ng, nb] = NEXT_COLORS[nextIdx].rgb;
+          const isOpen = recolorActiveRow === ulaIdx;
+          const wasApplied = recolorApplied.has(ulaIdx);
+          const isChanged = nextIdx !== ulaIdx;
+
+          const row = document.createElement('div');
+          row.className = 'recolor-row' + (isOpen ? ' active' : '') + (!used ? ' unused' : '');
+          if (wasApplied && !isChanged) row.style.borderColor = '#4caf50';
+          else if (wasApplied && isChanged) row.style.borderColor = '#ffb84d';
+          row.dataset.ula = ulaIdx;
+
+          const ulaS = document.createElement('span');
+          ulaS.className = 'recolor-swatch';
+          ulaS.style.background = `rgb(${ur},${ug},${ub})`;
+          const ulaL = document.createElement('span');
+          ulaL.className = 'recolor-label';
+          ulaL.textContent = `${ulaIdx} · ${zxColor.name}`;
+
+          const arrow = document.createElement('span');
+          arrow.className = 'recolor-arrow';
+          if (wasApplied && !isChanged) { arrow.textContent = '✓'; arrow.style.color = '#4caf50'; }
+          else if (isChanged && used) { arrow.textContent = '→'; arrow.style.color = '#ffb84d'; }
+          else { arrow.textContent = '→'; }
+
+          const nextS = document.createElement('span');
+          nextS.className = 'recolor-swatch';
+          nextS.style.background = `rgb(${nr},${ng},${nb})`;
+          const nextL = document.createElement('span');
+          nextL.className = 'recolor-next-label';
+          nextL.textContent = nextIdx;
+
+          row.append(ulaS, ulaL, arrow, nextS, nextL);
+          if (used) {
+            row.addEventListener('click', () => {
+              if (recolorActiveRow === ulaIdx) {
+                recolorActiveRow = -1;
+                el('ptdPickerWrap').style.display = 'none';
+                ptdRenderRecolorTable();
+              } else {
+                recolorActiveRow = ulaIdx;
+                ptdRenderRecolorTable();
+                ptdOpenPicker(ulaIdx);
+              }
+            });
+          }
+          table.appendChild(row);
+        }
+      }
+
+      function ptdOpenPicker(ulaIdx) {
+        const wrap = el('ptdPickerWrap');
+        const label = el('ptdPickerLabel');
+        const grid = el('ptdNextGrid');
+        if (!wrap || !grid) return;
+        label.textContent = `${ulaIdx} · ${ZX_COLORS[ulaIdx].name}`;
+        wrap.style.display = 'block';
+        grid.innerHTML = '';
+        getNextPaletteDisplayOrder().forEach(nextIdx => {
+          const [r, g, b] = NEXT_COLORS[nextIdx].rgb;
+          const cell = document.createElement('div');
+          cell.className = 'ptd-color-cell' + (recolorMapping[ulaIdx] === nextIdx ? ' selected' : '');
+          cell.style.background = `rgb(${r},${g},${b})`;
+          cell.title = `${nextIdx}: ${NEXT_COLORS[nextIdx].name}`;
+          cell.addEventListener('click', () => {
+            recolorMapping[ulaIdx] = nextIdx;
+            recolorActiveRow = -1;
+            wrap.style.display = 'none';
+            ptdRenderRecolorTable();
+            ptdRenderPreview();
+          });
+          grid.appendChild(cell);
+        });
+      }
+
+      function ptdApplyRecolor() {
+        if (!isNextScreenMode()) { setStatus('Recolor is only available in Next Layer 2 mode.'); return; }
+
+        let appliedCount = 0;
+        for (let i = 0; i < 16; i++) {
+          if (recolorUsedSet.has(i) && recolorMapping[i] !== i) {
+            recolorApplied.set(i, recolorMapping[i]);
+            appliedCount++;
+          }
+        }
+
+        mutateActiveLayer(layer => {
+          for (let i = 0; i < layer.colors.length; i++) {
+            const ci = layer.colors[i];
+            if (ci < 16) layer.colors[i] = recolorMapping[ci];
+          }
+        }, 'Recolor ULA → Next applied.');
+
+        if (_recolorSourceColors) {
+          const newSrc = new Uint8Array(_recolorSourceColors.length);
+          for (let i = 0; i < _recolorSourceColors.length; i++) {
+            const ci = _recolorSourceColors[i];
+            newSrc[i] = (ci < 16) ? recolorMapping[ci] : ci;
+          }
+          _recolorSourceColors = newSrc;
+        }
+
+        // Mapping stays — just re-render with applied indicators
+        ptdRenderRecolorTable();
+        ptdRenderPreview();
+
+        const s = el('ptdRecolorStatus');
+        if (s) {
+          s.classList.remove('hidden');
+          s.textContent = appliedCount > 0
+            ? `Applied ${appliedCount} mapping(s). Rows marked ✓ are done. Adjust and apply again if needed.`
+            : 'Nothing to apply — no changed mappings.';
+        }
+        setStatus('Recolor applied.');
+      }
+
+      function ptdResetMapping() {
+        for (let i = 0; i < 16; i++) recolorMapping[i] = i;
+        recolorApplied.clear();
+        recolorActiveRow = -1;
+        el('ptdPickerWrap').style.display = 'none';
+        ptdRenderRecolorTable();
+        ptdRenderPreview();
+        setStatus('Recolor mapping reset to default.');
+      }
+
+      function ptdLoadScr(file) {
+        if (!isNextScreenMode()) { setStatus('SCR→Next workflow is only available in Next Layer 2 mode.'); return; }
+        const reader = new FileReader();
+        reader.onload = ev => {
+          const buf = new Uint8Array(ev.target.result);
+          if (buf.length < 6912) { setStatus(`SCR too small: ${buf.length} B, need 6912.`); return; }
+          const { pixels, colors } = parseScrToNextPerPixel(buf);
+          mutateActiveLayer(layer => { layer.pixels = pixels; layer.colors = colors; }, `SCR→Next: ${file.name}`);
+          _recolorSourceColors = new Uint8Array(colors);
+          recolorUsedSet = new Set();
+          const pixelCount = new Array(16).fill(0);
+          for (let i = 0; i < colors.length; i++) { const c = colors[i]; if (c < 16) { recolorUsedSet.add(c); pixelCount[c]++; } }
+          for (let i = 0; i < 16; i++) recolorMapping[i] = i;
+          recolorActiveRow = -1;
+          // Show recolor section
+          const rw = el('ptdRecolorWrap'); if (rw) rw.classList.remove('hidden');
+          const nh = el('ptdNoScrHint'); if (nh) nh.classList.add('hidden');
+          const pw = el('ptdPickerWrap'); if (pw) pw.style.display = 'none';
+          const rs = el('ptdRecolorStatus'); if (rs) rs.classList.add('hidden');
+          // Info
+          const info = el('ptdImportInfo');
+          if (info) {
+            const usedNames = [...recolorUsedSet].sort((a,b)=>a-b).map(ci=>`${ZX_COLORS[ci].name} (${ci})`).join(', ');
+            info.classList.remove('hidden');
+            info.textContent = `File: ${file.name}\nSize: ${buf.length} B\nColors used: ${recolorUsedSet.size}/16\n${usedNames}`;
+          }
+          ptdRenderUlaGrid(recolorUsedSet, pixelCount);
+          ptdRenderRecolorTable();
+          ptdRenderPreview();
+          setStatus(`SCR→Next done: ${file.name} · ${recolorUsedSet.size} color(s)`);
+        };
+        reader.readAsArrayBuffer(file);
+      }
+
+      function savePalette() {
+        const data = { version:1, format:'zx-next-256', entries: NEXT_COLORS.map((c,i)=>({index:i, name:c.name, palLo:c.palLo, palHi:c.palHi, rgb:c.rgb})) };
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href=url; a.download=`${sanitizeLabel(state.screenName,'screen')}_palette.json`; a.click();
+        URL.revokeObjectURL(url);
+        const s = el('ptdPaletteIOStatus'); if (s) { s.classList.remove('hidden'); s.textContent='Palette saved as JSON.'; }
+        setStatus('Palette saved.');
+      }
+
+      function loadPaletteFromFile(file) {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          try {
+            const data = JSON.parse(ev.target.result);
+            if (!data.entries || !Array.isArray(data.entries)) throw new Error('Invalid palette file.');
+            if (!_ptdWorkingPalette) ptdSnapshotPalette();
+            let count = 0;
+            for (const e of data.entries) {
+              if (e.index >= 0 && e.index < 256 && e.palLo !== undefined) {
+                ptdSetWorkingEntry(e.index, e.palLo, e.palHi ?? 0, e.name);
+                count++;
+              }
+            }
+            ptdRenderPreview();
+            if (_ptdActiveTab === 'palette') ptdRenderPalGrid();
+            const s = el('ptdPaletteIOStatus');
+            if (s) { s.classList.remove('hidden'); s.textContent = `Loaded: ${count} entries from ${file.name} (click Apply to confirm).`; }
+            setStatus(`Palette loaded: ${count} entries — click Apply to confirm.`);
+          } catch(err) { setStatus('Palette load failed: '+err.message); }
+        };
+        reader.readAsText(file);
+      }
+
+      // ── Palette Tools dialog — tabs, palette editor, SCR recolor ──────────
+
+      let _ptdActiveTab = 'palette'; // 'palette' | 'scr'
+      let _ptdUsedSlots = new Set();  // indices used on canvas (for "show used only")
+      let _ptdShowUsedOnly = false;
+      let _ptdEditingSlot = -1;
+      let _ptdPopupMode = 'rgb'; // 'rgb' | 'grid'
+      let _ptdWorkingPalette = null; // working copy of NEXT_COLORS while dialog is open
+
+      function ptdSwitchTab(tab) {
+        _ptdActiveTab = tab;
+        el('ptdPaletteEditorTab').classList.toggle('hidden', tab !== 'palette');
+        el('ptdScrRecolorTab').classList.toggle('hidden', tab !== 'scr');
+        el('ptdTabPalette').classList.toggle('active', tab === 'palette');
+        el('ptdTabScr').classList.toggle('active', tab === 'scr');
+        if (tab === 'palette') ptdRenderPalGrid();
+      }
+
+      // ── Palette Editor grid ──────────────────────────────────────────────
+      function ptdScanCanvas() {
+        _ptdUsedSlots = new Set();
+        if (!isNextScreenMode()) return;
+        const merged = mergeVisibleLayers();
+        for (let i = 0; i < ZX_W * ZX_H; i++) {
+          if (merged.pixels[i]) _ptdUsedSlots.add(merged.colors ? clamp(merged.colors[i],0,255) : currentNextInk());
+        }
+        _ptdUsedSlots.add(clamp(state.nextPaperColor||0,0,255));
+        return _ptdUsedSlots;
+      }
+
+      function ptdRenderPalGrid() {
+        const grid = el('ptdPalGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        const pal = _ptdWorkingPalette || NEXT_COLORS;
+        for (let i = 0; i < 256; i++) {
+          const used = _ptdUsedSlots.has(i);
+          if (_ptdShowUsedOnly && !used) continue;
+          const [r, g, b] = pal[i].rgb;
+          const cell = document.createElement('div');
+          cell.className = 'ptd-pal-slot' + (used ? ' used-slot' : '');
+          cell.style.background = `rgb(${r},${g},${b})`;
+          cell.title = `${i}: ${pal[i].name}`;
+          cell.dataset.slot = i;
+          cell.addEventListener('click', e => { e.stopPropagation(); ptdOpenSlotPopup(i, cell); });
+          grid.appendChild(cell);
+        }
+      }
+
+      function ptdSetPopupMode(mode) {
+        _ptdPopupMode = mode;
+        el('ptdPanelRgb').style.display = mode === 'rgb' ? 'grid' : 'none';
+        el('ptdPanelGrid').style.display = mode === 'grid' ? 'block' : 'none';
+        el('ptdModeRgb').classList.toggle('active', mode === 'rgb');
+        el('ptdModeGrid').classList.toggle('active', mode === 'grid');
+        if (mode === 'grid') ptdRenderSlotColorGrid();
+      }
+
+      function ptdRenderSlotColorGrid() {
+        const grid = el('ptdSlotColorGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        getNextPaletteDisplayOrder().forEach(nextIdx => {
+          const [r, g, b] = NEXT_COLORS[nextIdx].rgb;
+          const isCurrent = nextIdx === _ptdEditingSlot; // highlight the editing slot itself? no — highlight previously selected
+          const cell = document.createElement('div');
+          cell.style.cssText = `width:10px;height:10px;background:rgb(${r},${g},${b});border-radius:1px;box-sizing:border-box;cursor:pointer;border:${isCurrent?'2px solid #fff':'1px solid transparent'};`;
+          cell.title = `${nextIdx}: ${NEXT_COLORS[nextIdx].name}`;
+          cell.addEventListener('click', () => {
+            // Apply this color to the editing slot directly
+            if (_ptdEditingSlot < 0) return;
+            const { palLo, palHi } = nextRgbToPalBytes([r, g, b]);
+            // Also sync sliders
+            el('ptdSlotR').value = Math.round(r*7/255);
+            el('ptdSlotG').value = Math.round(g*7/255);
+            el('ptdSlotB').value = Math.round(b*7/255);
+            el('ptdSlotRVal').textContent = el('ptdSlotR').value;
+            el('ptdSlotGVal').textContent = el('ptdSlotG').value;
+            el('ptdSlotBVal').textContent = el('ptdSlotB').value;
+            el('ptdSlotSwatch').style.background = `rgb(${r},${g},${b})`;
+            el('ptdSlotHex').textContent = `rgb(${r},${g},${b})`;
+            // Highlight selected cell
+            grid.querySelectorAll('div').forEach(c => c.style.border = '1px solid transparent');
+            cell.style.border = '2px solid #fff';
+          });
+          grid.appendChild(cell);
+        });
+      }
+
+      function ptdOpenSlotPopup(slotIdx, cellEl) {
+        if (_ptdEditingSlot === slotIdx) { ptdCloseSlotPopup(); return; }
+        _ptdEditingSlot = slotIdx;
+        const popup = el('ptdSlotPopup');
+        const [r, g, b] = ptdWorkingRgb(slotIdx);
+        const r7 = Math.round(r * 7 / 255);
+        const g7 = Math.round(g * 7 / 255);
+        const b7 = Math.round(b * 7 / 255);
+        const name = _ptdWorkingPalette ? _ptdWorkingPalette[slotIdx].name : NEXT_COLORS[slotIdx].name;
+
+        el('ptdSlotTitle').textContent = `Slot ${slotIdx}: ${name}`;
+        el('ptdSlotHex').textContent = `rgb(${r},${g},${b})`;
+        el('ptdSlotSwatch').style.background = `rgb(${r},${g},${b})`;
+        el('ptdSlotR').value = r7; el('ptdSlotRVal').textContent = r7;
+        el('ptdSlotG').value = g7; el('ptdSlotGVal').textContent = g7;
+        el('ptdSlotB').value = b7; el('ptdSlotBVal').textContent = b7;
+
+        // Apply current mode
+        ptdSetPopupMode(_ptdPopupMode);
+
+        // Position popup near the cell
+        const rect = cellEl.getBoundingClientRect();
+        const pw = _ptdPopupMode === 'grid' ? 360 : 260;
+        let left = rect.right + 6;
+        if (left + pw > window.innerWidth - 12) left = rect.left - pw - 6;
+        let top = rect.top;
+        const ph = _ptdPopupMode === 'grid' ? 280 : 230;
+        if (top + ph > window.innerHeight - 12) top = window.innerHeight - ph - 12;
+        popup.style.left = left + 'px';
+        popup.style.top = Math.max(8, top) + 'px';
+        popup.style.display = 'block';
+      }
+
+      function ptdCloseSlotPopup() {
+        _ptdEditingSlot = -1;
+        el('ptdSlotPopup').style.display = 'none';
+      }
+
+      function ptdUpdateSlotPreview() {
+        if (_ptdEditingSlot < 0) return;
+        const r7 = +el('ptdSlotR').value;
+        const g7 = +el('ptdSlotG').value;
+        const b7 = +el('ptdSlotB').value;
+        const r = Math.round(r7 * 255 / 7);
+        const g = Math.round(g7 * 255 / 7);
+        const b = Math.round(b7 * 255 / 7);
+        el('ptdSlotSwatch').style.background = `rgb(${r},${g},${b})`;
+        el('ptdSlotHex').textContent = `rgb(${r},${g},${b})`;
+        el('ptdSlotRVal').textContent = r7;
+        el('ptdSlotGVal').textContent = g7;
+        el('ptdSlotBVal').textContent = b7;
+      }
+
+      function ptdConfirmSlot() {
+        if (_ptdEditingSlot < 0 || !_ptdWorkingPalette) return;
+        const r7 = +el('ptdSlotR').value;
+        const g7 = +el('ptdSlotG').value;
+        const b7 = +el('ptdSlotB').value;
+        const { palLo, palHi } = nextRgbToPalBytes([
+          Math.round(r7*255/7), Math.round(g7*255/7), Math.round(b7*255/7)
+        ]);
+        ptdSetWorkingEntry(_ptdEditingSlot, palLo, palHi);
+        ptdRenderPalGrid();
+        ptdRenderPreview();
+        ptdCloseSlotPopup();
+        setStatus(`Slot ${_ptdEditingSlot} updated — click Apply to confirm.`);
+      }
+
+      function ptdClearSlot() {
+        if (_ptdEditingSlot < 0 || !_ptdWorkingPalette) return;
+        ptdSetWorkingEntry(_ptdEditingSlot, 0, 0, `next ${_ptdEditingSlot}`);
+        ptdRenderPalGrid();
+        ptdRenderPreview();
+        ptdCloseSlotPopup();
+        setStatus(`Slot ${_ptdEditingSlot} cleared — click Apply to confirm.`);
+      }
+
+      // Wire up slot popup controls
+      ['ptdSlotR','ptdSlotG','ptdSlotB'].forEach(id => {
+        if (el(id)) el(id).addEventListener('input', ptdUpdateSlotPreview);
+      });
+      if (el('ptdSlotConfirm')) el('ptdSlotConfirm').addEventListener('click', ptdConfirmSlot);
+      if (el('ptdSlotClear')) el('ptdSlotClear').addEventListener('click', ptdClearSlot);
+      if (el('ptdSlotPopupClose')) el('ptdSlotPopupClose').addEventListener('click', ptdCloseSlotPopup);
+      if (el('ptdModeRgb')) el('ptdModeRgb').addEventListener('click', () => ptdSetPopupMode('rgb'));
+      if (el('ptdModeGrid')) el('ptdModeGrid').addEventListener('click', () => ptdSetPopupMode('grid'));
+      // Close popup on click outside
+      document.addEventListener('click', e => {
+        const popup = el('ptdSlotPopup');
+        if (popup && popup.style.display !== 'none' && !popup.contains(e.target) && !e.target.closest('.ptd-pal-slot')) {
+          ptdCloseSlotPopup();
+        }
+      });
+
+      // Show used only checkbox
+      if (el('ptdShowUsedOnly')) el('ptdShowUsedOnly').addEventListener('change', e => {
+        _ptdShowUsedOnly = e.target.checked;
+        ptdRenderPalGrid();
+      });
+
+      // Scan button
+      if (el('ptdScanBtn')) el('ptdScanBtn').addEventListener('click', () => {
+        ptdScanCanvas();
+        ptdRenderPalGrid();
+        setStatus(`Canvas scanned: ${_ptdUsedSlots.size} color slot(s) in use.`);
+      });
+
+      // ── Open/close dialog ────────────────────────────────────────────────
+      function openPaletteTools() {
+        if (!isNextScreenMode()) { setStatus('Palette Tools are only available in Next Layer 2 mode.'); return; }
+        ptdSnapshotPalette();
+        ptdScanCanvas();
+        el('paletteToolsBackdrop').classList.add('open');
+        ptdRenderPreview();
+        if (_ptdActiveTab === 'palette') ptdRenderPalGrid();
+      }
+      function closePaletteTools() {
+        ptdCloseSlotPopup();
+        ptdDiscardWorkingPalette();
+        el('paletteToolsBackdrop').classList.remove('open');
+      }
+      function applyPaletteTools() {
+        ptdCloseSlotPopup();
+        ptdApplyWorkingPalette();
+        el('paletteToolsBackdrop').classList.remove('open');
+        setStatus('Palette changes applied.');
+      }
+
+      if (el('openPaletteToolsBtn')) el('openPaletteToolsBtn').addEventListener('click', openPaletteTools);
+      if (el('paletteToolsApplyBtn')) el('paletteToolsApplyBtn').addEventListener('click', applyPaletteTools);
+      if (el('paletteToolsCloseBtn')) el('paletteToolsCloseBtn').addEventListener('click', closePaletteTools);
+      el('paletteToolsBackdrop').addEventListener('click', e => { if (e.target === el('paletteToolsBackdrop')) closePaletteTools(); });
+      if (el('ptdTabPalette')) el('ptdTabPalette').addEventListener('click', () => ptdSwitchTab('palette'));
+      if (el('ptdTabScr')) el('ptdTabScr').addEventListener('click', () => ptdSwitchTab('scr'));
+
+      // Preview canvas click
+      if (el('ptdPreviewCanvas')) {
+        el('ptdPreviewCanvas').addEventListener('click', e => {
+          const canvas = el('ptdPreviewCanvas');
+          const rect = canvas.getBoundingClientRect();
+          const x = Math.floor((e.clientX - rect.left) / rect.width * 256);
+          const y = Math.floor((e.clientY - rect.top) / rect.height * 192);
+          if (x < 0 || y < 0 || x >= 256 || y >= 192) return;
+          const src = isNextScreenMode() ? ptdGetCanvasColors() : _recolorSourceColors;
+          if (!src) return;
+          const ci = src[y * 256 + x];
+          const [r, g, b] = NEXT_COLORS[ci].rgb;
+          // Update pixel info box
+          const info = el('ptdPixelInfo');
+          if (info) info.textContent = `(${x},${y}) · slot ${ci} · ${NEXT_COLORS[ci].name} · rgb(${r},${g},${b})`;
+          // Tab-specific action
+          if (_ptdActiveTab === 'palette') {
+            // Highlight slot in grid
+            el('ptdPalGrid').querySelectorAll('.ptd-pal-slot').forEach(s => s.style.outline = '');
+            const slotEl = el('ptdPalGrid').querySelector(`[data-slot="${ci}"]`);
+            if (slotEl) {
+              slotEl.style.outline = '2px solid #ffb84d';
+              slotEl.scrollIntoView({ block: 'nearest' });
+              ptdOpenSlotPopup(ci, slotEl);
+            }
+          } else if (_ptdActiveTab === 'scr') {
+            if (ci < 16 && recolorUsedSet.has(ci)) ptdHighlightRow(ci);
+          }
+        });
+
+        // ── Zoom loupa ──────────────────────────────────────────────────────────
+        // Zobrazuje 16×12 pixel výřez zvětšený 8× s křížkem uprostřed
+        const PTD_ZOOM_RADIUS_X = 8;  // pixely vlevo/vpravo od kurzoru
+        const PTD_ZOOM_RADIUS_Y = 6;  // pixely nad/pod kurzorem
+        const PTD_ZOOM_SCALE = 8;     // každý pixel → 8×8 px na zoom canvasu
+
+        function ptdDrawZoom(px, py) {
+          const srcCanvas = el('ptdPreviewCanvas');
+          const zoomCanvas = el('ptdZoomCanvas');
+          const wrap = el('ptdZoomWrap');
+          const coordsEl = el('ptdZoomCoords');
+          if (!srcCanvas || !zoomCanvas || !wrap) return;
+
+          const zw = PTD_ZOOM_RADIUS_X * 2 + 1;  // šířka výřezu v pixelech ZX
+          const zh = PTD_ZOOM_RADIUS_Y * 2 + 1;
+
+          // Nastav rozměry zoom canvasu (pokud je potřeba)
+          const cw = zw * PTD_ZOOM_SCALE;
+          const ch = zh * PTD_ZOOM_SCALE;
+          if (zoomCanvas.width !== cw)  zoomCanvas.width  = cw;
+          if (zoomCanvas.height !== ch) zoomCanvas.height = ch;
+
+          const zctx = zoomCanvas.getContext('2d', { willReadFrequently: true });
+          const sctx = srcCanvas.getContext('2d', { willReadFrequently: true });
+
+          zctx.clearRect(0, 0, cw, ch);
+
+          // Nakresli zvětšené pixely z preview canvasu
+          // srcCanvas je 256×192, ale zobrazený jako CSS width=100% —
+          // čteme přímo z canvasu (physical pixels = 256×192)
+          for (let dy = -PTD_ZOOM_RADIUS_Y; dy <= PTD_ZOOM_RADIUS_Y; dy++) {
+            for (let dx = -PTD_ZOOM_RADIUS_X; dx <= PTD_ZOOM_RADIUS_X; dx++) {
+              const sx = px + dx, sy = py + dy;
+              let r = 20, g = 20, b = 35, a = 255; // okraj mimo canvas
+              if (sx >= 0 && sy >= 0 && sx < 256 && sy < 192) {
+                const d = sctx.getImageData(sx, sy, 1, 1).data;
+                r = d[0]; g = d[1]; b = d[2]; a = d[3];
+              }
+              const zx = (dx + PTD_ZOOM_RADIUS_X) * PTD_ZOOM_SCALE;
+              const zy = (dy + PTD_ZOOM_RADIUS_Y) * PTD_ZOOM_SCALE;
+              zctx.fillStyle = `rgba(${r},${g},${b},${a/255})`;
+              zctx.fillRect(zx, zy, PTD_ZOOM_SCALE, PTD_ZOOM_SCALE);
+              // Tenká mřížka
+              zctx.strokeStyle = 'rgba(0,0,0,0.30)';
+              zctx.lineWidth = 0.5;
+              zctx.strokeRect(zx, zy, PTD_ZOOM_SCALE, PTD_ZOOM_SCALE);
+            }
+          }
+
+          // Křížek na středovém pixelu
+          const cx = PTD_ZOOM_RADIUS_X * PTD_ZOOM_SCALE;
+          const cy = PTD_ZOOM_RADIUS_Y * PTD_ZOOM_SCALE;
+          zctx.strokeStyle = 'rgba(255,255,0,0.9)';
+          zctx.lineWidth = 1;
+          // horizontální linka přes celý zoom
+          zctx.beginPath();
+          zctx.moveTo(0, cy + PTD_ZOOM_SCALE / 2);
+          zctx.lineTo(cw, cy + PTD_ZOOM_SCALE / 2);
+          zctx.stroke();
+          // vertikální linka přes celý zoom
+          zctx.beginPath();
+          zctx.moveTo(cx + PTD_ZOOM_SCALE / 2, 0);
+          zctx.lineTo(cx + PTD_ZOOM_SCALE / 2, ch);
+          zctx.stroke();
+          // ohraničení středového pixelu
+          zctx.strokeStyle = 'rgba(255,220,0,1)';
+          zctx.lineWidth = 1.5;
+          zctx.strokeRect(cx + 0.5, cy + 0.5, PTD_ZOOM_SCALE - 1, PTD_ZOOM_SCALE - 1);
+
+          wrap.classList.add('visible');
+          if (coordsEl) coordsEl.textContent = `(${px}, ${py})`;
+        }
+
+        el('ptdPreviewCanvas').addEventListener('mousemove', e => {
+          const canvas = el('ptdPreviewCanvas');
+          const rect = canvas.getBoundingClientRect();
+          const px = Math.floor((e.clientX - rect.left) / rect.width * 256);
+          const py = Math.floor((e.clientY - rect.top) / rect.height * 192);
+          if (px < 0 || py < 0 || px >= 256 || py >= 192) return;
+          ptdDrawZoom(px, py);
+        });
+
+        el('ptdPreviewCanvas').addEventListener('mouseleave', () => {
+          const wrap = el('ptdZoomWrap');
+          if (wrap) wrap.classList.remove('visible');
+        });
+        // ── /Zoom loupa ─────────────────────────────────────────────────────────
+      }
+
+      if (el('ptdScrImportInput')) el('ptdScrImportInput').addEventListener('change', e => { const f=e.target.files&&e.target.files[0]; if(f) ptdLoadScr(f); e.target.value=''; });
+
+      if (el('ptdLoadDefaultUlaBtn')) el('ptdLoadDefaultUlaBtn').addEventListener('click', () => {
+        if (!isNextScreenMode()) { setStatus('SCR Recolor is only available in Next Layer 2 mode.'); return; }
+
+        // All 16 ULA colors are "used" — generate a synthetic source where each
+        // color fills one stripe so the preview shows all 16
+        _recolorSourceColors = new Uint8Array(256 * 192);
+        const stripeH = Math.ceil(192 / 16);
+        for (let y = 0; y < 192; y++) {
+          const ci = Math.min(15, Math.floor(y / stripeH));
+          for (let x = 0; x < 256; x++) _recolorSourceColors[y * 256 + x] = ci;
+        }
+
+        recolorUsedSet = new Set(Array.from({length: 16}, (_, i) => i));
+        const pixelCount = new Array(16).fill(stripeH * 256);
+
+        for (let i = 0; i < 16; i++) recolorMapping[i] = i;
+        recolorActiveRow = -1;
+
+        // Show recolor section
+        const rw = el('ptdRecolorWrap'); if (rw) rw.classList.remove('hidden');
+        const nh = el('ptdNoScrHint'); if (nh) nh.classList.add('hidden');
+        const pw = el('ptdPickerWrap'); if (pw) pw.style.display = 'none';
+        const rs = el('ptdRecolorStatus'); if (rs) rs.classList.add('hidden');
+
+        // ULA grid
+        ptdRenderUlaGrid(recolorUsedSet, pixelCount);
+
+        // Info
+        const info = el('ptdImportInfo');
+        if (info) {
+          info.classList.remove('hidden');
+          info.textContent = 'Source: default ZX Spectrum ULA palette (16 colors)\nAll 16 ULA colors loaded for remapping.';
+        }
+
+        ptdRenderRecolorTable();
+        ptdRenderPreview();
+        setStatus('Default ZX colors loaded — remap as needed.');
+      });
+      if (el('ptdSavePaletteBtn')) el('ptdSavePaletteBtn').addEventListener('click', savePalette);
+      if (el('ptdLoadPaletteInput')) el('ptdLoadPaletteInput').addEventListener('change', e => { const f=e.target.files&&e.target.files[0]; if(f) loadPaletteFromFile(f); e.target.value=''; });
+      if (el('ptdApplyRecolorBtn')) el('ptdApplyRecolorBtn').addEventListener('click', ptdApplyRecolor);
+      if (el('ptdResetMappingBtn')) el('ptdResetMappingBtn').addEventListener('click', ptdResetMapping);
+
+      // ── Reset palette to defaults ────────────────────────────────────────
+      function resetPaletteToDefaults() {
+        if (!_ptdWorkingPalette) ptdSnapshotPalette();
+        for (let i = 0; i < 256; i++) {
+          const entry = i < ZX_COLORS.length
+            ? (() => { const bytes = nextRgbToPalBytes(ZX_COLORS[i].rgb); return { palLo: bytes.palLo, palHi: bytes.palHi, name: ZX_COLORS[i].name }; })()
+            : { palLo: i & 0xFF, palHi: 0, name: `next ${i}` };
+          ptdSetWorkingEntry(i, entry.palLo, entry.palHi, entry.name);
+        }
+        ptdRenderPreview();
+        if (_ptdActiveTab === 'palette') ptdRenderPalGrid();
+        const s = el('ptdPaletteIOStatus');
+        if (s) { s.classList.remove('hidden'); s.textContent = 'Palette reset to defaults (click Apply to confirm).'; }
+        setStatus('Palette reset — click Apply to confirm.');
+      }
+      if (el('ptdResetPaletteBtn')) el('ptdResetPaletteBtn').addEventListener('click', resetPaletteToDefaults);
+
+      // ── Export palette as binary .nxp ────────────────────────────────────
+      function exportPaletteNxp() {
+        const out = new Uint8Array(512);
+        for (let i = 0; i < 256; i++) {
+          out[i]       = NEXT_COLORS[i].palLo & 0xFF;
+          out[256 + i] = NEXT_COLORS[i].palHi & 0xFF;
+        }
+        const blob = new Blob([out], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href=url; a.download=`${sanitizeLabel(state.screenName,'screen')}_palette.nxp`; a.click();
+        URL.revokeObjectURL(url);
+        const s = el('ptdPaletteIOStatus');
+        if (s) { s.classList.remove('hidden'); s.textContent = 'Palette exported as binary .nxp (512 bytes).'; }
+        setStatus('Palette exported as .nxp.');
+      }
+      if (el('ptdExportNxpBtn')) el('ptdExportNxpBtn').addEventListener('click', exportPaletteNxp);
+
+      // ── Import palette from binary .nxp ──────────────────────────────────
+      function importPaletteNxp(file) {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          const buf = new Uint8Array(ev.target.result);
+          if (buf.length < 512) {
+            const s = el('ptdPaletteIOStatus');
+            if (s) { s.classList.remove('hidden'); s.textContent = `NXP import failed: file too small (${buf.length} B, need 512).`; }
+            setStatus(`NXP import failed: ${buf.length} B, need 512.`);
+            return;
+          }
+          if (!_ptdWorkingPalette) ptdSnapshotPalette();
+          for (let i = 0; i < 256; i++) {
+            ptdSetWorkingEntry(i, buf[i], buf[256 + i]);
+          }
+          ptdRenderPreview();
+          if (_ptdActiveTab === 'palette') ptdRenderPalGrid();
+          const s = el('ptdPaletteIOStatus');
+          if (s) { s.classList.remove('hidden'); s.textContent = `NXP imported from ${file.name} (click Apply to confirm).`; }
+          setStatus(`NXP imported — click Apply to confirm.`);
+        };
+        reader.readAsArrayBuffer(file);
+      }
+      if (el('ptdImportNxpInput')) el('ptdImportNxpInput').addEventListener('change', e => {
+        const f = e.target.files && e.target.files[0];
+        if (f) importPaletteNxp(f);
+        e.target.value = '';
+      });
+
+
+
       // Layer controls
+      el('layerTransformCancelBtn').addEventListener('click', closeLayerTransformDialog);
+      el('layerTransformCloseBtn').addEventListener('click', closeLayerTransformDialog);
+      el('layerTransformApplyBtn').addEventListener('click', applyLayerTransformDialog);
+      el('layerTransformResetBtn').addEventListener('click', () => {
+        el('layerTransformAngle').value = '0';
+        el('layerTransformAngleRange').value = '0';
+        el('layerTransformScaleX').value = '1';
+        el('layerTransformScaleY').value = '1';
+        el('layerTransformScaleXRange').value = '1';
+        el('layerTransformScaleYRange').value = '1';
+        setLayerTransformAttrsMode('preserve');
+        const session = state.layerTransformSession;
+        if (session) { session.panX = 0; session.panY = 0; session.pannedSource = null; session.snap8 = true; el('layerTransformSnap8Btn').classList.add('on'); }
+        syncLayerTransformControls();
+        updateLayerTransformPreview();
+      });
+      // ── Preview canvas pan (drag to reposition layer) ──────────────────────
+      (() => {
+        const canvas = el('layerTransformPreviewCanvas');
+        let dragging = false, startClientX = 0, startClientY = 0, startPanX = 0, startPanY = 0;
+        // canvas CSS width vs ZX canvas pixel resolution (256×192 logical)
+        function canvasScale() {
+          return canvas.width / canvas.getBoundingClientRect().width;
+        }
+        function applySnap(val) {
+          const session = state.layerTransformSession;
+          if (!session || !session.snap8) return val;
+          return Math.round(val / 8) * 8;
+        }
+        canvas.addEventListener('pointerdown', e => {
+          if (e.button !== 0 && e.pointerType !== 'touch') return;
+          const session = state.layerTransformSession;
+          if (!session) return;
+          e.preventDefault();
+          canvas.setPointerCapture(e.pointerId);
+          canvas.classList.add('panning');
+          dragging = true;
+          startClientX = e.clientX;
+          startClientY = e.clientY;
+          startPanX = session.panX || 0;
+          startPanY = session.panY || 0;
+        });
+        canvas.addEventListener('pointermove', e => {
+          if (!dragging) return;
+          const session = state.layerTransformSession;
+          if (!session) return;
+          const scale = canvasScale();
+          const rawDx = Math.round((e.clientX - startClientX) * scale);
+          const rawDy = Math.round((e.clientY - startClientY) * scale);
+          session.panX = applySnap(startPanX + rawDx);
+          session.panY = applySnap(startPanY + rawDy);
+          updateLayerTransformPreview();
+        });
+        const stopPan = () => {
+          if (!dragging) return;
+          dragging = false;
+          canvas.classList.remove('panning');
+          // Final snap on release
+          const session = state.layerTransformSession;
+          if (session) {
+            session.panX = applySnap(session.panX);
+            session.panY = applySnap(session.panY);
+            updateLayerTransformPreview();
+          }
+        };
+        canvas.addEventListener('pointerup', stopPan);
+        canvas.addEventListener('pointercancel', stopPan);
+        // Snap toggle button
+        el('layerTransformSnap8Btn').addEventListener('click', () => {
+          const session = state.layerTransformSession;
+          if (!session) return;
+          session.snap8 = !session.snap8;
+          el('layerTransformSnap8Btn').classList.toggle('on', session.snap8);
+          if (session.snap8) {
+            // Snap current pan to grid immediately
+            session.panX = Math.round(session.panX / 8) * 8;
+            session.panY = Math.round(session.panY / 8) * 8;
+            updateLayerTransformPreview();
+          }
+        });
+      })();
+      el('layerTransformUniformBtn').addEventListener('click', () => {
+        const session = state.layerTransformSession;
+        if (!session) return;
+        session.uniform = !session.uniform;
+        el('layerTransformUniformBtn').classList.toggle('on', !!session.uniform);
+        syncLayerTransformControls('layerTransformScaleX');
+        updateLayerTransformPreview();
+      });
+      ['layerTransformAngle', 'layerTransformAngleRange', 'layerTransformScaleX', 'layerTransformScaleY', 'layerTransformScaleXRange', 'layerTransformScaleYRange'].forEach(id => {
+        el(id).addEventListener('input', (ev) => {
+          const session = state.layerTransformSession;
+          if (!session) return;
+          syncLayerTransformControls(ev.target.id);
+          updateLayerTransformPreview();
+        });
+        el(id).addEventListener('change', (ev) => {
+          const session = state.layerTransformSession;
+          if (!session) return;
+          syncLayerTransformControls(ev.target.id);
+          updateLayerTransformPreview();
+        });
+      });
+      document.querySelectorAll('[data-transform-angle]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (!state.layerTransformSession) return;
+          el('layerTransformAngle').value = btn.getAttribute('data-transform-angle') || '0';
+          syncLayerTransformControls('layerTransformAngle');
+          updateLayerTransformPreview();
+        });
+      });
+      document.querySelectorAll('[data-transform-scale]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (!state.layerTransformSession) return;
+          const v = btn.getAttribute('data-transform-scale') || '1';
+          el('layerTransformScaleX').value = v;
+          el('layerTransformScaleY').value = v;
+          syncLayerTransformControls('layerTransformScaleX');
+          updateLayerTransformPreview();
+        });
+      });
+      ['layerTransformAttrsPreserveBtn', 'layerTransformAttrsIgnoreBtn'].forEach(id => {
+        el(id).addEventListener('click', () => {
+          if (!state.layerTransformSession) return;
+          setLayerTransformAttrsMode(el(id).getAttribute('data-attrs-mode'));
+          updateLayerTransformPreview();
+        });
+      });
+      el('layerTransformBackdrop').addEventListener('click', (e) => { if (e.target === el('layerTransformBackdrop')) closeLayerTransformDialog(); });
+
       el('addLayerBtn').addEventListener('click', () => {
         pushHistory();
         const layer = createLayer(`Layer ${state.layers.length + 1}`, false);
@@ -10121,6 +12374,39 @@ UDG codes: 144..164`);
       function fontMaskPointerDown(e) { if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return; if (!state.font.autoMask) return; const p = fontPointerPos(e, fontMaskEditCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; e.preventDefault(); pushFontHistory(); glyph.mask = glyph.mask ? new Uint8Array(glyph.mask) : getEffectiveFontMask(glyph); state.font.maskDrag = { erase: e.button === 2 }; glyph.mask[p.y * state.font.width + p.x] = e.button === 2 ? 0 : 1; renderFontAll(); }
       function fontMaskPointerMove(e) { if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return; if (!state.font.maskDrag || !state.font.autoMask) return; const p = fontPointerPos(e, fontMaskEditCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; glyph.mask[p.y * state.font.width + p.x] = state.font.maskDrag.erase ? 0 : 1; renderFontAll(); }
       function fontMaskPointerUp() { state.font.maskDrag = null; }
+      // ── Canvas resize handle ────────────────────────────────────────────────
+      (() => {
+        const handle = el('canvasResizeHandle');
+        const wrap = el('screenCanvasWrap');
+        if (!handle || !wrap) return;
+        let dragging = false, startY = 0, startH = 0;
+        const MIN_H = 100, MAX_H = 1200;
+
+        handle.addEventListener('pointerdown', e => {
+          if (e.button !== 0) return;
+          e.preventDefault();
+          handle.setPointerCapture(e.pointerId);
+          dragging = true;
+          startY = e.clientY;
+          startH = wrap.getBoundingClientRect().height;
+          document.body.style.cursor = 'ns-resize';
+        });
+        handle.addEventListener('pointermove', e => {
+          if (!dragging) return;
+          const dy = e.clientY - startY;
+          const newH = Math.max(MIN_H, Math.min(MAX_H, startH + dy));
+          wrap.style.height = newH + 'px';
+          wrap.style.overflow = 'auto';
+        });
+        const stopDrag = () => {
+          if (!dragging) return;
+          dragging = false;
+          document.body.style.cursor = '';
+        };
+        handle.addEventListener('pointerup', stopDrag);
+        handle.addEventListener('pointercancel', stopDrag);
+      })();
+
       // ── Init ────────────────────────────────────────────────────────────────
       function init() {
         const layer = createLayer('Layer 1', true);
