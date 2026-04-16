@@ -25,6 +25,103 @@
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
+    /* ── THEME: Compact ─────────────────────────────────────────────────────── */
+    /* Goal: narrower side panels so the 3-column layout fits on smaller screens */
+    [data-theme="compact"] {
+      --bg: #0d1117;
+      --panel: #161b22;
+      --panel-2: #1c2230;
+      --panel-3: #111519;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-2: #1f3d6e;
+      --ok: #3fb950;
+      --warn: #d29922;
+      --danger: #f85149;
+      --shadow: 0 4px 8px rgba(0, 0, 0, .4);
+      --radius: 8px;
+      --radius-sm: 5px;
+      font-size: 12px;
+    }
+    /* Tighter spacing everywhere */
+    [data-theme="compact"] .app { gap: 6px; padding: 8px; }
+    [data-theme="compact"] .topbar { padding: 4px 0; }
+    [data-theme="compact"] .brand h1 { font-size: 15px; }
+    [data-theme="compact"] .brand .sub { display: none; }
+    [data-theme="compact"] .panel-header { padding: 6px 10px; }
+    [data-theme="compact"] .panel-header h2,
+    [data-theme="compact"] .panel-header h3 { font-size: 11px; }
+    [data-theme="compact"] .panel-body { padding: 6px 8px; gap: 4px; }
+    [data-theme="compact"] .tab-btn,
+    [data-theme="compact"] button,
+    [data-theme="compact"] .button-like { padding: 4px 8px; font-size: 11px; min-height: 26px; }
+    [data-theme="compact"] .badge { font-size: 10px; padding: 2px 6px; }
+    [data-theme="compact"] .panel { border-radius: 8px; }
+    [data-theme="compact"] label { font-size: 11px; gap: 2px; }
+    [data-theme="compact"] input,
+    [data-theme="compact"] select { padding: 3px 6px; font-size: 11px; }
+    /* ── NARROWER SIDE COLUMNS — this is the key layout change ── */
+    [data-theme="compact"] .workspace {
+      grid-template-columns: 230px minmax(0, 1fr) 240px;
+      gap: 6px;
+    }
+    [data-theme="compact"] .sprite-layout {
+      grid-template-columns: 250px minmax(0, 1fr) 340px;
+      gap: 6px;
+    }
+    [data-theme="compact"] .font-layout {
+      grid-template-columns: 240px minmax(0, 1fr) 340px;
+      gap: 6px;
+    }
+    /* Sprite right panel: the glyph grid can have smaller cells */
+    [data-theme="compact"] .font-glyph-cell { width: 20px !important; height: 20px !important; }
+
+    /* ── THEME: Light ───────────────────────────────────────────────────────── */
+
+    /* ── THEME SWITCHER WIDGET ───────────────────────────────────────────────── */
+    .theme-switcher {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px 5px;
+    }
+    .theme-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px !important;
+      border: 1px solid transparent !important;
+      background: transparent !important;
+      padding: 0 !important;
+      font-size: 15px;
+      min-height: unset !important;
+      cursor: pointer;
+      transition: background .12s, border-color .12s;
+      title: attr(title);
+    }
+    .theme-btn:hover {
+      background: rgba(255,255,255,.12) !important;
+      border-color: var(--border) !important;
+      transform: none;
+    }
+    .theme-btn.active-theme {
+      background: var(--accent-2) !important;
+      border-color: var(--accent) !important;
+    }
+
+    [data-theme="compact"] .theme-switcher {
+      border-radius: 4px;
+      padding: 2px 4px;
+    }
+    [data-theme="compact"] .theme-btn { width: 22px; height: 22px; font-size: 12px; }
+
     * {
       box-sizing: border-box;
     }
@@ -1485,7 +1582,8 @@
     }
 
     #fontPreviewCanvas,
-    #fontMaskPreviewCanvas {
+    #fontMaskPreviewCanvas,
+    #fontMaskCompositeCanvas {
       border: 1px solid var(--border);
       background: #000;
       border-radius: 12px;
@@ -1782,6 +1880,25 @@
     }
 
     @media (max-width: 760px) {
+      /* Reset compact theme overrides on mobile — mobile styles take full priority */
+      [data-theme="compact"] .tab-btn,
+      [data-theme="compact"] button,
+      [data-theme="compact"] .button-like {
+        padding: 8px 10px;
+        font-size: 13px;
+        min-height: 38px;
+        border-radius: 10px;
+      }
+      [data-theme="compact"] .panel-header { padding: 14px 16px; }
+      [data-theme="compact"] .panel-header h2,
+      [data-theme="compact"] .panel-header h3 { font-size: 16px; }
+      [data-theme="compact"] .panel-body { padding: 14px 16px; gap: 10px; }
+      [data-theme="compact"] .app { gap: 10px; padding: 10px; }
+      [data-theme="compact"] .brand h1 { font-size: 20px; }
+      [data-theme="compact"] .brand .sub { display: block; }
+      [data-theme="compact"] label { font-size: inherit; gap: inherit; }
+      [data-theme="compact"] input,
+      [data-theme="compact"] select { padding: inherit; font-size: inherit; }
       body {
         overflow-x: hidden;
       }
@@ -2051,6 +2168,57 @@
       }
     }
 
+    /* Compact / light-compact theme: keep 3 columns until 1200px */
+    @media (min-width: 981px) and (max-width: 1620px) {
+      [data-theme="compact"] .workspace,
+      .workspace {
+        grid-template-columns: 230px minmax(0, 1fr) 240px;
+      }
+      [data-theme="compact"] .right-col,
+      .right-col {
+        grid-column: auto;
+      }
+      [data-theme="compact"] .sprite-layout,
+      .sprite-layout {
+        grid-template-columns: 250px minmax(0, 1fr) 340px;
+      }
+      [data-theme="compact"] .sprite-right,
+      [data-theme="compact"] .font-right,
+      .sprite-right,
+      .font-right {
+        grid-column: auto;
+      }
+      [data-theme="compact"] .font-layout,
+      .font-layout {
+        grid-template-columns: 240px minmax(0, 1fr) 340px;
+      }
+    }
+    /* Compact / light-compact: collapse to 2 columns at 1200px */
+    @media (max-width: 1200px) {
+      [data-theme="compact"] .workspace,
+      .workspace {
+        grid-template-columns: 230px minmax(0, 1fr);
+      }
+      [data-theme="compact"] .right-col,
+      .right-col {
+        grid-column: 1 / -1;
+      }
+      [data-theme="compact"] .sprite-layout,
+      .sprite-layout {
+        grid-template-columns: 250px minmax(0, 1fr);
+      }
+      [data-theme="compact"] .sprite-right,
+      [data-theme="compact"] .font-right,
+      .sprite-right,
+      .font-right {
+        grid-column: 1 / -1;
+      }
+      [data-theme="compact"] .font-layout,
+      .font-layout {
+        grid-template-columns: 240px minmax(0, 1fr);
+      }
+    }
+
     @media (max-width: 980px) {
 
       .workspace,
@@ -2060,6 +2228,74 @@
       }
     }
   </style>
+  <script>
+    // ── Theme switcher — global scope, runs before IIFE ──────────────────────
+    const _THEMES = ['', 'compact'];
+    const _THEME_BTNS = { '': 'themeDefault', 'compact': 'themeCompact' };
+    // Breakpoint: compact keeps 3 columns down to 1200px; default collapses at 1620px
+    // Auto-select compact when window is too narrow for default's 3-column layout
+    // but wide enough to still benefit (above 980px = not mobile)
+    const _COMPACT_BREAKPOINT = 1620;
+    const _MOBILE_BREAKPOINT  = 980;
+
+    function setTheme(name, saveToStorage) {
+      if (saveToStorage === undefined) saveToStorage = true;
+      document.documentElement.setAttribute('data-theme', name);
+      if (saveToStorage) localStorage.setItem('zxpp_theme', name);
+      _THEMES.forEach(function(t) {
+        var btn = document.getElementById(_THEME_BTNS[t]);
+        if (btn) btn.classList.toggle('active-theme', t === name);
+      });
+      var autoBtn = document.getElementById('themeAuto');
+      if (autoBtn) autoBtn.classList.toggle('active-theme', !localStorage.getItem('zxpp_theme_manual'));
+    }
+
+    function autoTheme() {
+      if (localStorage.getItem('zxpp_theme_manual')) return;
+      var w = window.innerWidth;
+      // On mobile (<= 980px) always use default — compact styles would break mobile layout
+      setTheme((w > _MOBILE_BREAKPOINT && w < _COMPACT_BREAKPOINT) ? 'compact' : '', false);
+      var autoBtn = document.getElementById('themeAuto');
+      if (autoBtn) autoBtn.classList.add('active-theme');
+    }
+
+    // Apply theme immediately on load (before DOMContentLoaded) to avoid flash
+    (function() {
+      var manual = localStorage.getItem('zxpp_theme_manual');
+      var saved  = localStorage.getItem('zxpp_theme') || '';
+      var w = window.innerWidth;
+      var auto = (w > _MOBILE_BREAKPOINT && w < _COMPACT_BREAKPOINT) ? 'compact' : '';
+      var theme = (manual && _THEMES.includes(saved)) ? saved : auto;
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+
+    // After DOM ready: sync buttons + watch resize
+    document.addEventListener('DOMContentLoaded', function() {
+      var manual = localStorage.getItem('zxpp_theme_manual');
+      var saved  = localStorage.getItem('zxpp_theme') || '';
+      var w = window.innerWidth;
+      var auto = (w > _MOBILE_BREAKPOINT && w < _COMPACT_BREAKPOINT) ? 'compact' : '';
+      var theme = (manual && _THEMES.includes(saved)) ? saved : auto;
+      setTheme(theme, false);
+      // Highlight auto button when in auto mode
+      var autoBtn = document.getElementById('themeAuto');
+      if (autoBtn) autoBtn.classList.toggle('active-theme', !manual);
+
+      // Manual override: when user clicks a button, lock it
+      document.querySelectorAll('.theme-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          localStorage.setItem('zxpp_theme_manual', '1');
+        });
+      });
+
+      // Watch resize — only auto-switch if not manually overridden
+      var resizeTimer;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(autoTheme, 150);
+      });
+    });
+  </script>
 </head>
 
 <body>
@@ -2078,6 +2314,11 @@
           <button id="modeScreenBtn" class="tab-btn active">Screen Editor</button>
           <button id="modeSpriteBtn" class="tab-btn">Sprite Editor</button>
           <button id="modeFontBtn" class="tab-btn">Font Editor</button>
+        </div>
+        <div class="theme-switcher" title="Switch theme">
+          <button class="theme-btn" id="themeDefault" title="Dark — full layout" onclick="setTheme(''); localStorage.setItem('zxpp_theme_manual','1')">🌙</button>
+          <button class="theme-btn" id="themeCompact" title="Compact — narrower columns" onclick="setTheme('compact'); localStorage.setItem('zxpp_theme_manual','1')">⚡</button>
+          <button class="theme-btn" id="themeAuto" title="Auto — switch by window width" onclick="localStorage.removeItem('zxpp_theme_manual'); autoTheme()">🔄</button>
         </div>
         <button id="newsBtn" class="news-btn">What's new</button>
         <button id="aboutBtn" class="about-btn">About</button>
@@ -2255,6 +2496,8 @@
               style="padding:3px 8px;font-size:12px;min-height:unset">1×1</button>
             <button id="grid8Btn" class="toggle-btn on"
               style="padding:3px 8px;font-size:12px;min-height:unset">8×8</button>
+            <button id="grid16Btn" class="toggle-btn"
+              style="padding:3px 8px;font-size:12px;min-height:unset">16×16</button>
           </div>
 
           <!-- Next preview adjustments — těsně pod slidery, jen v Next módu -->
@@ -2805,6 +3048,11 @@
             </svg>Help</a>
         </div>
         <div class="panel-body stack">
+          <div id="fontMaskCompositePreviewWrap" class="section hidden">
+            <div class="smallcaps">Mask fit preview</div>
+            <canvas id="fontMaskCompositeCanvas" width="180" height="180"></canvas>
+            <div class="sprite-mask-composite-note">Cihly = pozadí, přes masku se schová podklad a pak se vykreslí glyf.</div>
+          </div>
           <div class="preview-pair">
             <div class="stack">
               <div class="smallcaps">Glyph preview</div>
@@ -4315,7 +4563,7 @@
         fontName: 'font_1',
         asmFormat: 'bin',  // default binary
         spriteAsmPreviewMode: 'all',
-        layers: [], activeLayerId: null, tool: 'pencil', screenMode: 'classic', nextInkColor: 255, nextPaperColor: 0, nextBrightness: 0, nextContrast: 0, nextSaturation: 0, ink: 7, paper: 0, bright: false, flash: false, zoom: 3, showGrid: false, showAttrGrid: false, showAttrs: true, gridManualOff: false, attrGridManualOff: false,
+        layers: [], activeLayerId: null, tool: 'pencil', screenMode: 'classic', nextInkColor: 255, nextPaperColor: 0, nextBrightness: 0, nextContrast: 0, nextSaturation: 0, ink: 7, paper: 0, bright: false, flash: false, zoom: 3, showGrid: false, showAttrGrid: false, showGrid16: false, showAttrs: true, gridManualOff: false, attrGridManualOff: false, grid16ManualOff: true,
         brushSize: 1, spraySize: 4, sprayDensity: 20, attributesOnly: false, transparentPaper: false, transparentPaperMode: 'smart', selection: null, clipboard: null, textValue: 'ZX', textFont: 'builtin5x7', textBold: false, textItalic: false, textAngle: 0, textScale: 1,
         textObjects: [], activeTextId: null, textEditingId: null, status: 'Ready.', importOverlay: null, ditherMode: 'solid', ditherAmount: 160, history: [], future: [], drag: null, hoverPixel: null, hoverLayerId: null, renameLayerId: null, renameSpriteFrameIndex: null, transformLayerId: null, layerTransformSession: null, moveSnap8: false,
         floatingSelection: null,  // { pixels, attrs, attrsW, attrsH, x, y, w, h }
@@ -4355,6 +4603,7 @@
         drawBrushPreview(screenCtx, state.hoverPixel);
         if (!state.gridManualOff && (state.showGrid || state.zoom >= 8)) { drawContrastGrid(screenCtx, screenCanvas.width, screenCanvas.height, state.zoom, state.zoom, false); }
         if (!state.attrGridManualOff && (state.showAttrGrid || state.zoom >= 4)) { drawContrastGrid(screenCtx, screenCanvas.width, screenCanvas.height, 8 * state.zoom, 8 * state.zoom, true); }
+        if (!state.grid16ManualOff && state.showGrid16) { drawContrastGrid(screenCtx, screenCanvas.width, screenCanvas.height, 16 * state.zoom, 16 * state.zoom, true); }
       }
       const screenTextEditor = el('screenTextEditor');
       const spriteCanvas = el('spriteCanvas'), spriteCtx = spriteCanvas.getContext('2d');
@@ -4365,6 +4614,7 @@
       const fontMaskEditCanvas = el('fontMaskEditCanvas'), fontMaskEditCtx = fontMaskEditCanvas.getContext('2d');
       const fontPreviewCanvas = el('fontPreviewCanvas'), fontPreviewCtx = fontPreviewCanvas.getContext('2d');
       const fontMaskPreviewCanvas = el('fontMaskPreviewCanvas'), fontMaskPreviewCtx = fontMaskPreviewCanvas.getContext('2d');
+      const fontMaskCompositeCanvas = el('fontMaskCompositeCanvas'), fontMaskCompositeCtx = fontMaskCompositeCanvas.getContext('2d');
 
       function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
       function isNextScreenMode() { return state.screenMode === 'next'; }
@@ -4800,6 +5050,7 @@
 
       const CHANGELOG_PAGE_SIZE = 8;
       const changelogItems = [
+        { date: '2026-04-16', text: "The Font Editor displays a \"Mask fit preview\". A 16x16 grid option has been added to the Screen Editor." },
         { date: '2026-04-15', text: "Palette tools in the Next section. Option to redefine the palette for Next and classic ZX Spectrum images. A new \"Transform Layer\" tool has been added, along with numerous bug fixes and many minor improvements. Updated Sprite Editor (48k/128k) – added a preview with a mask." },
         { date: '2026-04-13', text: "Option to use the Fill tool on a selection." },
         { date: '2026-04-12', text: 'First public release.' },
@@ -4876,7 +5127,7 @@
           <div class="about-dialog">
             <div class="about-hero">
               <div class="about-kicker">ZX graphics studio</div>
-              <h3 class="about-title">ZX PixelPaste 1.0a</h3>
+              <h3 class="about-title">ZX PixelPaste</h3>
               <p class="about-lead">A graphics studio for the <strong>ZX Spectrum 48k/128k</strong> and <strong>ZX Spectrum Next</strong>, designed for easy creation of screens, sprites, fonts, and exports for yours projects.</p>
             </div>
             <div class="about-grid">
@@ -6603,6 +6854,7 @@
         drawBrushPreview(screenCtx, state.drag && state.drag.type !== 'selection' ? state.drag.current : state.hoverPixel);
         if (!state.gridManualOff && (state.showGrid || state.zoom >= 8)) { drawContrastGrid(screenCtx, screenCanvas.width, screenCanvas.height, state.zoom, state.zoom, false); }
         if (!state.attrGridManualOff && (state.showAttrGrid || state.zoom >= 4)) { drawContrastGrid(screenCtx, screenCanvas.width, screenCanvas.height, 8 * state.zoom, 8 * state.zoom, true); }
+        if (!state.grid16ManualOff && state.showGrid16) { drawContrastGrid(screenCtx, screenCanvas.width, screenCanvas.height, 16 * state.zoom, 16 * state.zoom, true); }
       }
 
 
@@ -7360,7 +7612,7 @@
         }
         ctx.restore();
       }
-      function updateToggleButtons() { if (el('attributesOnlyBtn')) el('attributesOnlyBtn').className = 'toggle-btn' + (state.attributesOnly ? ' on' : ''); if (el('transparentPaperBtn')) el('transparentPaperBtn').className = 'toggle-btn transparent-paper-swatch' + (state.transparentPaper ? ' on' : ''); updateTransparentPaperModeUI(); updateScreenModeUI(); el('grid1Btn').className = 'toggle-btn' + ((!state.gridManualOff && (state.showGrid || state.zoom >= 8)) ? ' on' : ''); el('grid8Btn').className = 'toggle-btn' + ((!state.attrGridManualOff && (state.showAttrGrid || state.zoom >= 4)) ? ' on' : ''); el('showAttrsBtn').className = 'toggle-btn' + (state.showAttrs ? ' on' : ''); }
+      function updateToggleButtons() { if (el('attributesOnlyBtn')) el('attributesOnlyBtn').className = 'toggle-btn' + (state.attributesOnly ? ' on' : ''); if (el('transparentPaperBtn')) el('transparentPaperBtn').className = 'toggle-btn transparent-paper-swatch' + (state.transparentPaper ? ' on' : ''); updateTransparentPaperModeUI(); updateScreenModeUI(); el('grid1Btn').className = 'toggle-btn' + ((!state.gridManualOff && (state.showGrid || state.zoom >= 8)) ? ' on' : ''); el('grid8Btn').className = 'toggle-btn' + ((!state.attrGridManualOff && (state.showAttrGrid || state.zoom >= 4)) ? ' on' : ''); el('grid16Btn').className = 'toggle-btn' + ((!state.grid16ManualOff && state.showGrid16) ? ' on' : ''); el('showAttrsBtn').className = 'toggle-btn' + (state.showAttrs ? ' on' : ''); }
       function isMoveSelectionToolActive() { return state.tool === 'moveSelection'; }
       function updateSelectionActionButtons() {
         const moveBtn = el('moveSelectionBtn');
@@ -9650,7 +9902,7 @@ attr grid: ${aw}x${ah}` : ''}`);
         state.zoom = clamp(newZoom, 1, 24);
         // Reset manual-off flags when zoom drops below the auto-trigger threshold
         if (state.zoom < 8 && oldZoom >= 8) state.gridManualOff = false;
-        if (state.zoom < 4 && oldZoom >= 4) state.attrGridManualOff = false;
+        if (state.zoom < 4 && oldZoom >= 4 && !(!state.grid16ManualOff && state.showGrid16)) state.attrGridManualOff = false;
         updateZoomBadge();
         renderAll();
       }
@@ -9821,6 +10073,18 @@ attr grid: ${aw}x${ah}` : ''}`);
           state.attrGridManualOff = true; state.showAttrGrid = false;
         } else {
           state.attrGridManualOff = false; state.showAttrGrid = true;
+          // vypnout 16×16
+          state.grid16ManualOff = true; state.showGrid16 = false;
+        }
+        renderAll();
+      });
+      el('grid16Btn').addEventListener('click', () => {
+        if (!state.grid16ManualOff && state.showGrid16) {
+          state.grid16ManualOff = true; state.showGrid16 = false;
+        } else {
+          state.grid16ManualOff = false; state.showGrid16 = true;
+          // vypnout 8×8
+          state.attrGridManualOff = true; state.showAttrGrid = false;
         }
         renderAll();
       });
@@ -12045,7 +12309,41 @@ attr grid: ${aw}x${ah}` : ''}`);
       function renderFontGlyphGrid() { const host = el('fontGlyphGrid'); host.innerHTML = ''; ensureFontGlyphs(); currentFontGlyphs().forEach((glyph, idx) => { const tile = document.createElement('div'); tile.className = 'glyph-tile' + (idx === state.font.activeGlyph ? ' active' : ''); tile.addEventListener('click', () => { state.font.activeGlyph = idx; renderFontAll(); }); const thumb = document.createElement('canvas'); thumb.width = 48; thumb.height = 48; const ctx = thumb.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.fillStyle = '#000'; ctx.fillRect(0, 0, 48, 48); const scale = Math.max(1, Math.floor(40 / Math.max(state.font.width, state.font.height))); const ox = Math.floor((48 - state.font.width * scale) / 2), oy = Math.floor((48 - state.font.height * scale) / 2); ctx.fillStyle = '#fff'; for (let y = 0; y < state.font.height; y++) for (let x = 0; x < state.font.width; x++) if (glyph.pixels[y * state.font.width + x]) ctx.fillRect(ox + x * scale, oy + y * scale, scale, scale); tile.appendChild(thumb); const meta = document.createElement('div'); meta.className = 'glyph-meta'; meta.textContent = `${glyph.label} / ${glyph.code}`; tile.appendChild(meta); host.appendChild(tile); }); }
       function renderFontCanvas() { const z = state.font.zoom, w = state.font.width, h = state.font.height, glyph = activeFontGlyph(); fontCanvas.width = w * z; fontCanvas.height = h * z; fontCtx.imageSmoothingEnabled = false; fontCtx.clearRect(0, 0, fontCanvas.width, fontCanvas.height); for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { fontCtx.fillStyle = glyph.pixels[y * w + x] ? '#fff' : '#111'; fontCtx.fillRect(x * z, y * z, z, z); } if (state.font.showGrid) { drawContrastGrid(fontCtx, fontCanvas.width, fontCanvas.height, z, z, false); } }
       function renderFontMaskEditCanvas() { const section = el('fontMaskEditSection'), label = el('fontMaskEditLabel'), glyph = activeFontGlyph(); if (!state.font.autoMask) { section.classList.add('hidden'); fontMaskEditCanvas.width = 0; fontMaskEditCanvas.height = 0; return; } section.classList.remove('hidden'); const z = state.font.zoom, w = state.font.width, h = state.font.height, mask = getEffectiveFontMask(glyph); fontMaskEditCanvas.width = w * z; fontMaskEditCanvas.height = h * z; fontMaskEditCtx.imageSmoothingEnabled = false; fontMaskEditCtx.clearRect(0, 0, fontMaskEditCanvas.width, fontMaskEditCanvas.height); for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { fontMaskEditCtx.fillStyle = mask[y * w + x] ? '#fff' : '#1a1a1a'; fontMaskEditCtx.fillRect(x * z, y * z, z, z); } if (state.font.showGrid) { drawContrastGrid(fontMaskEditCtx, fontMaskEditCanvas.width, fontMaskEditCanvas.height, z, z, false); } label.textContent = glyph.mask ? 'Mask (manual)' : 'Mask (auto)'; label.style.color = glyph.mask ? '#ffb84d' : ''; }
-      function renderFontPreview() { const glyph = activeFontGlyph(), size = 180, scale = Math.max(2, Math.floor(size / Math.max(state.font.width, state.font.height))); const ox = Math.floor((size - state.font.width * scale) / 2), oy = Math.floor((size - state.font.height * scale) / 2); fontPreviewCtx.imageSmoothingEnabled = false; fontPreviewCtx.clearRect(0, 0, size, size); fontPreviewCtx.fillStyle = '#000'; fontPreviewCtx.fillRect(0, 0, size, size); fontPreviewCtx.fillStyle = '#fff'; for (let y = 0; y < state.font.height; y++) for (let x = 0; x < state.font.width; x++) if (glyph.pixels[y * state.font.width + x]) fontPreviewCtx.fillRect(ox + x * scale, oy + y * scale, scale, scale); const wrap = el('fontMaskPreviewWrap'), label = el('fontMaskPreviewLabel'); if (!state.font.autoMask) { wrap.classList.add('mask-disabled'); label.textContent = 'Mask disabled'; fontMaskPreviewCtx.clearRect(0, 0, size, size); fontMaskPreviewCtx.fillStyle = '#000'; fontMaskPreviewCtx.fillRect(0, 0, size, size); return; } wrap.classList.remove('mask-disabled'); label.textContent = glyph.mask ? 'Mask (manual)' : 'Mask (auto)'; const mask = getEffectiveFontMask(glyph); fontMaskPreviewCtx.clearRect(0, 0, size, size); fontMaskPreviewCtx.fillStyle = '#000'; fontMaskPreviewCtx.fillRect(0, 0, size, size); fontMaskPreviewCtx.fillStyle = '#fff'; for (let y = 0; y < state.font.height; y++) for (let x = 0; x < state.font.width; x++) if (mask[y * state.font.width + x]) fontMaskPreviewCtx.fillRect(ox + x * scale, oy + y * scale, scale, scale); }
+      function drawFontMaskCompositeToCanvas(ctx, glyph, size) {
+        const w = state.font.width, h = state.font.height;
+        const scale = Math.max(2, Math.floor(size / Math.max(w, h)));
+        const ox = Math.floor((size - w * scale) / 2), oy = Math.floor((size - h * scale) / 2);
+        const mask = getEffectiveFontMask(glyph);
+        ctx.imageSmoothingEnabled = false;
+        ctx.clearRect(0, 0, size, size);
+        // cihlové pozadí (stejné jako sprite editor)
+        ctx.fillStyle = '#2a140d';
+        ctx.fillRect(0, 0, size, size);
+        const brickW = Math.max(12, Math.floor(scale * 2));
+        const brickH = Math.max(8, Math.floor(scale));
+        for (let y = 0; y < size; y += brickH) {
+          const offset = ((Math.floor(y / brickH) & 1) ? Math.floor(brickW / 2) : 0);
+          for (let x = -offset; x < size; x += brickW) {
+            ctx.fillStyle = ((Math.floor(y / brickH) + Math.floor((x + offset) / brickW)) & 1) ? '#a86443' : '#8f5238';
+            ctx.fillRect(x, y, brickW - 1, brickH - 1);
+          }
+        }
+        // průhledná díra přes masku
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+          if (mask[y * w + x]) {
+            ctx.fillStyle = '#05070b';
+            ctx.fillRect(ox + x * scale, oy + y * scale, scale, scale);
+          }
+        }
+        // bílé pixely glyfu
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+          if (glyph.pixels[y * w + x]) {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(ox + x * scale, oy + y * scale, scale, scale);
+          }
+        }
+      }
+      function renderFontPreview() { const glyph = activeFontGlyph(), size = 180, scale = Math.max(2, Math.floor(size / Math.max(state.font.width, state.font.height))); const ox = Math.floor((size - state.font.width * scale) / 2), oy = Math.floor((size - state.font.height * scale) / 2); fontPreviewCtx.imageSmoothingEnabled = false; fontPreviewCtx.clearRect(0, 0, size, size); fontPreviewCtx.fillStyle = '#000'; fontPreviewCtx.fillRect(0, 0, size, size); fontPreviewCtx.fillStyle = '#fff'; for (let y = 0; y < state.font.height; y++) for (let x = 0; x < state.font.width; x++) if (glyph.pixels[y * state.font.width + x]) fontPreviewCtx.fillRect(ox + x * scale, oy + y * scale, scale, scale); const wrap = el('fontMaskPreviewWrap'), label = el('fontMaskPreviewLabel'); const compositeWrap = el('fontMaskCompositePreviewWrap'); if (!state.font.autoMask) { wrap.classList.add('mask-disabled'); label.textContent = 'Mask disabled'; fontMaskPreviewCtx.clearRect(0, 0, size, size); fontMaskPreviewCtx.fillStyle = '#000'; fontMaskPreviewCtx.fillRect(0, 0, size, size); compositeWrap.classList.add('hidden'); fontMaskCompositeCtx.clearRect(0, 0, size, size); return; } wrap.classList.remove('mask-disabled'); label.textContent = glyph.mask ? 'Mask (manual)' : 'Mask (auto)'; const mask = getEffectiveFontMask(glyph); fontMaskPreviewCtx.clearRect(0, 0, size, size); fontMaskPreviewCtx.fillStyle = '#000'; fontMaskPreviewCtx.fillRect(0, 0, size, size); fontMaskPreviewCtx.fillStyle = '#fff'; for (let y = 0; y < state.font.height; y++) for (let x = 0; x < state.font.width; x++) if (mask[y * state.font.width + x]) fontMaskPreviewCtx.fillRect(ox + x * scale, oy + y * scale, scale, scale); compositeWrap.classList.remove('hidden'); drawFontMaskCompositeToCanvas(fontMaskCompositeCtx, glyph, size); }
       function generateFontAsmPreview() {
         ensureFontGlyphs();
         const labelBase = sanitizeLabel(state.fontName, 'font');
@@ -12367,13 +12665,15 @@ UDG codes: 144..164`);
       function renderFontAll() { ensureFontGlyphs(); const g = activeFontGlyph(); if (!g) return; el('fontSizeBadge').textContent = `${state.font.width}×${state.font.height}`; el('fontActiveGlyphBadge').textContent = `${g.label} / ${g.code}`; updateFontToggleButtons(); renderFontGlyphGrid(); renderFontCanvas(); renderFontMaskEditCanvas(); renderFontPreview(); refreshFontAsmPreview(); }
       function syncFontControls() { el('fontWidthInput').value = state.font.width; el('fontHeightInput').value = state.font.height; el('fontZoomRange').value = state.font.zoom; el('fontNameInput').value = state.fontName; }
       function fontPointerPos(e, canvas, w, h, z) { const r = canvas.getBoundingClientRect(); const x = Math.floor((e.clientX - r.left) / z), y = Math.floor((e.clientY - r.top) / z); if (x < 0 || y < 0 || x >= w || y >= h) return null; return { x, y }; }
-      function fontPointerDownCore(e) { if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return; const p = fontPointerPos(e, fontCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; e.preventDefault(); pushFontHistory(); state.font.drag = { erase: e.button === 2 }; glyph.pixels[p.y * state.font.width + p.x] = e.button === 2 ? 0 : 1; renderFontAll(); }
+      function fontPointerDownCore(e) { if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return; const p = fontPointerPos(e, fontCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; e.preventDefault(); pushFontHistory(); state.font.drag = { erase: e.button === 2 }; _lastFontDrawPx = p; glyph.pixels[p.y * state.font.width + p.x] = e.button === 2 ? 0 : 1; renderFontCanvas(); }
       function fontPointerDown(e) { if (e.pointerType === 'touch') { if (isGestureActiveFor(e.target)) { clearPendingTouchDraw('font'); return; } queuePendingTouchDraw('font', e); return; } fontPointerDownCore(e); }
-      function fontPointerMove(e) { if (e.pointerType === 'touch') { if (isGestureActiveFor(e.target)) { clearPendingTouchDraw('font'); return; } if (pendingTouchDraw.font && shouldStartPendingTouchDraw('font', e)) flushPendingTouchDraw('font', fontPointerDownCore); } if (!state.font.drag) return; const p = fontPointerPos(e, fontCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; glyph.pixels[p.y * state.font.width + p.x] = state.font.drag.erase ? 0 : 1; renderFontAll(); }
-      function fontPointerUp(e) { if (e?.pointerType === 'touch') { if (isGestureActiveFor(e.target)) { clearPendingTouchDraw('font'); state.font.drag = null; return; } if (!commitPendingTouchTap('font', e, fontPointerDownCore)) clearPendingTouchDraw('font'); } state.font.drag = null; }
-      function fontMaskPointerDown(e) { if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return; if (!state.font.autoMask) return; const p = fontPointerPos(e, fontMaskEditCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; e.preventDefault(); pushFontHistory(); glyph.mask = glyph.mask ? new Uint8Array(glyph.mask) : getEffectiveFontMask(glyph); state.font.maskDrag = { erase: e.button === 2 }; glyph.mask[p.y * state.font.width + p.x] = e.button === 2 ? 0 : 1; renderFontAll(); }
-      function fontMaskPointerMove(e) { if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return; if (!state.font.maskDrag || !state.font.autoMask) return; const p = fontPointerPos(e, fontMaskEditCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; glyph.mask[p.y * state.font.width + p.x] = state.font.maskDrag.erase ? 0 : 1; renderFontAll(); }
-      function fontMaskPointerUp() { state.font.maskDrag = null; }
+      let _lastFontDrawPx = null;
+      function fontPointerMove(e) { if (e.pointerType === 'touch') { if (isGestureActiveFor(e.target)) { clearPendingTouchDraw('font'); return; } if (pendingTouchDraw.font && shouldStartPendingTouchDraw('font', e)) flushPendingTouchDraw('font', fontPointerDownCore); } if (!state.font.drag) return; const p = fontPointerPos(e, fontCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; const erase = state.font.drag.erase; if (_lastFontDrawPx) { let { x: x0, y: y0 } = _lastFontDrawPx, { x: x1, y: y1 } = p; const dx = Math.abs(x1 - x0), dy = Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1; let err = dx - dy; while (true) { glyph.pixels[y0 * state.font.width + x0] = erase ? 0 : 1; if (x0 === x1 && y0 === y1) break; const e2 = 2 * err; if (e2 > -dy) { err -= dy; x0 += sx; } if (e2 < dx) { err += dx; y0 += sy; } } } else { glyph.pixels[p.y * state.font.width + p.x] = erase ? 0 : 1; } _lastFontDrawPx = p; renderFontCanvas(); }
+      function fontPointerUp(e) { if (e?.pointerType === 'touch') { if (isGestureActiveFor(e.target)) { clearPendingTouchDraw('font'); state.font.drag = null; _lastFontDrawPx = null; return; } if (!commitPendingTouchTap('font', e, fontPointerDownCore)) clearPendingTouchDraw('font'); } state.font.drag = null; _lastFontDrawPx = null; renderFontAll(); }
+      function fontMaskPointerDown(e) { if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return; if (!state.font.autoMask) return; const p = fontPointerPos(e, fontMaskEditCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; e.preventDefault(); pushFontHistory(); glyph.mask = glyph.mask ? new Uint8Array(glyph.mask) : getEffectiveFontMask(glyph); state.font.maskDrag = { erase: e.button === 2 }; _lastFontMaskDrawPx = p; glyph.mask[p.y * state.font.width + p.x] = e.button === 2 ? 0 : 1; renderFontMaskEditCanvas(); }
+      let _lastFontMaskDrawPx = null;
+      function fontMaskPointerMove(e) { if (e.pointerType === 'touch' && isGestureActiveFor(e.target)) return; if (!state.font.maskDrag || !state.font.autoMask) return; const p = fontPointerPos(e, fontMaskEditCanvas, state.font.width, state.font.height, state.font.zoom), glyph = activeFontGlyph(); if (!p || !glyph) return; const erase = state.font.maskDrag.erase; if (_lastFontMaskDrawPx) { let { x: x0, y: y0 } = _lastFontMaskDrawPx, { x: x1, y: y1 } = p; const dx = Math.abs(x1 - x0), dy = Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1; let err = dx - dy; while (true) { glyph.mask[y0 * state.font.width + x0] = erase ? 0 : 1; if (x0 === x1 && y0 === y1) break; const e2 = 2 * err; if (e2 > -dy) { err -= dy; x0 += sx; } if (e2 < dx) { err += dx; y0 += sy; } } } else { glyph.mask[p.y * state.font.width + p.x] = erase ? 0 : 1; } _lastFontMaskDrawPx = p; renderFontMaskEditCanvas(); }
+      function fontMaskPointerUp() { _lastFontMaskDrawPx = null; if (state.font.maskDrag) { state.font.maskDrag = null; renderFontAll(); } }
       // ── Canvas resize handle ────────────────────────────────────────────────
       (() => {
         const handle = el('canvasResizeHandle');
@@ -12406,6 +12706,8 @@ UDG codes: 144..164`);
         handle.addEventListener('pointerup', stopDrag);
         handle.addEventListener('pointercancel', stopDrag);
       })();
+
+      // theme switcher is global — see window.setTheme defined before this IIFE
 
       // ── Init ────────────────────────────────────────────────────────────────
       function init() {

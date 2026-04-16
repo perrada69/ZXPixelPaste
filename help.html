@@ -139,7 +139,11 @@
         <nav class="toc panel">
           <h2>Contents</h2>
           <ul>
-            <li><a href="#en-basics">1. General basics</a></li>
+            <li><a href="#en-basics">1. General basics</a>
+              <div class="sub">
+                <a href="#en-basics-theme">Theme switcher</a>
+              </div>
+            </li>
             <li><a href="#en-screen">2. Screen Editor</a>
               <div class="sub">
                 <a href="#en-screen-top">Top controls</a>
@@ -206,8 +210,21 @@
                 <tr><td>Layer 2</td><td>ZX Spectrum Next full-color screen mode — 256×192, 256-color indexed palette, no attribute grid.</td></tr>
                 <tr><td>NXI</td><td>Next screen file format: 49152 bytes of pixel data + optional 512-byte palette.</td></tr>
                 <tr><td>SL2</td><td>Alternative Next Layer 2 binary format (raw pixel data only, no header).</td></tr>
+                <tr><td>Theme switcher</td><td>Three buttons in the top-right of the header bar (🌙 / ⚡ / 🔄) that control the visual theme and layout density. See <em>General basics → Theme switcher</em> below.</td></tr>
               </tbody>
             </table>
+
+            <h3 id="en-basics-theme">Theme switcher</h3>
+            <p>The three buttons in the header bar let you control the application's visual theme and the layout density of the three-column workspace:</p>
+            <table>
+              <thead><tr><th>Button</th><th>Theme</th><th>Effect</th></tr></thead>
+              <tbody>
+                <tr><td>🌙 <strong>Dark</strong></td><td>Default dark theme</td><td>Full-width side columns (left 320 px, right 340 px). The right column collapses below the canvas at viewports narrower than 1620 px.</td></tr>
+                <tr><td>⚡ <strong>Compact</strong></td><td>Dark compact theme</td><td>Narrower side columns (left 230 px, right 240 px), reduced padding and font sizes. The three-column layout holds until the viewport is narrower than 1200 px — useful on smaller monitors or lower resolutions.</td></tr>
+                <tr><td>🔄 <strong>Auto</strong></td><td>Automatic</td><td>The theme is chosen automatically based on the current window width: <em>Dark</em> at ≥ 1620 px, <em>Compact</em> between 981–1619 px, and <em>Dark</em> again below 981 px (mobile). The selection updates live as you resize the window.</td></tr>
+              </tbody>
+            </table>
+            <div class="tip"><strong>Manual override:</strong> clicking 🌙 or ⚡ locks that theme regardless of window width. Clicking 🔄 removes the lock and re-enables automatic switching. The chosen theme is remembered in <code>localStorage</code> between sessions.</div>
           </section>
 
           <section id="en-screen" class="panel">
@@ -254,7 +271,7 @@
                 <tr><td><strong>Dither len.</strong></td><td>Controls the fade-out distance of the Dither tool stroke.</td><td>Higher values produce a longer gradient trail.</td></tr>
                 <tr><td><strong>Dither mode</strong></td><td>Selects the dither pattern: Solid, Checker, Sparse, or Radial.</td><td>Choose from the dropdown next to the Dither length slider.</td></tr>
                 <tr><td><strong>Attr Only</strong></td><td>Edits only the 32×24 attribute map (classic mode only).</td><td>Use for recoloring without changing bitmap pixels. <strong>Left-click</strong> writes the current INK+PAPER. <strong>Right-click</strong> writes with INK and PAPER <em>swapped</em> — useful for quickly inverting a cell's colors without changing the editor palette.</td></tr>
-                <tr><td><strong>1×1 / 8×8</strong></td><td>Grid overlays (classic mode only).</td><td>Use 1×1 for pixel precision and 8×8 for attribute planning.</td></tr>
+                <tr><td><strong>1×1 / 8×8 / 16×16</strong></td><td>Grid overlays (classic mode only). <strong>1×1</strong> shows individual pixel boundaries. <strong>8×8</strong> shows attribute cell boundaries (the ZX 8×8 color constraint grid). <strong>16×16</strong> shows a coarser 16×16 pixel grid — handy when designing sprites or tiles intended for ZX Spectrum Next, where hardware sprites are 16×16 pixels.</td><td>Toggle each overlay independently. 16×16 is off by default.</td></tr>
                 <tr><td><strong>Canvas resize handle</strong></td><td>A thin drag strip located immediately <em>below</em> the canvas area. Drag it up or down to change the visible height of the canvas viewport (range: 100–1200 px). Useful on smaller screens or when working at high zoom levels where the canvas would otherwise scroll out of view.</td><td>Hover over the strip (a horizontal bar appears) and drag vertically.</td></tr>
               </tbody>
             </table>
@@ -549,8 +566,12 @@
                 <tr><td><strong>Glyph tools</strong></td><td>Shift and rotate the active glyph or the entire set; load ZX 8×8; import ROM/CH8/ASM-like input.</td></tr>
                 <tr><td><strong>Character set</strong></td><td>Switch between standard printable characters and UDGs.</td></tr>
                 <tr><td><strong>Glyph canvas</strong></td><td>Main glyph editor. Left-click draws; right-click erases.</td></tr>
-                <tr><td><strong>Mask editor</strong></td><td>Works like sprite mask editing when mask mode is enabled.</td></tr>
+                <tr><td><strong>Mask editor</strong></td><td>Works like sprite mask editing when mask mode is enabled. Manual edits override the auto-generated mask until you restore it with <strong>↺ Auto</strong>.</td></tr>
+                <tr><td><strong>Mask fit preview</strong></td><td>Visible when mask mode is on. Shows a composited preview of the active glyph rendered over a checkerboard background using the AND/OR mask technique — the same way a classic ZX sprite routine would draw the character. The checkerboard represents arbitrary background pixels. Use this to verify that the mask correctly hides the background around the glyph edges.</td></tr>
+                <tr><td><strong>Glyph preview</strong></td><td>Enlarged view of the active glyph at the current zoom.</td></tr>
+                <tr><td><strong>Mask preview</strong></td><td>Shows the current mask bitmap for the active glyph alongside the glyph preview.</td></tr>
                 <tr><td><strong>Preview / Export</strong></td><td>Large preview, mask preview, ASM preview, plus BIN/ASM import-export for both font and UDG sets.</td></tr>
+                <tr><td><strong>Download ZX Routines</strong></td><td>Generates a ready-to-use Z80 assembly file with <code>DrawFontGlyph</code> (and optionally <code>DrawFontGlyphMasked</code>) routines tailored to the current font dimensions.</td></tr>
                 <tr><td><strong>Use in Screen Editor</strong></td><td>Select <em>Font editor</em> from the Text tool's font dropdown to render screen text using the currently edited font.</td></tr>
               </tbody>
             </table>
@@ -683,7 +704,7 @@
               <li>Export in BIN or ASM format.</li>
             </ol>
 
-            <p class="footer">This help page reflects the current interface including: Next Layer 2 screen mode (NXI/SL2/L2 import-export), Next 8bpp sprite mode (SPR export, multi-tile large sprites), classic↔Next conversion (including automatic text color conversion), Transparent PAPER, layer renaming, INK ⇄ PAPER swapping, Bresenham interpolation in all drawing tools, continuous spray, live text layers with drag handle and inline color editing, dithering with multiple patterns, image import and Next→Classic conversion with Ordered Bayer dithering (strength slider, 2×2/4×4/8×8 matrix, brightness/contrast/saturation pre-processing, live before/after preview), Attr Only right-click INK↔PAPER swap, project loading progress overlay, Transform Layer dialog (rotation, scale, pan, Snap 8×8, attribute behaviour, live preview), and canvas resize handle.</p>
+            <p class="footer">This help page reflects the current interface including: Next Layer 2 screen mode (NXI/SL2/L2 import-export), Next 8bpp sprite mode (SPR export, multi-tile large sprites), classic↔Next conversion (including automatic text color conversion), Transparent PAPER, layer renaming, INK ⇄ PAPER swapping, Bresenham interpolation in all drawing tools, continuous spray, live text layers with drag handle and inline color editing, dithering with multiple patterns, image import and Next→Classic conversion with Ordered Bayer dithering (strength slider, 2×2/4×4/8×8 matrix, brightness/contrast/saturation pre-processing, live before/after preview), Attr Only right-click INK↔PAPER swap, project loading progress overlay, Transform Layer dialog (rotation, scale, pan, Snap 8×8, attribute behaviour, live preview), canvas resize handle, <strong>16×16 grid overlay</strong> in Screen Editor, <strong>Mask fit preview</strong> in Font Editor, and <strong>automatic theme switching</strong> (Dark / Compact / Auto, stored in localStorage).</p>
           </section>
         </main>
       </div>
@@ -695,7 +716,11 @@
         <nav class="toc panel">
           <h2>Obsah</h2>
           <ul>
-            <li><a href="#cz-basics">1. Základní přehled</a></li>
+            <li><a href="#cz-basics">1. Základní přehled</a>
+              <div class="sub">
+                <a href="#cz-basics-theme">Přepínač témat</a>
+              </div>
+            </li>
             <li><a href="#cz-screen">2. Screen Editor</a>
               <div class="sub">
                 <a href="#cz-screen-top">Horní ovládání</a>
@@ -762,8 +787,21 @@
                 <tr><td>Layer 2</td><td>Plnobarevný režim obrazovky ZX Spectrum Next — 256×192, 256barevná indexovaná paleta, bez atributové mřížky.</td></tr>
                 <tr><td>NXI</td><td>Next formát obrazovky: 49152 bajtů pixelových dat + volitelná 512bajtová paleta.</td></tr>
                 <tr><td>SL2</td><td>Alternativní Next Layer 2 formát (jen surová pixelová data, bez hlavičky).</td></tr>
+                <tr><td>Přepínač témat</td><td>Tři tlačítka v pravé části záhlaví (🌙 / ⚡ / 🔄) pro změnu vizuálního tématu a hustoty layoutu. Viz <em>Základní přehled → Přepínač témat</em> níže.</td></tr>
               </tbody>
             </table>
+
+            <h3 id="cz-basics-theme">Přepínač témat</h3>
+            <p>Tři tlačítka v záhlaví ovládají vizuální téma aplikace a hustotu třísloupového layoutu pracovní plochy:</p>
+            <table>
+              <thead><tr><th>Tlačítko</th><th>Téma</th><th>Efekt</th></tr></thead>
+              <tbody>
+                <tr><td>🌙 <strong>Dark</strong></td><td>Výchozí tmavé téma</td><td>Plná šířka postranních sloupců (levý 320 px, pravý 340 px). Pravý sloupec se přesune pod canvas při šířce okna menší než 1620 px.</td></tr>
+                <tr><td>⚡ <strong>Compact</strong></td><td>Kompaktní tmavé téma</td><td>Užší postranní sloupce (levý 230 px, pravý 240 px), menší padding a velikosti písma. Třísloupový layout se zachová až do šířky okna 1200 px — vhodné pro menší monitory nebo nižší rozlišení.</td></tr>
+                <tr><td>🔄 <strong>Auto</strong></td><td>Automatické</td><td>Téma se volí automaticky podle šířky okna: <em>Dark</em> při ≥ 1620 px, <em>Compact</em> pro 981–1619 px a <em>Dark</em> pod 981 px (mobil). Výběr se aktualizuje živě při změně velikosti okna.</td></tr>
+              </tbody>
+            </table>
+            <div class="tip"><strong>Ruční přepnutí:</strong> kliknutím na 🌙 nebo ⚡ se téma uzamkne bez ohledu na šířku okna. Kliknutím na 🔄 se zámek odstraní a automatické přepínání se obnoví. Zvolené téma se ukládá do <code>localStorage</code> mezi relacemi.</div>
           </section>
 
           <section id="cz-screen" class="panel">
@@ -810,7 +848,7 @@
                 <tr><td><strong>Dither len.</strong></td><td>Řídí vzdálenost, na které dithering postupně doznívá.</td><td>Vyšší hodnota = delší přechodový efekt.</td></tr>
                 <tr><td><strong>Dither mód</strong></td><td>Vybírá vzor ditheringu: Solid, Checker, Sparse nebo Radial.</td><td>Vyber z rozbalovacího menu vedle slideru.</td></tr>
                 <tr><td><strong>Attr Only</strong></td><td>Upravuje jen atributovou mapu 32×24 (jen klasický mód).</td><td>Použij pro přebarvení bez změny bitmapy. <strong>Levé tlačítko</strong> zapíše aktuální INK+PAPER. <strong>Pravé tlačítko</strong> zapíše atribut s <em>prohozeným INK a PAPER</em> — hodí se pro rychlé otočení barev buňky bez změny nastavení editoru.</td></tr>
-                <tr><td><strong>1×1 / 8×8</strong></td><td>Mřížky (jen klasický mód).</td><td>1×1 pro přesné pixely, 8×8 pro plánování atributů.</td></tr>
+                <tr><td><strong>1×1 / 8×8 / 16×16</strong></td><td>Mřížky (jen klasický mód). <strong>1×1</strong> zobrazuje hranice jednotlivých pixelů. <strong>8×8</strong> zobrazuje hranice atributových buněk (ZX barevné omezení). <strong>16×16</strong> zobrazuje hrubší 16×16 mřížku — hodí se při návrhu spritů nebo dlaždic pro ZX Spectrum Next, kde má hardwarový sprite vždy 16×16 pixelů.</td><td>Každou mřížku lze zapnout/vypnout nezávisle. 16×16 je ve výchozím stavu vypnutá.</td></tr>
                 <tr><td><strong>Posuvník výšky canvasu</strong></td><td>Tenký táhnutelný proužek umístěný těsně <em>pod</em> canvasem. Tažením nahoru nebo dolů měníš viditelnou výšku výřezu canvasu (rozsah: 100–1200 px). Hodí se na menších obrazovkách nebo při vysokém přiblížení, kdy by canvas jinak „přetékl" mimo viditelnou oblast.</td><td>Najeď na proužek (objeví se vodorovný pruh) a táhni svisle.</td></tr>
               </tbody>
             </table>
@@ -1105,8 +1143,12 @@
                 <tr><td><strong>Glyph tools</strong></td><td>Posuny a rotace aktivního znaku nebo celé sady, načtení ZX 8×8 a import ROM/CH8/ASM.</td></tr>
                 <tr><td><strong>Character set</strong></td><td>Přepínání mezi standardní znakovou sadou a UDG.</td></tr>
                 <tr><td><strong>Glyph canvas</strong></td><td>Hlavní editor znaku. Levé tlačítko kreslí, pravé maže.</td></tr>
-                <tr><td><strong>Mask editor</strong></td><td>Při zapnuté masce funguje podobně jako u spritů.</td></tr>
+                <tr><td><strong>Mask editor</strong></td><td>Při zapnuté masce funguje podobně jako u spritů. Ruční úpravy masky přepíší automaticky generovanou, dokud ji neobnovíš tlačítkem <strong>↺ Auto</strong>.</td></tr>
+                <tr><td><strong>Mask fit preview</strong></td><td>Zobrazuje se, když je zapnutá maska. Ukazuje složený náhled aktivního znaku vykresleného přes šachovnicové pozadí technikou AND/OR masky — stejně, jak by znak vykreslila klasická ZX rutina. Šachovnice představuje libovolné pozadí. Slouží k ověření, že maska správně zakrývá pozadí kolem okrajů znaku.</td></tr>
+                <tr><td><strong>Glyph preview</strong></td><td>Zvětšený náhled aktivního znaku v aktuálním zoomu.</td></tr>
+                <tr><td><strong>Mask preview</strong></td><td>Zobrazuje bitmapovou masku aktivního znaku vedle náhledu znaku.</td></tr>
                 <tr><td><strong>Preview / Export</strong></td><td>Velký náhled, náhled masky, ASM preview a import/export BIN/ASM pro font i UDG.</td></tr>
+                <tr><td><strong>Download ZX Routines</strong></td><td>Vygeneruje hotový Z80 assembly soubor s rutinami <code>DrawFontGlyph</code> (a volitelně <code>DrawFontGlyphMasked</code>) přizpůsobenými aktuálním rozměrům fontu.</td></tr>
                 <tr><td><strong>Použití ve Screen Editoru</strong></td><td>Ve Screen Editoru vyber <em>Font editor</em> z rozbalovacího menu Font v panelu textového nástroje pro vykreslování textu aktuálně editovaným fontem.</td></tr>
               </tbody>
             </table>
@@ -1238,7 +1280,7 @@
               <li>Exportuj do BIN nebo ASM.</li>
             </ol>
 
-            <p class="footer">Tato nápověda odpovídá aktuální verzi rozhraní včetně: Next Layer 2 screen módu (import/export NXI/SL2/L2), Next 8bpp sprite módu (SPR export, víceblokové velké sprity), konverze Classic↔Next (včetně automatické konverze barev textu), Transparent PAPER, přejmenování vrstev, prohazování INK ⇄ PAPER, Bresenhamovy interpolace ve všech kreslicích nástrojích, kontinuálního spraeje, živých textových vrstev s uškem pro tažení a přímou editací barev, ditheringu s více vzory, importu obrázků a konverze Next→Classic s Ordered Bayer ditheringem (slider síly, matice 2×2/4×4/8×8, předúprava jasem/kontrastem/saturací, živý náhled před/po), prohazování INK↔PAPER pravým tlačítkem v režimu Attr Only a ukazatele průběhu při načítání projektu.</p>
+            <p class="footer">Tato nápověda odpovídá aktuální verzi rozhraní včetně: Next Layer 2 screen módu (import/export NXI/SL2/L2), Next 8bpp sprite módu (SPR export, víceblokové velké sprity), konverze Classic↔Next (včetně automatické konverze barev textu), Transparent PAPER, přejmenování vrstev, prohazování INK ⇄ PAPER, Bresenhamovy interpolace ve všech kreslicích nástrojích, kontinuálního spraeje, živých textových vrstev s uškem pro tažení a přímou editací barev, ditheringu s více vzory, importu obrázků a konverze Next→Classic s Ordered Bayer ditheringem (slider síly, matice 2×2/4×4/8×8, předúprava jasem/kontrastem/saturací, živý náhled před/po), prohazování INK↔PAPER pravým tlačítkem v režimu Attr Only, ukazatele průběhu při načítání projektu, dialogu Transform Layer (rotace, měřítko, posun, Snap 8×8, chování atributů, živý náhled), tažení okraje canvasu, <strong>mřížky 16×16</strong> ve Screen Editoru, <strong>Mask fit preview</strong> ve Font Editoru a <strong>automatického přepínání témat</strong> (Dark / Compact / Auto, uloženo v localStorage).</p>
           </section>
         </main>
       </div>
