@@ -1089,6 +1089,57 @@
       line-height: 1;
     }
 
+    /* ── Layer context menu (3-dots) ─────────────────────────────────────────── */
+    .layer-menu-btn {
+      padding: 2px 7px;
+      min-height: unset;
+      font-size: 15px;
+      line-height: 1;
+      letter-spacing: 1px;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background .12s, color .12s, border-color .12s;
+    }
+    .layer-menu-btn:hover {
+      background: var(--panel-2);
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .layer-ctx-menu {
+      position: fixed;
+      z-index: 9999;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 8px 24px rgba(0,0,0,.45);
+      min-width: 180px;
+      padding: 4px 0;
+      display: none;
+    }
+    .layer-ctx-menu.open { display: block; }
+    .layer-ctx-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 14px;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .1s;
+    }
+    .layer-ctx-item:hover { background: var(--panel-2); }
+    .layer-ctx-item .ctx-icon { width: 16px; text-align: center; font-size: 14px; flex-shrink: 0; }
+    .layer-ctx-sep { height: 1px; background: var(--border); margin: 3px 0; }
+    .layer-ctx-item.danger { color: var(--danger); }
+
+    [data-theme="compact"] .layer-menu-btn { font-size: 13px; padding: 1px 5px; }
+    [data-theme="compact"] .layer-ctx-item { font-size: 11px; padding: 5px 11px; }
+
     .rename-dialog {
       max-width: 420px;
     }
@@ -2299,6 +2350,40 @@
 </head>
 
 <body>
+  <!-- ── Preloader / Splash ─────────────────────────────────────────────────── -->
+  <div id="zxSplash" style="
+    position:fixed;inset:0;z-index:99999;
+    background:#090b10;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:0;font-family:Inter,system-ui,sans-serif;
+    transition:opacity .5s ease;
+  ">
+    <!-- ZX Spectrum colour stripes -->
+    <div style="display:flex;width:320px;height:8px;border-radius:4px;overflow:hidden;margin-bottom:28px;box-shadow:0 0 24px rgba(0,0,0,.6)">
+      <div style="flex:1;background:#0000d7"></div>
+      <div style="flex:1;background:#d70000"></div>
+      <div style="flex:1;background:#d700d7"></div>
+      <div style="flex:1;background:#00d700"></div>
+      <div style="flex:1;background:#00d7d7"></div>
+      <div style="flex:1;background:#d7d700"></div>
+      <div style="flex:1;background:#d7d7d7"></div>
+    </div>
+    <!-- Logo -->
+    <div style="font-size:38px;font-weight:800;letter-spacing:-1px;color:#eef3ff;line-height:1">
+      ZX <span style="color:#5d8dff">Pixel</span><span style="color:#4caf50">Paste</span>
+    </div>
+    <div style="font-size:13px;color:#9ea8ba;margin-top:8px;letter-spacing:.5px">ZX Spectrum Graphics Studio</div>
+    <!-- Author -->
+    <div style="font-size:11px;color:#5a6478;margin-top:28px;letter-spacing:.3px">
+      Coded by <span style="color:#5d8dff;font-weight:600">Shrek / MB Maniax</span>
+    </div>
+    <!-- Loading bar -->
+    <div style="width:220px;height:3px;background:#1a2030;border-radius:2px;margin-top:24px;overflow:hidden">
+      <div id="zxSplashBar" style="height:100%;width:0;background:linear-gradient(90deg,#5d8dff,#4caf50);border-radius:2px;transition:width .15s ease"></div>
+    </div>
+    <div id="zxSplashStatus" style="font-size:11px;color:#3a4a60;margin-top:8px;min-height:16px">Initializing…</div>
+  </div>
+
   <div class="app">
     <div class="topbar">
       <div class="brand">
@@ -4250,6 +4335,105 @@
   </div>
 
 
+  <!-- ── Layer Dither Export Dialog ────────────────────────────────────────── -->
+  <div id="layerDitherBackdrop" class="dialog-backdrop">
+    <div class="dialog conv-dialog">
+      <div class="dialog-header">
+        <strong id="layerDitherTitle">Dither layer</strong>
+      </div>
+      <div class="dialog-body" style="gap:14px;">
+        <div class="conv-layout">
+          <!-- LEFT: preview -->
+          <div class="conv-preview-wrap">
+            <div class="conv-preview-label-row">
+              <div class="conv-preview-label">Preview</div>
+              <div class="conv-view-switch" role="group" aria-label="Preview layout">
+                <button type="button" class="conv-view-btn active" data-conv-view="split">Split</button>
+                <button type="button" class="conv-view-btn" data-conv-view="result-only">Result only</button>
+                <button type="button" class="conv-view-btn" data-conv-view="source-only">Source only</button>
+              </div>
+            </div>
+            <div class="conv-preview-canvases" data-conv-title="Dither layer">
+              <div class="conv-preview-col" data-view-col="source">
+                <div class="conv-preview-sublabel">Original</div>
+                <canvas id="ldSrcCanvas" class="conv-canvas"></canvas>
+              </div>
+              <div class="conv-preview-col" data-view-col="result">
+                <div class="conv-preview-sublabel conv-preview-sublabel-row"><span>Result</span><span id="ldSpinner" class="conv-preview-spinner-inline">(working…)</span></div>
+                <canvas id="ldDstCanvas" class="conv-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+          <!-- RIGHT: controls -->
+          <div class="conv-controls">
+            <div class="conv-section">
+              <div class="conv-section-title">Method</div>
+              <div class="conv-radio-group">
+                <label class="conv-radio-opt">
+                  <input type="radio" name="ldMethod" value="dither" checked style="margin-top:2px;flex-shrink:0;">
+                  <div class="conv-radio-opt-text">
+                    <span class="conv-radio-opt-title">Colour dithering</span>
+                    <span class="conv-radio-opt-desc">Ordered Bayer dithering — simulates mid-tones using ZX colour pairs per cell.</span>
+                    <div id="ldDitherExtra" class="conv-dither-extra">
+                      <div class="conv-slider-row">
+                        <div class="conv-slider-label">Dither strength <span id="ldStrengthVal" class="conv-slider-val">70%</span></div>
+                        <input type="range" id="ldDitherStrength" min="0" max="100" value="70">
+                      </div>
+                      <div class="conv-slider-row">
+                        <div class="conv-slider-label">Matrix</div>
+                        <select id="ldDitherMatrix" style="min-height:30px;padding:4px 8px;font-size:12px;">
+                          <option value="bayer4">Bayer 4×4 (recommended)</option>
+                          <option value="bayer2">Bayer 2×2 (finer)</option>
+                          <option value="bayer8">Bayer 8×8 (coarser)</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+                <label class="conv-radio-opt">
+                  <input type="radio" name="ldMethod" value="bw" style="margin-top:2px;flex-shrink:0;">
+                  <div class="conv-radio-opt-text">
+                    <span class="conv-radio-opt-title">B&amp;W dithering</span>
+                    <span class="conv-radio-opt-desc">Monochrome — white ink on black paper. Uses the same dither controls above.</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="conv-section">
+              <div class="conv-section-title">Image adjustments</div>
+              <div class="conv-slider-row">
+                <div class="conv-slider-label">Brightness <span id="ldBrightnessVal" class="conv-slider-val">0</span></div>
+                <input type="range" id="ldBrightness" min="-100" max="100" value="0">
+              </div>
+              <div class="conv-slider-row">
+                <div class="conv-slider-label">Contrast <span id="ldContrastVal" class="conv-slider-val">0</span></div>
+                <input type="range" id="ldContrast" min="-100" max="100" value="0">
+              </div>
+              <div class="conv-slider-row">
+                <div class="conv-slider-label">Saturation <span id="ldSaturationVal" class="conv-slider-val">0</span></div>
+                <input type="range" id="ldSaturation" min="-100" max="100" value="0">
+              </div>
+              <div class="row" style="padding-top:4px;">
+                <button id="ldAutoAdjustBtn" type="button">Auto tune</button>
+              </div>
+            </div>
+            <div class="confirm-btns" style="margin-top:auto;padding-top:4px;">
+              <button id="ldCancelBtn">Cancel</button>
+              <button id="ldOkBtn" class="primary">Apply to layer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ── Layer context menu (floating) ──────────────────────────────────────── -->
+  <div id="layerCtxMenu" class="layer-ctx-menu">
+    <div class="layer-ctx-item" id="ctxRename"><span class="ctx-icon">✎</span>Rename</div>
+    <div class="layer-ctx-item" id="ctxTransform"><span class="ctx-icon">⟳</span>Transform</div>
+    <div class="layer-ctx-sep"></div>
+    <div class="layer-ctx-item" id="ctxDither"><span class="ctx-icon">⬡</span>Dither export…</div>
+  </div>
+
   <div id="loadingOverlay"
     style="display:none;position:fixed;inset:0;z-index:200;background:rgba(9,11,16,.82);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
     <div
@@ -5050,7 +5234,7 @@
 
       const CHANGELOG_PAGE_SIZE = 8;
       const changelogItems = [
-        { date: '2026-04-16', text: "The Font Editor displays a \"Mask fit preview\". A 16x16 grid option has been added to the Screen Editor." },
+        { date: '2026-04-16', text: "The Font Editor displays a \"Mask fit preview\". A 16x16 grid option has been added to the Screen Editor. Option to convert the layer to dithering." },
         { date: '2026-04-15', text: "Palette tools in the Next section. Option to redefine the palette for Next and classic ZX Spectrum images. A new \"Transform Layer\" tool has been added, along with numerous bug fixes and many minor improvements. Updated Sprite Editor (48k/128k) – added a preview with a mask." },
         { date: '2026-04-13', text: "Option to use the Fill tool on a selection." },
         { date: '2026-04-12', text: 'First public release.' },
@@ -7499,23 +7683,17 @@
 
             const actions = document.createElement('div');
             actions.className = 'layer-actions';
-            const renameBtn = document.createElement('button');
-            renameBtn.className = 'mini-btn layer-rename-btn';
-            renameBtn.type = 'button';
-            renameBtn.title = `Rename ${layer.name}`;
-            renameBtn.setAttribute('aria-label', `Rename ${layer.name}`);
-            renameBtn.textContent = '✎';
-            renameBtn.addEventListener('click', (e) => { e.stopPropagation(); openRenameLayerDialog(layer); });
-            const transformBtn = document.createElement('button');
-            transformBtn.className = 'mini-btn layer-rename-btn';
-            transformBtn.type = 'button';
-            transformBtn.title = `Transform ${layer.name}`;
-            transformBtn.setAttribute('aria-label', `Transform ${layer.name}`);
-            transformBtn.textContent = '⟳';
-            transformBtn.addEventListener('click', (e) => { e.stopPropagation(); openLayerTransformDialog(layer); });
+            const menuBtn = document.createElement('button');
+            menuBtn.className = 'layer-menu-btn';
+            menuBtn.type = 'button';
+            menuBtn.title = `Options for ${layer.name}`;
+            menuBtn.setAttribute('aria-label', `Options for ${layer.name}`);
+            menuBtn.textContent = '···';
+            menuBtn.dataset.layerMenuBtn = layer.id;
+            menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openLayerCtxMenu(e, layer); });
 
             left.append(vis, badge, name);
-            actions.append(renameBtn, transformBtn);
+            actions.append(menuBtn);
             item.append(left, actions);
 
           } else {
@@ -10598,6 +10776,320 @@ attr grid: ${aw}x${ah}` : ''}`);
         return { brightness: best.brightness, contrast: best.contrast, saturation: best.saturation };
       }
 
+      // ── Layer context menu (3-dots) ─────────────────────────────────────────
+      let _ctxMenuLayer = null;
+      const _ctxMenu = document.getElementById('layerCtxMenu');
+
+      function openLayerCtxMenu(e, layer) {
+        // Toggle: pokud je menu otevřené pro stejnou vrstvu, zavřít
+        if (_ctxMenu.classList.contains('open') && _ctxMenuLayer && _ctxMenuLayer.id === layer.id) {
+          closeLayerCtxMenu();
+          return;
+        }
+        _ctxMenuLayer = layer;
+        const menu = _ctxMenu;
+        const btnRect = e.currentTarget.getBoundingClientRect();
+        menu.style.top = (btnRect.bottom + 4) + 'px';
+        // position so it doesn't go off right edge
+        const menuW = 190;
+        let left = btnRect.right - menuW;
+        if (left < 6) left = 6;
+        menu.style.left = left + 'px';
+        menu.classList.add('open');
+      }
+
+      function closeLayerCtxMenu() {
+        _ctxMenu.classList.remove('open');
+        _ctxMenuLayer = null;
+      }
+
+      document.getElementById('ctxRename').addEventListener('click', () => {
+        const layer = _ctxMenuLayer;
+        closeLayerCtxMenu();
+        if (layer) openRenameLayerDialog(layer);
+      });
+      document.getElementById('ctxTransform').addEventListener('click', () => {
+        const layer = _ctxMenuLayer;
+        closeLayerCtxMenu();
+        if (layer) openLayerTransformDialog(layer);
+      });
+      document.getElementById('ctxDither').addEventListener('click', () => {
+        const layer = _ctxMenuLayer;
+        closeLayerCtxMenu();
+        if (layer) openLayerDitherDialog(layer);
+      });
+
+      // Close on outside click — ale IGNORUJ kliknutí na samotný menuBtn (ten si toggle řeší sám)
+      document.addEventListener('click', (e) => {
+        if (_ctxMenu.classList.contains('open') && !_ctxMenu.contains(e.target) && !e.target.closest('[data-layer-menu-btn]')) {
+          closeLayerCtxMenu();
+        }
+      }, true);
+
+      // ── Layer dither dialog ─────────────────────────────────────────────────
+      // Renders the layer's current pixels as an RGB canvas for the preview
+      // Canvas PRO KONVERZI: průhledné buňky = černá (ne šachovnice), aby dithering
+      // nepočítal šachovnici jako součást obrazu
+      function layerToConvCanvas(layer) {
+        const c = document.createElement('canvas');
+        c.width = ZX_W; c.height = ZX_H;
+        const ctx = c.getContext('2d');
+        const id = ctx.createImageData(ZX_W, ZX_H);
+        const d = id.data;
+        if (!isNextScreenMode()) {
+          const ZX_CLASSIC_PALETTE = [
+            [0,0,0],[0,0,215],[215,0,0],[215,0,215],[0,215,0],[0,215,215],[215,215,0],[215,215,215],
+            [0,0,0],[0,0,255],[255,0,0],[255,0,255],[0,255,0],[0,255,255],[255,255,0],[255,255,255]
+          ];
+          for (let y = 0; y < ZX_H; y++) {
+            for (let x = 0; x < ZX_W; x++) {
+              const i = getIdx(x, y);
+              const ai = Math.floor(y / 8) * ATTR_W + Math.floor(x / 8);
+              const attr = layer.attrs[ai];
+              if (attr === TRANSPARENT_ATTR) {
+                d[i * 4] = 0; d[i * 4 + 1] = 0; d[i * 4 + 2] = 0; d[i * 4 + 3] = 255;
+                continue;
+              }
+              const bright = (attr >> 6) & 1;
+              const inkIdx = (attr & 7) + (bright ? 8 : 0);
+              const paperIdx = ((attr >> 3) & 7) + (bright ? 8 : 0);
+              const on = layer.pixels[i];
+              const col = ZX_CLASSIC_PALETTE[on ? inkIdx : paperIdx];
+              d[i * 4] = col[0]; d[i * 4 + 1] = col[1]; d[i * 4 + 2] = col[2]; d[i * 4 + 3] = 255;
+            }
+          }
+        }
+        ctx.putImageData(id, 0, 0);
+        return c;
+      }
+
+      function layerToRGBCanvas(layer) {
+        const c = document.createElement('canvas');
+        c.width = ZX_W; c.height = ZX_H;
+        const ctx = c.getContext('2d');
+        const id = ctx.createImageData(ZX_W, ZX_H);
+        const d = id.data;
+        if (isNextScreenMode()) {
+          // Next Layer 2: colors array holds palette indices, use the Next palette
+          const pal = state.nextPalette || [];
+          for (let i = 0; i < ZX_W * ZX_H; i++) {
+            const idx = (layer.colors || [])[i] ?? 0;
+            const r3 = (idx >> 5) & 7, g3 = (idx >> 2) & 7, b3 = idx & 3;
+            d[i * 4]     = Math.round(r3 / 7 * 255);
+            d[i * 4 + 1] = Math.round(g3 / 7 * 255);
+            d[i * 4 + 2] = Math.round(b3 / 3 * 255);
+            d[i * 4 + 3] = layer.pixels[i] ? 255 : 0;
+          }
+        } else {
+          const ZX_CLASSIC_PALETTE = [
+            [0,0,0],[0,0,215],[215,0,0],[215,0,215],[0,215,0],[0,215,215],[215,215,0],[215,215,215],
+            [0,0,0],[0,0,255],[255,0,0],[255,0,255],[0,255,0],[0,255,255],[255,255,0],[255,255,255]
+          ];
+          for (let y = 0; y < ZX_H; y++) {
+            for (let x = 0; x < ZX_W; x++) {
+              const i = getIdx(x, y);
+              const ai = Math.floor(y / 8) * ATTR_W + Math.floor(x / 8);
+              const attr = layer.attrs[ai];
+              // Průhledná buňka — zobrazit šachovnici stejně jako v Result preview
+              if (attr === TRANSPARENT_ATTR) {
+                const checker = ((Math.floor(x / 4) + Math.floor(y / 4)) & 1);
+                const v = checker ? 80 : 50;
+                d[i * 4] = v; d[i * 4 + 1] = v; d[i * 4 + 2] = v; d[i * 4 + 3] = 255;
+                continue;
+              }
+              const bright = (attr >> 6) & 1;
+              const inkIdx = (attr & 7) + (bright ? 8 : 0);
+              const paperIdx = ((attr >> 3) & 7) + (bright ? 8 : 0);
+              const on = layer.pixels[i];
+              const col = ZX_CLASSIC_PALETTE[on ? inkIdx : paperIdx];
+              d[i * 4]     = col[0];
+              d[i * 4 + 1] = col[1];
+              d[i * 4 + 2] = col[2];
+              d[i * 4 + 3] = 255;
+            }
+          }
+        }
+        ctx.putImageData(id, 0, 0);
+        return c;
+      }
+
+      // Pomocná funkce: vrátí RGB canvas pro vrstvu se správnou průhledností (šachovnice pro TP)
+      // ale s alpha kanálem pro průhledné buňky = 0 (pro compositing)
+      function layerToRGBCanvasAlpha(layer) {
+        const c = document.createElement('canvas');
+        c.width = ZX_W; c.height = ZX_H;
+        const ctx = c.getContext('2d');
+        const id = ctx.createImageData(ZX_W, ZX_H);
+        const d = id.data;
+        const ZX_CLASSIC_PALETTE = [
+          [0,0,0],[0,0,215],[215,0,0],[215,0,215],[0,215,0],[0,215,215],[215,215,0],[215,215,215],
+          [0,0,0],[0,0,255],[255,0,0],[255,0,255],[0,255,0],[0,255,255],[255,255,0],[255,255,255]
+        ];
+        for (let y = 0; y < ZX_H; y++) {
+          for (let x = 0; x < ZX_W; x++) {
+            const i = getIdx(x, y);
+            const ai = Math.floor(y / 8) * ATTR_W + Math.floor(x / 8);
+            const attr = layer.attrs[ai];
+            if (attr === TRANSPARENT_ATTR) {
+              d[i * 4 + 3] = 0; // průhledné
+              continue;
+            }
+            const bright = (attr >> 6) & 1;
+            const inkIdx = (attr & 7) + (bright ? 8 : 0);
+            const paperIdx = ((attr >> 3) & 7) + (bright ? 8 : 0);
+            const paperTransp = layer.paperTransparent ? layer.paperTransparent[ai] : 0;
+            const on = layer.pixels[i];
+            const explPaper = layer.explicitPaper ? layer.explicitPaper[i] : 0;
+            if (!on && paperTransp && !explPaper) {
+              d[i * 4 + 3] = 0; // průhledný paper
+              continue;
+            }
+            const col = ZX_CLASSIC_PALETTE[on ? inkIdx : paperIdx];
+            d[i * 4]     = col[0];
+            d[i * 4 + 1] = col[1];
+            d[i * 4 + 2] = col[2];
+            d[i * 4 + 3] = 255;
+          }
+        }
+        ctx.putImageData(id, 0, 0);
+        return c;
+      }
+
+      // Vykreslí kompozitní "Original" preview: vrstvy pod + aktivní vrstva + vrstvy nad
+      function buildDitherCompositeOriginal(targetLayerId) {
+        const c = document.createElement('canvas');
+        c.width = ZX_W; c.height = ZX_H;
+        const ctx = c.getContext('2d');
+        // Černé pozadí
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, ZX_W, ZX_H);
+        // Vrstvy ve správném pořadí (index 0 = dno, kreslíme od spodu)
+        const layers = state.layers;
+        for (let li = 0; li < layers.length; li++) {
+          const layer = layers[li];
+          if (!layer.visible) continue;
+          const lc = layerToRGBCanvasAlpha(layer);
+          ctx.drawImage(lc, 0, 0);
+        }
+        return c;
+      }
+
+      // Vykreslí kompozitní "Result" preview s dithered aktivní vrstvou místo originálu.
+      // Přesně simuluje co onOk udělá: paper pixely dithered vrstvy jsou průhledné
+      // (paperTransparent=1) — jen ink (dithered pattern) překrývá spodní vrstvy.
+      function buildDitherCompositeResult(zx, origAttrs, targetLayerId) {
+        const ZX_CLASSIC_PALETTE = [
+          [0,0,0],[0,0,215],[215,0,0],[215,0,215],[0,215,0],[0,215,215],[215,215,0],[215,215,215],
+          [0,0,0],[0,0,255],[255,0,0],[255,0,255],[0,255,0],[0,255,255],[255,255,0],[255,255,255]
+        ];
+        // Simulujeme přesně to co onOk udělá: newAttrs + obnovení TRANSPARENT_ATTR buněk
+        const newAttrs = zx.attrs ? new Uint8Array(zx.attrs) : new Uint8Array(ATTR_W * ATTR_H).fill(0);
+        const newPixels = new Uint8Array(zx.pixels);
+        if (origAttrs) {
+          for (let ay = 0; ay < ATTR_H; ay++) {
+            for (let ax = 0; ax < ATTR_W; ax++) {
+              const ai = ay * ATTR_W + ax;
+              if (origAttrs[ai] === TRANSPARENT_ATTR) {
+                newAttrs[ai] = TRANSPARENT_ATTR;
+                for (let py = 0; py < 8; py++)
+                  for (let px2 = 0; px2 < 8; px2++)
+                    newPixels[getIdx(ax * 8 + px2, ay * 8 + py)] = 0;
+              }
+            }
+          }
+        }
+
+        // Canvas pro dithered vrstvu jako ink-only overlay:
+        // pixel=1 (ink) → viditelný s barvou ink; pixel=0 (paper) → alpha=0 (průhledné)
+        // TRANSPARENT_ATTR buňky → celá buňka průhledná
+        const dithCanvas = document.createElement('canvas');
+        dithCanvas.width = ZX_W; dithCanvas.height = ZX_H;
+        const dithCtx = dithCanvas.getContext('2d');
+        const dithId = dithCtx.createImageData(ZX_W, ZX_H);
+        const dd = dithId.data;
+        for (let y = 0; y < ZX_H; y++) {
+          for (let x = 0; x < ZX_W; x++) {
+            const i = getIdx(x, y);
+            const ai = Math.floor(y / 8) * ATTR_W + Math.floor(x / 8);
+            if (newAttrs[ai] === TRANSPARENT_ATTR) {
+              dd[i * 4 + 3] = 0;
+              continue;
+            }
+            const on = newPixels[i];
+            if (!on) {
+              // paper pixel — průhledný (spodní vrstva prosvítá)
+              dd[i * 4 + 3] = 0;
+              continue;
+            }
+            // ink pixel — zobrazit barvou ink
+            const attr = newAttrs[ai];
+            const bright = (attr >> 6) & 1;
+            const inkIdx = (attr & 7) + (bright ? 8 : 0);
+            const col = ZX_CLASSIC_PALETTE[inkIdx];
+            dd[i * 4]     = col[0];
+            dd[i * 4 + 1] = col[1];
+            dd[i * 4 + 2] = col[2];
+            dd[i * 4 + 3] = 255;
+          }
+        }
+        dithCtx.putImageData(dithId, 0, 0);
+
+        // Složíme kompozit: vrstvy v pořadí state.layers (0 = spodní), aktivní vrstva = dithered
+        const c = document.createElement('canvas');
+        c.width = ZX_W; c.height = ZX_H;
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, ZX_W, ZX_H);
+        const layers = state.layers;
+        for (let li = 0; li < layers.length; li++) {
+          const layer = layers[li];
+          if (!layer.visible) continue;
+          if (layer.id === targetLayerId) {
+            ctx.drawImage(dithCanvas, 0, 0);
+          } else {
+            ctx.drawImage(layerToRGBCanvasAlpha(layer), 0, 0);
+          }
+        }
+        return c;
+      }
+
+      function openLayerDitherDialog(layer) {
+        const title = isNextScreenMode()
+          ? `Dither: ${layer.name} (Next Layer 2)`
+          : `Dither: ${layer.name} (ZX 48k)`;
+        el('layerDitherTitle').textContent = title;
+        const bd = el('layerDitherBackdrop');
+        bd._targetLayerId = layer.id;
+        bd._origAttrs = new Uint8Array(layer.attrs);
+        // convCanvas = pro konverzi (průhledné = černá, bez šachovnice)
+        const convCanvas = layerToConvCanvas(layer);
+        bd._convCanvas = convCanvas;
+        // Kompozitní "Original" panel — ukazuje jak vypadá scéna se všemi vrstvami
+        const compositeOriginal = buildDitherCompositeOriginal(layer.id);
+        bd._displayCanvas = compositeOriginal;
+        // Otevřeme dialog — source = convCanvas (pro konverzi)
+        bd._openDialog(convCanvas);
+        // Přepis levého "Original" panelu na kompozitní pohled
+        const srcCv = el('ldSrcCanvas');
+        if (srcCv) {
+          srcCv.width = ZX_W; srcCv.height = ZX_H;
+          srcCv.getContext('2d').drawImage(compositeOriginal, 0, 0);
+        }
+      }
+
+      // Wire layer dither preview renderer — kompozitní pohled se všemi vrstvami
+      function renderLayerDitherPreview(srcCanvas, dstCanvas, method, strength, matrix) {
+        const zx = method === 'bw'
+          ? convertImageToZXBWDithered(srcCanvas, strength, matrix)
+          : convertImageToZXDithered(srcCanvas, strength, matrix);
+        const origAttrs = el('layerDitherBackdrop')._origAttrs || null;
+        const targetLayerId = el('layerDitherBackdrop')._targetLayerId || null;
+        // Vykreslíme kompozit s dithered vrstvou
+        const composite = buildDitherCompositeResult(zx, origAttrs, targetLayerId);
+        dstCanvas.width = ZX_W; dstCanvas.height = ZX_H;
+        dstCanvas.getContext('2d').drawImage(composite, 0, 0);
+      }
+
       // Wire up a conversion dialog: handles preview, sliders, ok/cancel
       function wireConvDialog({ backdropId, methodName, ditherExtraId,
         strengthId, strengthValId, matrixId,
@@ -10726,7 +11218,17 @@ attr grid: ${aw}x${ah}` : ''}`);
             if (!source) { setSpinnerActive(false); return; }
             const { method, strength, matrix, brightness, contrast, saturation } = getParams();
             lastSrcCanvas = buildAdjustedSrcCanvas(source, brightness, contrast, saturation);
-            if (srcCanvas) { srcCanvas.width = ZX_W; srcCanvas.height = ZX_H; srcCanvas.getContext('2d').drawImage(lastSrcCanvas, 0, 0); }
+            if (srcCanvas) {
+              // Pokud backdrop má _displayCanvas, použij ho pro levý "Original" panel
+              const displayOverride = backdrop._displayCanvas || null;
+              if (displayOverride) {
+                srcCanvas.width = ZX_W; srcCanvas.height = ZX_H;
+                srcCanvas.getContext('2d').drawImage(displayOverride, 0, 0);
+              } else {
+                srcCanvas.width = ZX_W; srcCanvas.height = ZX_H;
+                srcCanvas.getContext('2d').drawImage(lastSrcCanvas, 0, 0);
+              }
+            }
             (previewRenderer || renderConversionPreview)(lastSrcCanvas, dstCanvas, method, strength, matrix);
             setSpinnerActive(false);
           }, delay);
@@ -10930,6 +11432,77 @@ attr grid: ${aw}x${ah}` : ''}`);
             : method === 'dither' ? ` (dithering ${Math.round(strength * 100)}%, ${matrix})` : '';
           mutateActiveLayer(layer => { layer.pixels = zx.pixels; if (zx.colors) layer.colors = zx.colors; if (zx.attrs) layer.attrs = zx.attrs; }, 'Image imported' + label + '.');
         }
+      });
+
+      // Layer dither dialog wiring
+      wireConvDialog({
+        backdropId: 'layerDitherBackdrop', methodName: 'ldMethod',
+        ditherExtraId: 'ldDitherExtra',
+        strengthId: 'ldDitherStrength', strengthValId: 'ldStrengthVal',
+        matrixId: 'ldDitherMatrix',
+        brightnessId: 'ldBrightness', brightnessValId: 'ldBrightnessVal',
+        contrastId: 'ldContrast', contrastValId: 'ldContrastVal',
+        saturationId: 'ldSaturation', saturationValId: 'ldSaturationVal',
+        srcCanvasId: 'ldSrcCanvas', dstCanvasId: 'ldDstCanvas', spinnerId: 'ldSpinner',
+        cancelBtnId: 'ldCancelBtn', okBtnId: 'ldOkBtn', autoAdjustBtnId: 'ldAutoAdjustBtn',
+        getSource: () => el('layerDitherBackdrop')._convCanvas || el('layerDitherBackdrop')._source || null,
+        onCancel: () => { el('layerDitherBackdrop')._source = null; el('layerDitherBackdrop')._convCanvas = null; el('layerDitherBackdrop')._displayCanvas = null; el('layerDitherBackdrop')._targetLayerId = null; },
+        onOk: (adjCanvas, method, strength, matrix) => {
+          const targetId = el('layerDitherBackdrop')._targetLayerId;
+          const origAttrsSnapshot = el('layerDitherBackdrop')._origAttrs;
+          el('layerDitherBackdrop')._source = null;
+          el('layerDitherBackdrop')._convCanvas = null;
+          el('layerDitherBackdrop')._displayCanvas = null;
+          el('layerDitherBackdrop')._targetLayerId = null;
+          el('layerDitherBackdrop')._origAttrs = null;
+          if (!targetId) return;
+          const zx = method === 'bw'
+            ? convertImageToZXBWDithered(adjCanvas, strength, matrix)
+            : convertImageToZXDithered(adjCanvas, strength, matrix);
+          const label = method === 'bw'
+            ? ` (BW ${Math.round(strength * 100)}%, ${matrix})`
+            : ` (colour ${Math.round(strength * 100)}%, ${matrix})`;
+          pushHistory();
+          const next = cloneLayers(state.layers);
+          const layerIdx = next.findIndex(l => l.id === targetId);
+          if (layerIdx < 0) { setStatus('Layer not found.'); return; }
+          const origLayer = next[layerIdx];
+
+          // Restore transparency: buňky, které byly v původní vrstvě průhledné
+          // (TRANSPARENT_ATTR), musí zůstat průhledné i po dithering konverzi.
+          const origAttrs = origAttrsSnapshot || new Uint8Array(origLayer.attrs);
+          const newAttrs = zx.attrs ? new Uint8Array(zx.attrs) : new Uint8Array(ATTR_W * ATTR_H).fill(makeAttrByte(7, 0, 0, 0));
+          const newPixels = new Uint8Array(zx.pixels);
+
+          for (let ay = 0; ay < ATTR_H; ay++) {
+            for (let ax = 0; ax < ATTR_W; ax++) {
+              const ai = ay * ATTR_W + ax;
+              if (origAttrs[ai] === TRANSPARENT_ATTR) {
+                // Buňka byla průhledná — vrátit průhlednost a vymazat pixely
+                newAttrs[ai] = TRANSPARENT_ATTR;
+                for (let py = 0; py < 8; py++) {
+                  for (let px2 = 0; px2 < 8; px2++) {
+                    newPixels[getIdx(ax * 8 + px2, ay * 8 + py)] = 0;
+                  }
+                }
+              }
+            }
+          }
+
+          origLayer.pixels = newPixels;
+          origLayer.attrs = newAttrs;
+          if (zx.colors) origLayer.colors = zx.colors;
+          // Po dithering: paper pixely buněk jsou průhledné — ink vzor překrývá spodní vrstvy
+          // ale paper nezakrývá spodní vrstvy (jako ink-only overlay).
+          if (!origLayer.paperTransparent) origLayer.paperTransparent = new Uint8Array(ATTR_W * ATTR_H);
+          for (let ai = 0; ai < ATTR_W * ATTR_H; ai++) {
+            if (newAttrs[ai] !== TRANSPARENT_ATTR) origLayer.paperTransparent[ai] = 1;
+          }
+          state.layers = next;
+          setStatus(`Layer dithered${label}.`);
+          renderAll();
+        },
+        previewRenderer: renderLayerDitherPreview
       });
       el('scrImportInput').addEventListener('change', e => {
         const file = e.target.files && e.target.files[0]; if (!file) return;
@@ -12731,6 +13304,106 @@ UDG codes: 144..164`);
         renderAll();
       }
       init();
+
+      // ── Ochrana před náhodným zavřením / F5 ────────────────────────────────
+      // Sledujeme, zda došlo k jakékoli změně od posledního uložení projektu.
+      let _projectDirty = false;
+
+      // Zachytíme všechna pushHistory volání skrze monkey-patch
+      const _origPushHistory = pushHistory;
+      // pushHistory je definována výše — přepišeme ji tak, aby nastavila dirty flag
+      // Protože je to let/function uvnitř IIFE, přepíšeme přímo proměnnou.
+      // Místo toho nastavíme dirty flag v každé akci, kde se mění state:
+      // Nejjednodušší: interceptujeme renderAll / setStatus jako signál změny
+
+      // Sledujeme dirty přes MutationObserver na stav — ale jednodušší je
+      // prostě nastavit flag kdykoli se zavolá pushHistory.
+      // Jelikož pushHistory je function declaration, nemůžeme ji snadno přepsat —
+      // nastavíme dirty flag v setStatus (každá změna stavu toto zavolá):
+      const _origSetStatus = setStatus;
+      let _ignoreNextStatus = false;
+
+      // Jednoduchý přístup: nastavíme dirty při jakékoliv pointer/keyboard interakci
+      // na hlavním canvasu a vymaže se po saveProject.
+      document.addEventListener('pointerdown', () => { _projectDirty = true; });
+      document.addEventListener('keydown', (e) => {
+        // ignorovat čistě navigační klávesy
+        if (!['F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
+              'Escape','Tab','CapsLock','Shift','Control','Alt','Meta',
+              'ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)) {
+          _projectDirty = true;
+        }
+      });
+
+      // Reset dirty po uložení projektu
+      const _origSaveProject = saveProject;
+      window._resetProjectDirty = () => { _projectDirty = false; };
+
+      // Zachytit kliknutí na Save Project tlačítka
+      ['saveProjectBtn','spriteSaveProjectBtn','fontSaveProjectBtn'].forEach(id => {
+        const btn = el(id);
+        if (btn) btn.addEventListener('click', () => { setTimeout(() => { _projectDirty = false; }, 100); });
+      });
+
+      window.addEventListener('beforeunload', (e) => {
+        if (_projectDirty) {
+          e.preventDefault();
+          e.returnValue = 'Máte neuložené změny. Opravdu chcete odejít?';
+          return e.returnValue;
+        }
+      });
+
+      // ── Keyboard protection: F5 / Ctrl+R reload, Ctrl+W close ──────────────
+      window.addEventListener('keydown', (e) => {
+        if (!_projectDirty) return;
+        if (e.key === 'F5' || ((e.ctrlKey || e.metaKey) && e.key === 'r')) {
+          e.preventDefault();
+          if (confirm('Máte neuložené změny.\nOpravdu chcete reload stránky? Přijdete o rozdělanou práci.')) {
+            _projectDirty = false;
+            location.reload();
+          }
+          return;
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'w') {
+          e.preventDefault();
+          if (confirm('Máte neuložené změny.\nOpravdu chcete zavřít záložku? Přijdete o rozdělanou práci.')) {
+            _projectDirty = false;
+            window.close();
+          }
+        }
+      }, { capture: true });
+
+      // ── Splash screen dismiss ───────────────────────────────────────────────
+      (function initSplash() {
+        const splash = document.getElementById('zxSplash');
+        const bar = document.getElementById('zxSplashBar');
+        const status = document.getElementById('zxSplashStatus');
+        if (!splash) return;
+        const steps = [
+          { w: 20, txt: 'Loading palette…' },
+          { w: 45, txt: 'Building pixel engine…' },
+          { w: 70, txt: 'Preparing canvas…' },
+          { w: 90, txt: 'Ready.' },
+        ];
+        let i = 0;
+        function tick() {
+          if (i < steps.length) {
+            if (bar) bar.style.width = steps[i].w + '%';
+            if (status) status.textContent = steps[i].txt;
+            i++;
+            setTimeout(tick, 120);
+          } else {
+            if (bar) bar.style.width = '100%';
+            if (status) status.textContent = "Let's go!";
+            setTimeout(() => {
+              splash.style.opacity = '0';
+              setTimeout(() => { splash.style.display = 'none'; }, 520);
+            }, 200);
+          }
+        }
+        requestAnimationFrame(() => setTimeout(tick, 80));
+      })();
+
     })();
   </script>
 </body>

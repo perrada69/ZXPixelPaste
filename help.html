@@ -154,6 +154,7 @@
                 <a href="#en-screen-palette-tools">Palette Tools (Next)</a>
                 <a href="#en-screen-layers">Layers and text layers</a>
                 <a href="#en-screen-transform">Transform Layer</a>
+                <a href="#en-screen-dither-export">Dither Export</a>
                 <a href="#en-screen-selection">Selection panel</a>
                 <a href="#en-screen-files">Import / export / project files</a>
               </div>
@@ -437,6 +438,7 @@
                 <tr><td><strong>Click on text layer</strong></td><td>Text</td><td>Selects the text object and switches to the Text tool.</td></tr>
                 <tr><td><strong>Double-click on text layer</strong></td><td>Text</td><td>Opens the text editor box immediately.</td></tr>
                 <tr><td><strong>Transform (⟳)</strong></td><td>Bitmap</td><td>Opens the Transform Layer dialog for the selected bitmap layer. Allows non-destructive rotation, scaling, and panning with a live preview before applying.</td></tr>
+                <tr><td><strong>⋯ (layer menu)</strong></td><td>Bitmap</td><td>Opens the layer context menu with additional options: <em>Rename</em>, <em>Transform</em>, and <em>Dither export…</em>. Click ⋯ again to close the menu.</td></tr>
               </tbody>
             </table>
 
@@ -460,6 +462,26 @@
             <div class="tip"><strong>Non-destructive workflow:</strong> pixels outside the canvas boundary during a transform are temporarily preserved inside the dialog session — you can pan or re-scale and they reappear. Only after clicking Apply are pixels outside the 256×192 canvas clipped permanently.</div>
 
             <div class="note"><strong>Layer ordering:</strong> text layers are always displayed above the bitmap layer they belong to (the layer that was active when the text was created). Bitmap layer order is controlled by Up/Down buttons. You can have multiple text layers interleaved with bitmap layers.</div>
+
+            <h4 id="en-screen-dither-export">Dither Export</h4>
+            <p>The <strong>Dither Export</strong> dialog opens via the <strong>⋯</strong> menu next to any bitmap layer → <em>Dither export…</em>. It converts the layer's colour content into a ZX Spectrum attribute-constrained representation using Ordered Bayer dithering, then writes the result back into that layer.</p>
+            <p>The <strong>Original</strong> panel shows a composite of all visible layers as they currently look. The <strong>Result</strong> panel shows the same composite but with the active layer replaced by its dithered version — so you can see exactly how the final result will look in context before confirming.</p>
+            <table>
+              <thead><tr><th>Control</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Colour dithering</strong></td><td>Ordered Bayer dithering. For each 8×8 attribute cell the algorithm selects the best ZX ink+paper colour pair (using perceptual colour distance), then applies the Bayer matrix to distribute pixels between those two colours and simulate mid-tones.</td></tr>
+                <tr><td><strong>B&amp;W dithering</strong></td><td>Monochrome mode. Uses white ink on black paper. The same Bayer matrix and strength settings apply. Useful for creating clean halftone patterns.</td></tr>
+                <tr><td><strong>Dither strength</strong></td><td>Controls the intensity of the Bayer pattern (0–100 %). At 0 % the result is equivalent to a direct nearest-colour conversion. At 100 % the full dither pattern is applied. 70 % is a good starting point.</td></tr>
+                <tr><td><strong>Matrix</strong></td><td>Selects the Bayer matrix size: <em>Bayer 2×2</em>, <em>Bayer 4×4 (recommended)</em>, or <em>Bayer 8×8</em>. Larger matrices produce finer patterns with more tonal gradations; smaller matrices are coarser but cleaner at low zoom.</td></tr>
+                <tr><td><strong>Brightness / Contrast / Saturation</strong></td><td>Pre-processing adjustments applied to the source image before dithering. Increasing contrast or saturation often improves colour cell selection. These adjustments are temporary and only affect the conversion — the original layer pixels are not modified by them.</td></tr>
+                <tr><td><strong>Auto tune</strong></td><td>Automatically finds the best brightness/contrast/saturation combination for the current dither method and strength. Useful as a starting point — you can fine-tune manually afterwards.</td></tr>
+                <tr><td><strong>Split / Result only / Source only</strong></td><td>Switches the preview between a split view (Original left, Result right), result only, or source only.</td></tr>
+                <tr><td><strong>Apply to layer</strong></td><td>Writes the dithered result into the layer. Paper pixels of the dithered cells are set to <strong>transparent</strong> — only the ink (dither pattern) pixels are written, so underlying layers show through the gaps. Original transparent cells (TRANSPARENT_ATTR) are always preserved as transparent.</td></tr>
+                <tr><td><strong>Cancel</strong></td><td>Closes the dialog without modifying the layer.</td></tr>
+              </tbody>
+            </table>
+            <div class="tip"><strong>Ink-only overlay behaviour:</strong> after applying, the dithered layer acts as an ink-only overlay — paper pixels are transparent and lower layers show through them. This means the dither pattern blends naturally with layers underneath. If you want to fill the paper gaps with a solid colour, paint the background on a lower layer first.</div>
+            <div class="note"><strong>Classic ZX mode only:</strong> Dither Export is available for classic ZX 48k bitmap layers. In Next Layer 2 mode the layer already stores full 8bpp colour per pixel so dithering is not needed.</div>
 
             <!-- ── SELECTION ── -->
             <h3 id="en-screen-selection">Selection panel</h3>
@@ -633,6 +655,20 @@
               <li>Paint over the canvas — the tool progressively blends INK and PAPER within the attribute constraints.</li>
             </ol>
 
+            <h3>Layer Dither Export workflow</h3>
+            <p>Use this when you have a layer with solid or semi-transparent areas and want to convert its colours to ZX Spectrum attribute-constrained dithering — turning the layer into a dithered ink-only overlay that blends naturally with layers underneath.</p>
+            <ol>
+              <li>In the <strong>Layers panel</strong>, click <strong>⋯</strong> next to the bitmap layer you want to dither.</li>
+              <li>Choose <strong>Dither export…</strong> from the context menu.</li>
+              <li>In the dialog, select the method: <em>Colour dithering</em> (default) for full colour work, or <em>B&amp;W dithering</em> for monochrome halftone effects.</li>
+              <li>Set <strong>Dither strength</strong> — 70 % is a good starting point. Lower values produce cleaner, less noisy results; higher values better approximate mid-tones.</li>
+              <li>Choose a <strong>Matrix</strong>: <em>Bayer 4×4</em> is recommended for most work. Use <em>2×2</em> for a coarser, bolder look.</li>
+              <li>Use the <strong>Brightness / Contrast / Saturation</strong> sliders to pre-process the source if needed, or click <strong>Auto tune</strong> to let the editor find a good starting point automatically.</li>
+              <li>Check the <strong>Result</strong> panel — it shows the composite with all other visible layers, exactly as the final result will look.</li>
+              <li>When satisfied, click <strong>Apply to layer</strong>. The dithered ink pattern is written to the layer; paper pixels become transparent so underlying layers show through.</li>
+            </ol>
+            <div class="tip"><strong>Layered dithering tip:</strong> for multi-layer compositions, work from bottom to top. Keep a solid-colour base layer at the bottom, then dither each overlay layer separately. Because applied dither layers use ink-only transparency, the colours of lower layers will show through the paper gaps and blend with the dither pattern — giving you a natural, composite ZX halftone effect across all layers.</div>
+
             <h3>Next Layer 2 screen workflow</h3>
             <ol>
               <li>Switch to <strong>Screen Editor</strong> and select <em>ZX Spectrum Next Layer 2</em> from the mode dropdown.</li>
@@ -704,7 +740,7 @@
               <li>Export in BIN or ASM format.</li>
             </ol>
 
-            <p class="footer">This help page reflects the current interface including: Next Layer 2 screen mode (NXI/SL2/L2 import-export), Next 8bpp sprite mode (SPR export, multi-tile large sprites), classic↔Next conversion (including automatic text color conversion), Transparent PAPER, layer renaming, INK ⇄ PAPER swapping, Bresenham interpolation in all drawing tools, continuous spray, live text layers with drag handle and inline color editing, dithering with multiple patterns, image import and Next→Classic conversion with Ordered Bayer dithering (strength slider, 2×2/4×4/8×8 matrix, brightness/contrast/saturation pre-processing, live before/after preview), Attr Only right-click INK↔PAPER swap, project loading progress overlay, Transform Layer dialog (rotation, scale, pan, Snap 8×8, attribute behaviour, live preview), canvas resize handle, <strong>16×16 grid overlay</strong> in Screen Editor, <strong>Mask fit preview</strong> in Font Editor, and <strong>automatic theme switching</strong> (Dark / Compact / Auto, stored in localStorage).</p>
+            <p class="footer">This help page reflects the current interface including: Next Layer 2 screen mode (NXI/SL2/L2 import-export), Next 8bpp sprite mode (SPR export, multi-tile large sprites), classic↔Next conversion (including automatic text color conversion), Transparent PAPER, layer renaming, INK ⇄ PAPER swapping, Bresenham interpolation in all drawing tools, continuous spray, live text layers with drag handle and inline color editing, dithering with multiple patterns, image import and Next→Classic conversion with Ordered Bayer dithering (strength slider, 2×2/4×4/8×8 matrix, brightness/contrast/saturation pre-processing, live before/after preview), Attr Only right-click INK↔PAPER swap, project loading progress overlay, Transform Layer dialog (rotation, scale, pan, Snap 8×8, attribute behaviour, live preview), canvas resize handle, <strong>16×16 grid overlay</strong> in Screen Editor, <strong>Mask fit preview</strong> in Font Editor, <strong>automatic theme switching</strong> (Dark / Compact / Auto, stored in localStorage), and <strong>Dither Export</strong> dialog (per-layer Ordered Bayer dithering with composite live preview, ink-only overlay result, context menu ⋯ toggle).</p>
           </section>
         </main>
       </div>
@@ -731,6 +767,7 @@
                 <a href="#cz-screen-palette-tools">Palette Tools (Next)</a>
                 <a href="#cz-screen-layers">Vrstvy a textové vrstvy</a>
                 <a href="#cz-screen-transform">Transform Layer</a>
+                <a href="#cz-screen-dither-export">Dither Export</a>
                 <a href="#cz-screen-selection">Selection panel</a>
                 <a href="#cz-screen-files">Import / export / projektové soubory</a>
               </div>
@@ -1014,6 +1051,7 @@
                 <tr><td><strong>Klik na textovou vrstvu</strong></td><td>Text</td><td>Vybere textový objekt a přepne na nástroj Text.</td></tr>
                 <tr><td><strong>Dvojklik na textovou vrstvu</strong></td><td>Text</td><td>Okamžitě otevře textový editor.</td></tr>
                 <tr><td><strong>Transform (⟳)</strong></td><td>Bitmapa</td><td>Otevře dialog Transform Layer pro vybranou bitmapovou vrstvu. Umožňuje nedestruktivní rotaci, škálování a posun obsahu vrstvy s živým náhledem před potvrzením.</td></tr>
+                <tr><td><strong>⋯ (menu vrstvy)</strong></td><td>Bitmapa</td><td>Otevře kontextové menu vrstvy s dalšími volbami: <em>Rename</em>, <em>Transform</em> a <em>Dither export…</em>. Druhým kliknutím na ⋯ menu zavřeš.</td></tr>
               </tbody>
             </table>
 
@@ -1037,6 +1075,26 @@
             <div class="tip"><strong>Nedestruktivní workflow:</strong> pixely, které při transformaci přesáhnou hranici canvasu, jsou v rámci dialogu dočasně zachovány — po posunutí nebo změně škálování se znovu zobrazí. Teprve po kliknutí na Apply se pixely mimo 256×192 trvale oříznou.</div>
 
             <div class="note"><strong>Pořadí vrstev:</strong> textové vrstvy se vždy zobrazují nad bitmapovou vrstvou, ke které patří (ta byla aktivní při vytvoření textu). Pořadí bitmapových vrstev ovládáš tlačítky Nahoru/Dolů. Textové vrstvy lze mít prokládané s bitmapovými vrstvami.</div>
+
+            <h4 id="cz-screen-dither-export">Dither Export</h4>
+            <p>Dialog <strong>Dither Export</strong> otevřeš přes menu <strong>⋯</strong> u bitmapové vrstvy → <em>Dither export…</em>. Převede barevný obsah vrstvy na reprezentaci odpovídající atributovým omezením ZX Spectra pomocí Ordered Bayer ditheringu a výsledek zapíše zpět do vrstvy.</p>
+            <p>Panel <strong>Original</strong> zobrazuje kompozit všech viditelných vrstev v jejich aktuálním stavu. Panel <strong>Result</strong> zobrazuje tentýž kompozit, ale s aktivní vrstvou nahrazenou jejím ditheringovým výsledkem — takže přesně vidíš, jak bude výsledek vypadat v kontextu ostatních vrstev ještě před potvrzením.</p>
+            <table>
+              <thead><tr><th>Prvek</th><th>Co dělá</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Colour dithering</strong></td><td>Ordered Bayer dithering. Pro každou atributovou buňku 8×8 algoritmus vybere nejlepší dvojici ZX ink+paper barev (pomocí percepční vzdálenosti barev) a pak aplikuje Bayerovu matici k rozložení pixelů mezi tyto dvě barvy a simulaci středních tónů.</td></tr>
+                <tr><td><strong>B&amp;W dithering</strong></td><td>Monochromatický mód. Používá bílý ink na černém paperu. Platí stejná Bayerova matice i nastavení síly. Vhodné pro vytváření čistých polotónových vzorů.</td></tr>
+                <tr><td><strong>Dither strength</strong></td><td>Řídí intenzitu Bayerova vzoru (0–100 %). Při 0 % je výsledek ekvivalentní přímé konverzi nejbližší barvou. Při 100 % se plně aplikuje dithering vzor. Jako výchozí bod dobře funguje 70 %.</td></tr>
+                <tr><td><strong>Matrix</strong></td><td>Vybírá velikost Bayerovy matice: <em>Bayer 2×2</em>, <em>Bayer 4×4 (doporučeno)</em> nebo <em>Bayer 8×8</em>. Větší matice produkují jemnější vzor s více tónovými přechody; menší matice jsou hrubší, ale čistší při nízkém zoomu.</td></tr>
+                <tr><td><strong>Brightness / Contrast / Saturation</strong></td><td>Předúpravy zdrojového obrázku před ditheringem. Zvýšení kontrastu nebo saturace často zlepší výběr atributových barev. Tyto úpravy jsou dočasné a ovlivní pouze konverzi — původní pixely vrstvy se jimi nemění.</td></tr>
+                <tr><td><strong>Auto tune</strong></td><td>Automaticky najde nejlepší kombinaci jasu/kontrastu/saturace pro aktuální metodu a sílu ditheringu. Vhodné jako výchozí bod — poté lze ručně doladit.</td></tr>
+                <tr><td><strong>Split / Result only / Source only</strong></td><td>Přepíná náhled mezi rozděleným pohledem (Original vlevo, Result vpravo), pouze výsledkem nebo pouze zdrojem.</td></tr>
+                <tr><td><strong>Apply to layer</strong></td><td>Zapíše ditheringový výsledek do vrstvy. Paper pixely ditheringových buněk jsou nastaveny jako <strong>průhledné</strong> — zapíší se jen ink (dithering vzor) pixely, takže spodní vrstvy prosvítají mezerami. Původně průhledné buňky (TRANSPARENT_ATTR) jsou vždy zachovány jako průhledné.</td></tr>
+                <tr><td><strong>Cancel</strong></td><td>Zavře dialog bez úpravy vrstvy.</td></tr>
+              </tbody>
+            </table>
+            <div class="tip"><strong>Ink-only overlay chování:</strong> po aplikaci funguje ditheringová vrstva jako ink-only overlay — paper pixely jsou průhledné a spodní vrstvy prosvítají. Ditheringový vzor se tak přirozeně prolíná s vrstvami pod ním. Pokud chceš paper mezery vyplnit plnou barvou, nakresli pozadí na spodní vrstvě předem.</div>
+            <div class="note"><strong>Pouze klasický ZX mód:</strong> Dither Export je dostupný pro bitmapové vrstvy klasického ZX 48k. V Next Layer 2 módu vrstva již uchovává plnou 8bpp barvu na pixel, takže dithering není potřeba.</div>
 
             <!-- ── SELECTION ── -->
             <h3 id="cz-screen-selection">Selection panel</h3>
@@ -1210,6 +1268,20 @@
               <li>Maluj po canvasu — nástroj postupně prolíná INK a PAPER v rámci atributových omezení.</li>
             </ol>
 
+            <h3>Workflow pro Layer Dither Export</h3>
+            <p>Použij tehdy, když máš vrstvu s plnými nebo průhlednostmi ošetřenými oblastmi a chceš její barvy převést na atributový dithering ZX Spectra — vrstva se tak stane ditheringovým ink-only overlajem, který se přirozeně prolíná s vrstvami pod ní.</p>
+            <ol>
+              <li>V <strong>panelu Vrstvy</strong> klikni na <strong>⋯</strong> u bitmapové vrstvy, kterou chceš ditherovat.</li>
+              <li>Z kontextového menu vyber <strong>Dither export…</strong></li>
+              <li>V dialogu zvol metodu: <em>Colour dithering</em> (výchozí) pro barevnou práci, nebo <em>B&amp;W dithering</em> pro monochromatický polotónový efekt.</li>
+              <li>Nastav <strong>Dither strength</strong> — 70 % je dobrý výchozí bod. Nižší hodnoty dávají čistší, méně zašuměný výsledek; vyšší lépe aproximují střední tóny.</li>
+              <li>Zvol <strong>matici</strong>: <em>Bayer 4×4</em> je doporučena pro většinu práce. <em>2×2</em> dává hrubší, výraznější vzhled.</li>
+              <li>Podle potřeby předuprav zdroj slidery <strong>Jas / Kontrast / Saturace</strong>, nebo klikni na <strong>Auto tune</strong> pro automatické nalezení dobrého výchozího nastavení.</li>
+              <li>Zkontroluj panel <strong>Result</strong> — zobrazuje kompozit se všemi ostatními viditelnými vrstvami přesně tak, jak bude výsledek vypadat.</li>
+              <li>Až jsi spokojený, klikni na <strong>Apply to layer</strong>. Ditheringový ink vzor se zapíše do vrstvy; paper pixely budou průhledné, takže spodní vrstvy budou prosvítat mezerami.</li>
+            </ol>
+            <div class="tip"><strong>Tip pro vícevrstvý dithering:</strong> u kompozic s více vrstvami pracuj odspoda nahoru. Ponech dole vrstvu s plnými barvami jako základ, poté ditheruj každou overlay vrstvu samostatně. Protože aplikované ditheringové vrstvy používají ink-only průhlednost, barvy spodních vrstev budou prosvítat přes paper mezery a prolínat se s ditheringovým vzorem — výsledkem je přirozený ZX polotónový efekt napříč všemi vrstvami.</div>
+
             <h3>Next Layer 2 obrazovka</h3>
             <ol>
               <li>Přepni <strong>Screen Editor</strong> do módu <em>ZX Spectrum Next Layer 2</em>.</li>
@@ -1280,7 +1352,7 @@
               <li>Exportuj do BIN nebo ASM.</li>
             </ol>
 
-            <p class="footer">Tato nápověda odpovídá aktuální verzi rozhraní včetně: Next Layer 2 screen módu (import/export NXI/SL2/L2), Next 8bpp sprite módu (SPR export, víceblokové velké sprity), konverze Classic↔Next (včetně automatické konverze barev textu), Transparent PAPER, přejmenování vrstev, prohazování INK ⇄ PAPER, Bresenhamovy interpolace ve všech kreslicích nástrojích, kontinuálního spraeje, živých textových vrstev s uškem pro tažení a přímou editací barev, ditheringu s více vzory, importu obrázků a konverze Next→Classic s Ordered Bayer ditheringem (slider síly, matice 2×2/4×4/8×8, předúprava jasem/kontrastem/saturací, živý náhled před/po), prohazování INK↔PAPER pravým tlačítkem v režimu Attr Only, ukazatele průběhu při načítání projektu, dialogu Transform Layer (rotace, měřítko, posun, Snap 8×8, chování atributů, živý náhled), tažení okraje canvasu, <strong>mřížky 16×16</strong> ve Screen Editoru, <strong>Mask fit preview</strong> ve Font Editoru a <strong>automatického přepínání témat</strong> (Dark / Compact / Auto, uloženo v localStorage).</p>
+            <p class="footer">Tato nápověda odpovídá aktuální verzi rozhraní včetně: Next Layer 2 screen módu (import/export NXI/SL2/L2), Next 8bpp sprite módu (SPR export, víceblokové velké sprity), konverze Classic↔Next (včetně automatické konverze barev textu), Transparent PAPER, přejmenování vrstev, prohazování INK ⇄ PAPER, Bresenhamovy interpolace ve všech kreslicích nástrojích, kontinuálního spraeje, živých textových vrstev s uškem pro tažení a přímou editací barev, ditheringu s více vzory, importu obrázků a konverze Next→Classic s Ordered Bayer ditheringem (slider síly, matice 2×2/4×4/8×8, předúprava jasem/kontrastem/saturací, živý náhled před/po), prohazování INK↔PAPER pravým tlačítkem v režimu Attr Only, ukazatele průběhu při načítání projektu, dialogu Transform Layer (rotace, měřítko, posun, Snap 8×8, chování atributů, živý náhled), tažení okraje canvasu, <strong>mřížky 16×16</strong> ve Screen Editoru, <strong>Mask fit preview</strong> ve Font Editoru, <strong>automatického přepínání témat</strong> (Dark / Compact / Auto, uloženo v localStorage) a dialogu <strong>Dither Export</strong> (Ordered Bayer dithering pro jednotlivé vrstvy s kompozitním živým náhledem, výsledek jako ink-only overlay, přepínání kontextového menu ⋯).</p>
           </section>
         </main>
       </div>
