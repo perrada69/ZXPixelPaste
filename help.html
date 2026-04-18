@@ -155,6 +155,8 @@
                 <a href="#en-screen-layers">Layers and text layers</a>
                 <a href="#en-screen-transform">Transform Layer</a>
                 <a href="#en-screen-dither-export">Dither Export</a>
+                <a href="#en-screen-color-transparency">Color to Transparency</a>
+                <a href="#en-screen-merge-down">Merge with Layer Below</a>
                 <a href="#en-screen-selection">Selection panel</a>
                 <a href="#en-screen-files">Import / export / project files</a>
               </div>
@@ -438,7 +440,7 @@
                 <tr><td><strong>Click on text layer</strong></td><td>Text</td><td>Selects the text object and switches to the Text tool.</td></tr>
                 <tr><td><strong>Double-click on text layer</strong></td><td>Text</td><td>Opens the text editor box immediately.</td></tr>
                 <tr><td><strong>Transform (⟳)</strong></td><td>Bitmap</td><td>Opens the Transform Layer dialog for the selected bitmap layer. Allows non-destructive rotation, scaling, and panning with a live preview before applying.</td></tr>
-                <tr><td><strong>⋯ (layer menu)</strong></td><td>Bitmap</td><td>Opens the layer context menu with additional options: <em>Rename</em>, <em>Transform</em>, and <em>Dither export…</em>. Click ⋯ again to close the menu.</td></tr>
+                <tr><td><strong>⋯ (layer menu)</strong></td><td>Bitmap</td><td>Opens the layer context menu with additional options: <em>Rename</em>, <em>Transform</em>, <em>Dither export…</em>, <em>Color to transparency…</em>, and <em>Merge with layer below…</em>. Click ⋯ again to close the menu.</td></tr>
               </tbody>
             </table>
 
@@ -482,6 +484,25 @@
             </table>
             <div class="tip"><strong>Ink-only overlay behaviour:</strong> after applying, the dithered layer acts as an ink-only overlay — paper pixels are transparent and lower layers show through them. This means the dither pattern blends naturally with layers underneath. If you want to fill the paper gaps with a solid colour, paint the background on a lower layer first.</div>
             <div class="note"><strong>Classic ZX mode only:</strong> Dither Export is available for classic ZX 48k bitmap layers. In Next Layer 2 mode the layer already stores full 8bpp colour per pixel so dithering is not needed.</div>
+
+            <h4 id="en-screen-color-transparency">Color to Transparency</h4>
+            <p>The <strong>Color to Transparency</strong> dialog opens via the <strong>⋯</strong> menu next to any bitmap layer → <em>Color to transparency…</em>. It lets you pick one colour used in the layer and make every pixel of that colour fully transparent — useful for removing backgrounds or unwanted fills from a layer without affecting other colours.</p>
+            <p>The <strong>Original</strong> panel shows the layer composite as it currently looks. The <strong>Result</strong> panel shows the same composite with the chosen colour replaced by transparency, so you can judge the effect in context before applying.</p>
+            <table>
+              <thead><tr><th>Control</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Used colors in layer</strong></td><td>Lists every visible colour present in the active layer with a colour swatch and the pixel count. Click a colour to select it.</td></tr>
+                <tr><td><strong>Selected color</strong></td><td>Shows the currently selected colour. The Result preview updates immediately when you pick a different colour from the list.</td></tr>
+                <tr><td><strong>Split / Result only / Source only</strong></td><td>Switches the preview between a split view (Original left, Result right), result only, or source only.</td></tr>
+                <tr><td><strong>Apply to layer</strong></td><td>Permanently removes all pixels of the selected colour from the layer (sets them to transparent). Can be undone with Undo.</td></tr>
+                <tr><td><strong>Cancel</strong></td><td>Closes the dialog without modifying the layer.</td></tr>
+              </tbody>
+            </table>
+            <div class="tip"><strong>Workflow tip:</strong> Color to Transparency works in both <strong>classic ZX</strong> and <strong>Next Layer 2</strong> modes. In classic mode it removes all pixels of the chosen ZX ink/paper colour; in Next mode it removes all pixels matching the selected palette index. This is a one-step operation — for gradual or partial transparency you can combine it with the Transparent PAPER workflow or manual erasing.</div>
+
+            <h4 id="en-screen-merge-down">Merge with Layer Below</h4>
+            <p><strong>Merge with Layer Below</strong> is available via the <strong>⋯</strong> menu next to any bitmap layer → <em>Merge with layer below…</em>. It composites the active bitmap layer onto the layer immediately below it and removes the active layer. The result is stored in the lower layer.</p>
+            <div class="note"><strong>Conditions:</strong> the option is only available when there is at least one bitmap layer below the active layer. Text layers cannot be merged with this operation — use <strong>Merge Layers</strong> (the global button in the Layers panel) to rasterize text layers. The operation can be undone with Undo.</div>
 
             <!-- ── SELECTION ── -->
             <h3 id="en-screen-selection">Selection panel</h3>
@@ -740,7 +761,7 @@
               <li>Export in BIN or ASM format.</li>
             </ol>
 
-            <p class="footer">This help page reflects the current interface including: Next Layer 2 screen mode (NXI/SL2/L2 import-export), Next 8bpp sprite mode (SPR export, multi-tile large sprites), classic↔Next conversion (including automatic text color conversion), Transparent PAPER, layer renaming, INK ⇄ PAPER swapping, Bresenham interpolation in all drawing tools, continuous spray, live text layers with drag handle and inline color editing, dithering with multiple patterns, image import and Next→Classic conversion with Ordered Bayer dithering (strength slider, 2×2/4×4/8×8 matrix, brightness/contrast/saturation pre-processing, live before/after preview), Attr Only right-click INK↔PAPER swap, project loading progress overlay, Transform Layer dialog (rotation, scale, pan, Snap 8×8, attribute behaviour, live preview), canvas resize handle, <strong>16×16 grid overlay</strong> in Screen Editor, <strong>Mask fit preview</strong> in Font Editor, <strong>automatic theme switching</strong> (Dark / Compact / Auto, stored in localStorage), and <strong>Dither Export</strong> dialog (per-layer Ordered Bayer dithering with composite live preview, ink-only overlay result, context menu ⋯ toggle).</p>
+            <p class="footer">This help page reflects the current interface including: Next Layer 2 screen mode (NXI/SL2/L2 import-export), Next 8bpp sprite mode (SPR export, multi-tile large sprites), classic↔Next conversion (including automatic text color conversion), Transparent PAPER, layer renaming, INK ⇄ PAPER swapping, Bresenham interpolation in all drawing tools, continuous spray, live text layers with drag handle and inline color editing, dithering with multiple patterns, image import and Next→Classic conversion with Ordered Bayer dithering (strength slider, 2×2/4×4/8×8 matrix, brightness/contrast/saturation pre-processing, live before/after preview), Attr Only right-click INK↔PAPER swap, project loading progress overlay, Transform Layer dialog (rotation, scale, pan, Snap 8×8, attribute behaviour, live preview), canvas resize handle, <strong>16×16 grid overlay</strong> in Screen Editor, <strong>Mask fit preview</strong> in Font Editor, <strong>automatic theme switching</strong> (Dark / Compact / Auto, stored in localStorage), and <strong>Dither Export</strong> dialog (per-layer Ordered Bayer dithering with composite live preview, ink-only overlay result, context menu ⋯ toggle), <strong>Color to Transparency</strong> dialog (select a colour from the layer and remove all its pixels in one step, with split/result/source preview), and <strong>Merge with Layer Below</strong> (composites active bitmap layer onto the layer below and removes it).</p>
           </section>
         </main>
       </div>
@@ -768,6 +789,8 @@
                 <a href="#cz-screen-layers">Vrstvy a textové vrstvy</a>
                 <a href="#cz-screen-transform">Transform Layer</a>
                 <a href="#cz-screen-dither-export">Dither Export</a>
+                <a href="#cz-screen-color-transparency">Color to Transparency</a>
+                <a href="#cz-screen-merge-down">Merge with Layer Below</a>
                 <a href="#cz-screen-selection">Selection panel</a>
                 <a href="#cz-screen-files">Import / export / projektové soubory</a>
               </div>
@@ -1051,7 +1074,7 @@
                 <tr><td><strong>Klik na textovou vrstvu</strong></td><td>Text</td><td>Vybere textový objekt a přepne na nástroj Text.</td></tr>
                 <tr><td><strong>Dvojklik na textovou vrstvu</strong></td><td>Text</td><td>Okamžitě otevře textový editor.</td></tr>
                 <tr><td><strong>Transform (⟳)</strong></td><td>Bitmapa</td><td>Otevře dialog Transform Layer pro vybranou bitmapovou vrstvu. Umožňuje nedestruktivní rotaci, škálování a posun obsahu vrstvy s živým náhledem před potvrzením.</td></tr>
-                <tr><td><strong>⋯ (menu vrstvy)</strong></td><td>Bitmapa</td><td>Otevře kontextové menu vrstvy s dalšími volbami: <em>Rename</em>, <em>Transform</em> a <em>Dither export…</em>. Druhým kliknutím na ⋯ menu zavřeš.</td></tr>
+                <tr><td><strong>⋯ (menu vrstvy)</strong></td><td>Bitmapa</td><td>Otevře kontextové menu vrstvy s dalšími volbami: <em>Rename</em>, <em>Transform</em>, <em>Dither export…</em>, <em>Color to transparency…</em> a <em>Merge with layer below…</em>. Druhým kliknutím na ⋯ menu zavřeš.</td></tr>
               </tbody>
             </table>
 
@@ -1095,6 +1118,25 @@
             </table>
             <div class="tip"><strong>Ink-only overlay chování:</strong> po aplikaci funguje ditheringová vrstva jako ink-only overlay — paper pixely jsou průhledné a spodní vrstvy prosvítají. Ditheringový vzor se tak přirozeně prolíná s vrstvami pod ním. Pokud chceš paper mezery vyplnit plnou barvou, nakresli pozadí na spodní vrstvě předem.</div>
             <div class="note"><strong>Pouze klasický ZX mód:</strong> Dither Export je dostupný pro bitmapové vrstvy klasického ZX 48k. V Next Layer 2 módu vrstva již uchovává plnou 8bpp barvu na pixel, takže dithering není potřeba.</div>
+
+            <h4 id="cz-screen-color-transparency">Color to Transparency</h4>
+            <p>Dialog <strong>Color to Transparency</strong> otevřeš přes menu <strong>⋯</strong> u bitmapové vrstvy → <em>Color to transparency…</em>. Umožňuje vybrat jednu barvu použitou ve vrstvě a všechny její pixely nahradit průhledností — vhodné pro odstraňování pozadí nebo nechtěných výplní bez dotyku ostatních barev.</p>
+            <p>Panel <strong>Original</strong> zobrazuje aktuální kompozit vrstev. Panel <strong>Result</strong> zobrazuje tentýž kompozit s vybranou barvou nahrazenou průhledností, takže efekt posoudíš v kontextu ještě před potvrzením.</p>
+            <table>
+              <thead><tr><th>Prvek</th><th>Co dělá</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Used colors in layer</strong></td><td>Vypíše všechny viditelné barvy přítomné v aktivní vrstvě s ukázkou barvy a počtem pixelů. Kliknutím barvu vyber.</td></tr>
+                <tr><td><strong>Selected color</strong></td><td>Zobrazuje aktuálně vybranou barvu. Náhled Result se okamžitě aktualizuje po výběru jiné barvy ze seznamu.</td></tr>
+                <tr><td><strong>Split / Result only / Source only</strong></td><td>Přepíná náhled mezi rozděleným pohledem (Original vlevo, Result vpravo), pouze výsledkem nebo pouze zdrojem.</td></tr>
+                <tr><td><strong>Apply to layer</strong></td><td>Trvale odstraní všechny pixely vybrané barvy z vrstvy (nastaví je jako průhledné). Lze vrátit zpět přes Undo.</td></tr>
+                <tr><td><strong>Cancel</strong></td><td>Zavře dialog bez úpravy vrstvy.</td></tr>
+              </tbody>
+            </table>
+            <div class="tip"><strong>Tipy k použití:</strong> Color to Transparency funguje jak v <strong>klasickém ZX</strong>, tak v <strong>Next Layer 2</strong> módu. V klasickém módu odstraní všechny pixely vybrané ZX ink/paper barvy; v Next módu odstraní všechny pixely odpovídající vybranému indexu palety. Jde o jednorázovou operaci — pro postupnou nebo částečnou průhlednost lze kombinovat s workflow Transparent PAPER nebo ručním mazáním.</div>
+
+            <h4 id="cz-screen-merge-down">Merge with Layer Below</h4>
+            <p><strong>Merge with Layer Below</strong> je dostupná přes menu <strong>⋯</strong> u bitmapové vrstvy → <em>Merge with layer below…</em>. Zkompozituje aktivní bitmapovou vrstvu s vrstvou těsně pod ní a aktivní vrstvu odstraní. Výsledek se uloží do spodní vrstvy.</p>
+            <div class="note"><strong>Podmínky:</strong> volba je dostupná pouze pokud se pod aktivní vrstvou nachází alespoň jedna bitmapová vrstva. Textové vrstvy touto operací sloučit nelze — pro rasterizaci textových vrstev použij globální tlačítko <strong>Merge Layers</strong> v panelu Vrstvy. Operaci lze vrátit přes Undo.</div>
 
             <!-- ── SELECTION ── -->
             <h3 id="cz-screen-selection">Selection panel</h3>
@@ -1352,7 +1394,7 @@
               <li>Exportuj do BIN nebo ASM.</li>
             </ol>
 
-            <p class="footer">Tato nápověda odpovídá aktuální verzi rozhraní včetně: Next Layer 2 screen módu (import/export NXI/SL2/L2), Next 8bpp sprite módu (SPR export, víceblokové velké sprity), konverze Classic↔Next (včetně automatické konverze barev textu), Transparent PAPER, přejmenování vrstev, prohazování INK ⇄ PAPER, Bresenhamovy interpolace ve všech kreslicích nástrojích, kontinuálního spraeje, živých textových vrstev s uškem pro tažení a přímou editací barev, ditheringu s více vzory, importu obrázků a konverze Next→Classic s Ordered Bayer ditheringem (slider síly, matice 2×2/4×4/8×8, předúprava jasem/kontrastem/saturací, živý náhled před/po), prohazování INK↔PAPER pravým tlačítkem v režimu Attr Only, ukazatele průběhu při načítání projektu, dialogu Transform Layer (rotace, měřítko, posun, Snap 8×8, chování atributů, živý náhled), tažení okraje canvasu, <strong>mřížky 16×16</strong> ve Screen Editoru, <strong>Mask fit preview</strong> ve Font Editoru, <strong>automatického přepínání témat</strong> (Dark / Compact / Auto, uloženo v localStorage) a dialogu <strong>Dither Export</strong> (Ordered Bayer dithering pro jednotlivé vrstvy s kompozitním živým náhledem, výsledek jako ink-only overlay, přepínání kontextového menu ⋯).</p>
+            <p class="footer">Tato nápověda odpovídá aktuální verzi rozhraní včetně: Next Layer 2 screen módu (import/export NXI/SL2/L2), Next 8bpp sprite módu (SPR export, víceblokové velké sprity), konverze Classic↔Next (včetně automatické konverze barev textu), Transparent PAPER, přejmenování vrstev, prohazování INK ⇄ PAPER, Bresenhamovy interpolace ve všech kreslicích nástrojích, kontinuálního spraeje, živých textových vrstev s uškem pro tažení a přímou editací barev, ditheringu s více vzory, importu obrázků a konverze Next→Classic s Ordered Bayer ditheringem (slider síly, matice 2×2/4×4/8×8, předúprava jasem/kontrastem/saturací, živý náhled před/po), prohazování INK↔PAPER pravým tlačítkem v režimu Attr Only, ukazatele průběhu při načítání projektu, dialogu Transform Layer (rotace, měřítko, posun, Snap 8×8, chování atributů, živý náhled), tažení okraje canvasu, <strong>mřížky 16×16</strong> ve Screen Editoru, <strong>Mask fit preview</strong> ve Font Editoru, <strong>automatického přepínání témat</strong> (Dark / Compact / Auto, uloženo v localStorage) a dialogu <strong>Dither Export</strong> (Ordered Bayer dithering pro jednotlivé vrstvy s kompozitním živým náhledem, výsledek jako ink-only overlay, přepínání kontextového menu ⋯), dialogu <strong>Color to Transparency</strong> (výběr barvy z vrstvy a její jednorázové odstranění s náhledem split/result/source) a funkce <strong>Merge with Layer Below</strong> (zkompozituje aktivní bitmapovou vrstvu s vrstvou pod ní a odstraní ji).</p>
           </section>
         </main>
       </div>

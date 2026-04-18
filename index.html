@@ -2844,6 +2844,30 @@
             <button id="spriteGridBtn" class="toggle-btn on">Grid</button>
           </div>
           <div class="divider"></div>
+          <div class="section">
+            <div class="smallcaps">Sprite tools</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Current frame</div>
+            <div class="compact-grid">
+              <button id="spriteShiftLeftBtn" title="Shift sprite 1 pixel left">← shift</button>
+              <button id="spriteShiftRightBtn" title="Shift sprite 1 pixel right">→ shift</button>
+              <button id="spriteShiftUpBtn" title="Shift sprite 1 pixel up">↑ shift</button>
+              <button id="spriteShiftDownBtn" title="Shift sprite 1 pixel down">↓ shift</button>
+              <button id="spriteRotateCCWBtn" title="Rotate sprite 90° counter-clockwise (square sprites only)">⟲ rot</button>
+              <button id="spriteRotateCWBtn" title="Rotate sprite 90° clockwise (square sprites only)">⟳ rot</button>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:2px;">All frames</div>
+            <div class="compact-grid">
+              <button id="spriteShiftLeftAllBtn" title="Shift all frames 1 pixel left">← all</button>
+              <button id="spriteShiftRightAllBtn" title="Shift all frames 1 pixel right">→ all</button>
+              <button id="spriteShiftUpAllBtn" title="Shift all frames 1 pixel up">↑ all</button>
+              <button id="spriteShiftDownAllBtn" title="Shift all frames 1 pixel down">↓ all</button>
+              <button id="spriteRotateCCWAllBtn" title="Rotate all frames 90° counter-clockwise (square sprites only)">⟲ all</button>
+              <button id="spriteRotateCWAllBtn" title="Rotate all frames 90° clockwise (square sprites only)">⟳ all</button>
+            </div>
+            <div class="hint">Shift: pixels that overflow the edge are discarded. Rotate: square sprites only. Mask and colors are transformed together with the pixels.</div>
+            <div id="spriteToolStatus" class="status-box" style="display:none;margin-top:4px;font-size:12px;color:var(--warn);"></div>
+          </div>
+          <div class="divider"></div>
           <div class="frame-toolbar">
             <button id="addSpriteFrameBtn" class="btn-add">New Frame</button>
             <button id="duplicateSpriteFrameBtn" class="btn-dup">Duplicate Frame</button>
@@ -4426,12 +4450,64 @@
       </div>
     </div>
   </div>
+
+
+<!-- ── Layer Color to Transparency Dialog ───────────────────────────────── -->
+<div id="layerColorTransparencyBackdrop" class="dialog-backdrop">
+  <div class="dialog conv-dialog">
+    <div class="dialog-header">
+      <strong id="layerColorTransparencyTitle">Color to transparency</strong>
+    </div>
+    <div class="dialog-body" style="gap:14px;">
+      <div class="conv-layout">
+        <div class="conv-preview-wrap">
+          <div class="conv-preview-label-row">
+            <div class="conv-preview-label">Preview</div>
+            <div class="conv-view-switch" role="group" aria-label="Preview layout">
+              <button type="button" class="conv-view-btn active" data-conv-view="split">Split</button>
+              <button type="button" class="conv-view-btn" data-conv-view="result-only">Result only</button>
+              <button type="button" class="conv-view-btn" data-conv-view="source-only">Source only</button>
+            </div>
+          </div>
+          <div class="conv-preview-canvases" id="lctPreviewCanvases" data-conv-title="Color to transparency">
+            <div class="conv-preview-col" data-view-col="source">
+              <div class="conv-preview-sublabel">Original</div>
+              <canvas id="lctSrcCanvas" class="conv-canvas"></canvas>
+            </div>
+            <div class="conv-preview-col" data-view-col="result">
+              <div class="conv-preview-sublabel">Result</div>
+              <canvas id="lctDstCanvas" class="conv-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="conv-controls">
+          <div class="conv-section">
+            <div class="conv-section-title">Selected color</div>
+            <div id="lctSelectedInfo" class="info-box">Choose a used color from the list below.</div>
+          </div>
+          <div class="conv-section">
+            <div class="conv-section-title">Used colors in layer</div>
+            <div id="lctColorsList" style="display:grid;gap:8px;max-height:320px;overflow:auto;"></div>
+            <div id="lctEmptyHint" class="hint hidden">No visible colors were found in this layer.</div>
+          </div>
+          <div class="confirm-btns" style="margin-top:auto;padding-top:4px;">
+            <button id="lctCancelBtn">Cancel</button>
+            <button id="lctOkBtn" class="primary">Apply to layer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
   <!-- ── Layer context menu (floating) ──────────────────────────────────────── -->
   <div id="layerCtxMenu" class="layer-ctx-menu">
     <div class="layer-ctx-item" id="ctxRename"><span class="ctx-icon">✎</span>Rename</div>
     <div class="layer-ctx-item" id="ctxTransform"><span class="ctx-icon">⟳</span>Transform</div>
     <div class="layer-ctx-sep"></div>
     <div class="layer-ctx-item" id="ctxDither"><span class="ctx-icon">⬡</span>Dither export…</div>
+    <div class="layer-ctx-item" id="ctxColorTransparency"><span class="ctx-icon">◌</span>Color to transparency…</div>
+    <div class="layer-ctx-item" id="ctxMergeDown"><span class="ctx-icon">⇣</span>Merge with layer below…</div>
   </div>
 
   <div id="loadingOverlay"
@@ -5234,7 +5310,8 @@
 
       const CHANGELOG_PAGE_SIZE = 8;
       const changelogItems = [
-        { date: '2026-04-16', text: "The Font Editor displays a \"Mask fit preview\". A 16x16 grid option has been added to the Screen Editor. Option to convert the layer to dithering." },
+        { date: '2026-04-18', text: "Sprite Editor - the ability to move sprites in all directions and rotate them in 90-degree increments—both for individual sprites and for all frames at once." },
+        { date: '2026-04-16', text: "The Font Editor displays a \"Mask fit preview\". A 16x16 grid option has been added to the Screen Editor. Option to convert the layer to dithering. Added more tools for working with layers: Color to Transparency and Merge with Layer Below..." },
         { date: '2026-04-15', text: "Palette tools in the Next section. Option to redefine the palette for Next and classic ZX Spectrum images. A new \"Transform Layer\" tool has been added, along with numerous bug fixes and many minor improvements. Updated Sprite Editor (48k/128k) – added a preview with a mask." },
         { date: '2026-04-13', text: "Option to use the Fill tool on a selection." },
         { date: '2026-04-12', text: 'First public release.' },
@@ -5765,6 +5842,161 @@
         }
 
         return { pixels, attrs };
+      }
+
+
+      function getLayerVisibleClassicColorAt(layer, x, y) {
+        if (!layer || !layer.visible) return null;
+        const idx = getIdx(x, y);
+        const attrIdx = getAttrIdx((x / 8) | 0, (y / 8) | 0);
+        const attrByte = layer.attrs ? layer.attrs[attrIdx] : TRANSPARENT_ATTR;
+        if (attrByte === TRANSPARENT_ATTR) return layer.pixels && layer.pixels[idx] ? ((layer.colors && layer.colors[idx] != null) ? clamp(layer.colors[idx], 0, 15) : currentNextInk()) : null;
+        const bright = (attrByte >> 6) & 1;
+        const inkCI = (attrByte & 7) + (bright << 3);
+        const paperCI = ((attrByte >> 3) & 7) + (bright << 3);
+        const bit = layer.pixels && layer.pixels[idx] ? 1 : 0;
+        if (bit) return inkCI;
+        if (!layerPaperTransparentByAttrIndex(layer, attrIdx) || layerExplicitPaperAt(layer, x, y)) return paperCI;
+        return null;
+      }
+
+      function mergeActiveLayerDown() {
+        const topIdx = activeLayerIndex();
+        if (topIdx <= 0) return false;
+        const top = state.layers[topIdx];
+        const bottom = state.layers[topIdx - 1];
+        if (!top || !bottom) return false;
+
+        const merged = createLayer(bottom.name, false);
+        merged.id = bottom.id;
+        merged.name = bottom.name;
+        merged.visible = bottom.visible;
+        merged.autoOverlayFor = null;
+        merged.autoOverlayKind = null;
+        merged.transformBuffer = null;
+
+        if (isNextScreenMode()) {
+          merged.pixels.fill(0);
+          merged.colors.fill(currentNextPaper());
+          for (let i = 0; i < ZX_W * ZX_H; i++) {
+            if (top.pixels && top.pixels[i]) {
+              merged.pixels[i] = 1;
+              merged.colors[i] = top.colors ? top.colors[i] : currentNextInk();
+            } else if (bottom.pixels && bottom.pixels[i]) {
+              merged.pixels[i] = 1;
+              merged.colors[i] = bottom.colors ? bottom.colors[i] : currentNextInk();
+            }
+          }
+          merged.attrs.fill(TRANSPARENT_ATTR);
+          merged.paperTransparent.fill(0);
+          merged.explicitPaper.fill(0);
+        } else {
+          const visibleColor = new Int16Array(ZX_W * ZX_H).fill(-1);
+          for (let y = 0; y < ZX_H; y++) {
+            for (let x = 0; x < ZX_W; x++) {
+              const i = getIdx(x, y);
+              const topColor = getLayerVisibleClassicColorAt(top, x, y);
+              if (topColor != null) {
+                visibleColor[i] = topColor;
+                continue;
+              }
+              const bottomColor = getLayerVisibleClassicColorAt(bottom, x, y);
+              if (bottomColor != null) visibleColor[i] = bottomColor;
+            }
+          }
+
+          merged.pixels.fill(0);
+          merged.attrs.fill(TRANSPARENT_ATTR);
+          merged.paperTransparent.fill(0);
+          merged.explicitPaper.fill(0);
+          merged.colors.fill(currentNextInk());
+
+          for (let ay = 0; ay < ATTR_H; ay++) {
+            for (let ax = 0; ax < ATTR_W; ax++) {
+              const attrIdx = ay * ATTR_W + ax;
+              const freq = new Int32Array(16);
+              let visibleCount = 0;
+              let transparentCount = 0;
+              for (let yy = 0; yy < 8; yy++) {
+                for (let xx = 0; xx < 8; xx++) {
+                  const idx = getIdx(ax * 8 + xx, ay * 8 + yy);
+                  const ci = visibleColor[idx];
+                  if (ci >= 0) {
+                    freq[ci]++;
+                    visibleCount++;
+                  } else {
+                    transparentCount++;
+                  }
+                }
+              }
+              if (!visibleCount) {
+                merged.attrs[attrIdx] = TRANSPARENT_ATTR;
+                continue;
+              }
+              let inkIdx = 0, inkCnt = -1, paperIdx = 0, paperCnt = -1;
+              for (let c = 0; c < 16; c++) {
+                const cnt = freq[c];
+                if (cnt > inkCnt) {
+                  paperIdx = inkIdx; paperCnt = inkCnt;
+                  inkIdx = c; inkCnt = cnt;
+                } else if (cnt > paperCnt) {
+                  paperIdx = c; paperCnt = cnt;
+                }
+              }
+              if (paperCnt <= 0) paperIdx = inkIdx;
+              const bright = (inkIdx > 7 || paperIdx > 7) ? 1 : 0;
+              merged.attrs[attrIdx] = makeAttrByte(inkIdx & 7, paperIdx & 7, bright, 0);
+              const inkBase = inkIdx & 7, paperBase = paperIdx & 7;
+              const hasTransparency = transparentCount > 0;
+              if (hasTransparency) merged.paperTransparent[attrIdx] = 1;
+              for (let yy = 0; yy < 8; yy++) {
+                for (let xx = 0; xx < 8; xx++) {
+                  const x = ax * 8 + xx, y = ay * 8 + yy;
+                  const idx = getIdx(x, y);
+                  const ci = visibleColor[idx];
+                  if (ci < 0) {
+                    merged.pixels[idx] = 0;
+                    merged.explicitPaper[idx] = 0;
+                    continue;
+                  }
+                  if (ci === inkIdx) {
+                    merged.pixels[idx] = 1;
+                    merged.explicitPaper[idx] = 0;
+                    continue;
+                  }
+                  let usePaper = false;
+                  if (ci === paperIdx) {
+                    usePaper = true;
+                  } else {
+                    const inkScore = Math.abs((ci & 7) - inkBase) + (((ci > 7) !== (inkIdx > 7)) ? 2 : 0);
+                    const paperScore = Math.abs((ci & 7) - paperBase) + (((ci > 7) !== (paperIdx > 7)) ? 2 : 0);
+                    usePaper = paperScore < inkScore;
+                  }
+                  if (usePaper) {
+                    merged.pixels[idx] = 0;
+                    merged.explicitPaper[idx] = hasTransparency ? 1 : 0;
+                  } else {
+                    merged.pixels[idx] = 1;
+                    merged.explicitPaper[idx] = 0;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        const nextLayers = cloneLayers(state.layers);
+        nextLayers[topIdx - 1] = merged;
+        nextLayers.splice(topIdx, 1);
+        state.layers = nextLayers;
+        state.activeLayerId = merged.id;
+
+        const movedTopTexts = new Set([top.id]);
+        state.textObjects = state.textObjects.filter(obj => obj.layerId !== top.id).map(obj => {
+          if (obj.layerId === bottom.id) return obj;
+          return obj;
+        });
+        return true;
       }
 
       // Write attr to the given layer at the 8x8 cell containing (x,y).
@@ -8750,6 +8982,50 @@
         return { pixels, attrs };
       }
 
+      function convertImageToNextDithered(image, strength, matrix) {
+        const cv = document.createElement('canvas'); cv.width = ZX_W; cv.height = ZX_H;
+        const cx = cv.getContext('2d', { willReadFrequently: true });
+        cx.drawImage(image, 0, 0, ZX_W, ZX_H);
+        const data = cx.getImageData(0, 0, ZX_W, ZX_H).data;
+        const pixels = new Uint8Array(ZX_W * ZX_H).fill(1);
+        const colors = new Uint8Array(ZX_W * ZX_H);
+        const strengthClamped = Math.max(0, Math.min(1, strength));
+        for (let y = 0; y < ZX_H; y++) {
+          for (let x = 0; x < ZX_W; x++) {
+            const idx = getIdx(x, y);
+            const i = idx * 4;
+            const d = (getBayerThreshold(matrix, x, y) - 0.5) * strengthClamped;
+            const r = clamp(Math.round(data[i] + d * 96), 0, 255);
+            const g = clamp(Math.round(data[i + 1] + d * 96), 0, 255);
+            const b = clamp(Math.round(data[i + 2] + d * 96), 0, 255);
+            colors[idx] = nearestNextColor(r, g, b);
+          }
+        }
+        return { pixels, colors };
+      }
+
+      function convertImageToNextBWDithered(image, strength, matrix) {
+        const cv = document.createElement('canvas'); cv.width = ZX_W; cv.height = ZX_H;
+        const cx = cv.getContext('2d', { willReadFrequently: true });
+        cx.drawImage(image, 0, 0, ZX_W, ZX_H);
+        const data = cx.getImageData(0, 0, ZX_W, ZX_H).data;
+        const pixels = new Uint8Array(ZX_W * ZX_H).fill(1);
+        const colors = new Uint8Array(ZX_W * ZX_H);
+        const blackIdx = nearestNextColor(0, 0, 0);
+        const whiteIdx = nearestNextColor(255, 255, 255);
+        for (let y = 0; y < ZX_H; y++) for (let x = 0; x < ZX_W; x++) {
+          const idx = getIdx(x, y);
+          const i = idx * 4;
+          const r = data[i], g = data[i + 1], b = data[i + 2];
+          const luma = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+          const thresholdBias = (1 - Math.max(0, Math.min(1, strength))) * 0.2;
+          const t = Math.max(0, Math.min(1, 1 - luma + thresholdBias));
+          const bit = ditherPixelBit(x, y, t, strength, matrix);
+          colors[idx] = bit ? whiteIdx : blackIdx;
+        }
+        return { pixels, colors };
+      }
+
       // ── Loading overlay helpers ─────────────────────────────────────────────
       function showLoadingOverlay() { const o = el('loadingOverlay'); if (o) { o.style.display = 'flex'; setLoadingProgress(0, 'Reading file…'); } }
       function hideLoadingOverlay() { const o = el('loadingOverlay'); if (o) o.style.display = 'none'; }
@@ -10492,7 +10768,17 @@ attr grid: ${aw}x${ah}` : ''}`);
             refreshNextPaletteCaches();
             setStatus(`NXI imported with palette (${formatLabel}): ${file.name}`);
           } else {
-            setStatus(`NXI imported (${formatLabel}): ${file.name}`);
+            // No palette in file – reset NEXT_COLORS to the hardware default Next palette.
+            // Default palette: index i = RRRGGGBB (3-3-2 bit encoding), same as ZX Spectrum Next hardware default.
+            for (let i = 0; i < 256; i++) {
+              const r8 = Math.round(((i >> 5) & 7) * 255 / 7);
+              const g8 = Math.round(((i >> 2) & 7) * 255 / 7);
+              const b8 = Math.round(((i & 3) * 255) / 3);
+              const bytes = nextRgbToPalBytes([r8, g8, b8]);
+              setNextPaletteEntry(i, bytes.palLo, bytes.palHi, `next ${i}`);
+            }
+            refreshNextPaletteCaches();
+            setStatus(`NXI imported (pixels only, default Next palette restored): ${file.name}`);
           }
           pushHistory();
           mutateActiveLayer(layer => { layer.pixels = pixels; layer.colors = colors; }, `NXI imported: ${file.name}`);
@@ -10787,6 +11073,11 @@ attr grid: ${aw}x${ah}` : ''}`);
           return;
         }
         _ctxMenuLayer = layer;
+        const mergeDownItem = document.getElementById('ctxMergeDown');
+        if (mergeDownItem) {
+          const idx = state.layers.findIndex(l => l.id === layer.id);
+          mergeDownItem.style.display = idx > 0 ? 'flex' : 'none';
+        }
         const menu = _ctxMenu;
         const btnRect = e.currentTarget.getBoundingClientRect();
         menu.style.top = (btnRect.bottom + 4) + 'px';
@@ -10818,6 +11109,58 @@ attr grid: ${aw}x${ah}` : ''}`);
         closeLayerCtxMenu();
         if (layer) openLayerDitherDialog(layer);
       });
+      document.getElementById('ctxColorTransparency').addEventListener('click', () => {
+        const layer = _ctxMenuLayer;
+        closeLayerCtxMenu();
+        if (layer) openLayerColorTransparencyDialog(layer);
+      });
+      document.getElementById('ctxMergeDown').addEventListener('click', () => {
+        const layer = _ctxMenuLayer;
+        closeLayerCtxMenu();
+        if (!layer) return;
+        const idx = state.layers.findIndex(l => l.id === layer.id);
+        if (idx <= 0) return;
+        confirmAction('Merge the current layer with the layer below? The current layer will be removed.', () => {
+          pushHistory();
+          if (mergeActiveLayerDown()) {
+            renderLayers();
+            renderAll();
+            setStatus('Layer merged with the layer below.');
+          }
+        }, 'Merge with layer below', 'Merge');
+      });
+      document.getElementById('lctCancelBtn').addEventListener('click', () => closeLayerColorTransparencyDialog());
+      document.getElementById('layerColorTransparencyBackdrop').addEventListener('click', (e) => {
+        if (e.target.id === 'layerColorTransparencyBackdrop') closeLayerColorTransparencyDialog();
+      });
+      // View switch buttons for lct dialog (Split / Result only / Source only)
+      (function () {
+        const previewCanvases = el('lctPreviewCanvases');
+        const viewButtons = document.querySelectorAll('#layerColorTransparencyBackdrop .conv-view-btn');
+        function setLctPreviewView(view) {
+          const normalized = ['split', 'result-only', 'source-only'].includes(view) ? view : 'split';
+          previewCanvases.classList.toggle('view-result-only', normalized === 'result-only');
+          previewCanvases.classList.toggle('view-source-only', normalized === 'source-only');
+          viewButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.convView === normalized));
+        }
+        viewButtons.forEach(btn => {
+          btn.addEventListener('click', () => setLctPreviewView(btn.dataset.convView));
+        });
+      })();
+      document.getElementById('lctOkBtn').addEventListener('click', () => {
+        const bd = el('layerColorTransparencyBackdrop');
+        const layerId = bd._targetLayerId;
+        const selectedKey = bd._selectedKey;
+        if (!layerId || !selectedKey) return closeLayerColorTransparencyDialog();
+        const idx = state.layers.findIndex(l => l.id === layerId);
+        if (idx < 0) return closeLayerColorTransparencyDialog();
+        pushHistory();
+        state.layers[idx] = makeLayerColorTransparent(state.layers[idx], selectedKey);
+        renderLayers();
+        renderAll();
+        setStatus('Selected color is now transparent in the layer.');
+        closeLayerColorTransparencyDialog();
+      });
 
       // Close on outside click — ale IGNORUJ kliknutí na samotný menuBtn (ten si toggle řeší sám)
       document.addEventListener('click', (e) => {
@@ -10826,6 +11169,218 @@ attr grid: ${aw}x${ah}` : ''}`);
         }
       }, true);
 
+
+function getClassicVisibleColorAt(layer, x, y) {
+  if (!layer) return null;
+  const i = getIdx(x, y);
+  const ai = getAttrIdx((x / 8) | 0, (y / 8) | 0);
+  const attr = layer.attrs[ai];
+  if (attr === TRANSPARENT_ATTR) return null;
+  const bright = (attr >> 6) & 1;
+  const inkIdx = normalizeZXColorIndex((attr & 7) + (bright ? 8 : 0));
+  const paperIdx = normalizeZXColorIndex(((attr >> 3) & 7) + (bright ? 8 : 0));
+  const on = !!layer.pixels[i];
+  const paperTransparent = layer.paperTransparent ? !!layer.paperTransparent[ai] : false;
+  const explicitPaper = layer.explicitPaper ? !!layer.explicitPaper[i] : false;
+  if (on) return inkIdx;
+  if (paperTransparent && !explicitPaper) return null;
+  return paperIdx;
+}
+
+function getLayerUsedVisibleColors(layer) {
+  const counts = new Map();
+  if (!layer) return [];
+  if (isNextScreenMode()) {
+    for (let i = 0; i < ZX_W * ZX_H; i++) {
+      if (!layer.pixels[i]) continue;
+      const ci = clamp((layer.colors && layer.colors[i]) ?? 0, 0, 255);
+      counts.set(ci, (counts.get(ci) || 0) + 1);
+    }
+    return [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([idx, count]) => ({
+      key: `next:${idx}`,
+      mode: 'next',
+      index: idx,
+      count,
+      label: `Next #${idx}`,
+      rgb: NEXT_COLORS[idx].rgb
+    }));
+  }
+  for (let y = 0; y < ZX_H; y++) {
+    for (let x = 0; x < ZX_W; x++) {
+      const ci = getClassicVisibleColorAt(layer, x, y);
+      if (ci == null) continue;
+      counts.set(ci, (counts.get(ci) || 0) + 1);
+    }
+  }
+  return [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([idx, count]) => ({
+    key: `classic:${idx}`,
+    mode: 'classic',
+    index: idx,
+    count,
+    label: ZX_COLORS[idx]?.name || `Color ${idx}`,
+    rgb: ZX_COLORS[idx]?.rgb || [0, 0, 0]
+  }));
+}
+
+function makeLayerColorTransparent(layer, selectedKey) {
+  if (!layer || !selectedKey) return cloneLayer(layer);
+  const out = cloneLayer(layer);
+  if (String(selectedKey).startsWith('next:')) {
+    const target = clamp(Number(String(selectedKey).split(':')[1]) || 0, 0, 255);
+    for (let i = 0; i < ZX_W * ZX_H; i++) {
+      if (!out.pixels[i]) continue;
+      const ci = clamp((out.colors && out.colors[i]) ?? 0, 0, 255);
+      if (ci === target) out.pixels[i] = 0;
+    }
+    return out;
+  }
+
+  const target = normalizeZXColorIndex(Number(String(selectedKey).split(':')[1]) || 0);
+  out.paperTransparent = new Uint8Array(ATTR_W * ATTR_H);
+  out.explicitPaper = new Uint8Array(ZX_W * ZX_H);
+  const newPixels = new Uint8Array(out.pixels);
+
+  for (let ay = 0; ay < ATTR_H; ay++) {
+    for (let ax = 0; ax < ATTR_W; ax++) {
+      const ai = getAttrIdx(ax, ay);
+      const attr = out.attrs[ai];
+      if (attr === TRANSPARENT_ATTR) continue;
+      let cellNeedsTransparentPaper = false;
+      const keepPaperPixels = [];
+      for (let py = 0; py < 8; py++) {
+        for (let px = 0; px < 8; px++) {
+          const x = ax * 8 + px;
+          const y = ay * 8 + py;
+          const i = getIdx(x, y);
+          const visible = getClassicVisibleColorAt(layer, x, y);
+          if (visible == null) {
+            newPixels[i] = 0;
+            out.explicitPaper[i] = 0;
+            cellNeedsTransparentPaper = true;
+            continue;
+          }
+          if (sameZXVisibleColor(visible, target)) {
+            newPixels[i] = 0;
+            out.explicitPaper[i] = 0;
+            cellNeedsTransparentPaper = true;
+            continue;
+          }
+          const bright = (attr >> 6) & 1;
+          const inkIdx = normalizeZXColorIndex((attr & 7) + (bright ? 8 : 0));
+          const paperIdx = normalizeZXColorIndex(((attr >> 3) & 7) + (bright ? 8 : 0));
+          if (sameZXVisibleColor(visible, inkIdx)) {
+            newPixels[i] = 1;
+            out.explicitPaper[i] = 0;
+          } else if (sameZXVisibleColor(visible, paperIdx)) {
+            newPixels[i] = 0;
+            keepPaperPixels.push(i);
+          } else {
+            newPixels[i] = layer.pixels[i] ? 1 : 0;
+          }
+        }
+      }
+      if (cellNeedsTransparentPaper) {
+        out.paperTransparent[ai] = 1;
+        for (const i of keepPaperPixels) out.explicitPaper[i] = 1;
+      }
+    }
+  }
+  out.pixels = newPixels;
+  return out;
+}
+
+function buildLayerColorTransparencyComposite(targetLayerId, previewLayer = null) {
+  const c = document.createElement('canvas');
+  c.width = ZX_W; c.height = ZX_H;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, ZX_W, ZX_H);
+  for (const layer of state.layers) {
+    if (!layer.visible) continue;
+    const srcLayer = (previewLayer && layer.id === targetLayerId) ? previewLayer : layer;
+    ctx.drawImage(layerToRGBCanvasAlpha(srcLayer), 0, 0);
+  }
+  return c;
+}
+
+function renderLayerColorTransparencyPreview() {
+  const bd = el('layerColorTransparencyBackdrop');
+  if (!bd || !bd._layer) return;
+  const selectedKey = bd._selectedKey || null;
+  const previewLayer = selectedKey ? makeLayerColorTransparent(bd._layer, selectedKey) : cloneLayer(bd._layer);
+  bd._previewLayer = previewLayer;
+  const dst = el('lctDstCanvas');
+  if (dst) {
+    dst.width = ZX_W; dst.height = ZX_H;
+    dst.getContext('2d').drawImage(buildLayerColorTransparencyComposite(bd._layer.id, previewLayer), 0, 0);
+  }
+  const info = el('lctSelectedInfo');
+  if (info) {
+    const entry = (bd._usedColors || []).find(c => c.key === selectedKey);
+    info.innerHTML = entry
+      ? `<div style="display:flex;align-items:center;gap:10px;"><span style="display:inline-block;width:18px;height:18px;border-radius:4px;border:1px solid rgba(255,255,255,.25);background:${rgbToCss(entry.rgb)}"></span><strong style="color:var(--text)">${entry.label}</strong><span style="color:var(--muted)">${entry.count} px</span></div>`
+      : 'Choose a used color from the list below.';
+  }
+  const okBtn = el('lctOkBtn');
+  if (okBtn) okBtn.disabled = !selectedKey;
+}
+
+function renderLayerColorTransparencyColorList() {
+  const bd = el('layerColorTransparencyBackdrop');
+  const wrap = el('lctColorsList');
+  const emptyHint = el('lctEmptyHint');
+  if (!bd || !wrap) return;
+  wrap.innerHTML = '';
+  const used = bd._usedColors || [];
+  emptyHint?.classList.toggle('hidden', used.length !== 0);
+  for (const entry of used) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--border);border-radius:10px;background:#141923;color:var(--text);text-align:left;';
+    btn.innerHTML = `<span style="display:inline-block;width:18px;height:18px;border-radius:4px;border:1px solid rgba(255,255,255,.25);background:${rgbToCss(entry.rgb)};flex:0 0 auto;"></span><span style="display:grid;gap:2px;flex:1;min-width:0;"><span style="font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${entry.label}</span><span style="font-size:11px;color:var(--muted);">${entry.count} px</span></span>`;
+    if (bd._selectedKey === entry.key) {
+      btn.style.borderColor = '#79a2ff';
+      btn.style.background = '#1a2e55';
+    }
+    btn.addEventListener('click', () => {
+      bd._selectedKey = entry.key;
+      renderLayerColorTransparencyColorList();
+      renderLayerColorTransparencyPreview();
+    });
+    wrap.appendChild(btn);
+  }
+}
+
+function openLayerColorTransparencyDialog(layer) {
+  if (!layer) return;
+  const bd = el('layerColorTransparencyBackdrop');
+  bd._layer = cloneLayer(layer);
+  bd._targetLayerId = layer.id;
+  bd._usedColors = getLayerUsedVisibleColors(layer);
+  bd._selectedKey = bd._usedColors[0]?.key || null;
+  bd._previewLayer = cloneLayer(layer);
+  el('layerColorTransparencyTitle').textContent = isNextScreenMode()
+    ? `Color to transparency: ${layer.name} (Next Layer 2)`
+    : `Color to transparency: ${layer.name} (ZX 48k)`;
+  const src = el('lctSrcCanvas');
+  if (src) {
+    src.width = ZX_W; src.height = ZX_H;
+    src.getContext('2d').drawImage(buildDitherCompositeOriginal(layer.id), 0, 0);
+  }
+  renderLayerColorTransparencyColorList();
+  renderLayerColorTransparencyPreview();
+  bd.classList.add('open');
+}
+
+function closeLayerColorTransparencyDialog() {
+  const bd = el('layerColorTransparencyBackdrop');
+  bd.classList.remove('open');
+  bd._layer = null;
+  bd._previewLayer = null;
+  bd._targetLayerId = null;
+  bd._usedColors = null;
+  bd._selectedKey = null;
+}
       // ── Layer dither dialog ─────────────────────────────────────────────────
       // Renders the layer's current pixels as an RGB canvas for the preview
       // Canvas PRO KONVERZI: průhledné buňky = černá (ne šachovnice), aby dithering
@@ -10836,7 +11391,20 @@ attr grid: ${aw}x${ah}` : ''}`);
         const ctx = c.getContext('2d');
         const id = ctx.createImageData(ZX_W, ZX_H);
         const d = id.data;
-        if (!isNextScreenMode()) {
+        if (isNextScreenMode()) {
+          for (let y = 0; y < ZX_H; y++) {
+            for (let x = 0; x < ZX_W; x++) {
+              const i = getIdx(x, y);
+              if (!layer.pixels[i]) {
+                d[i * 4] = 0; d[i * 4 + 1] = 0; d[i * 4 + 2] = 0; d[i * 4 + 3] = 255;
+                continue;
+              }
+              const ci = clamp((layer.colors && layer.colors[i]) ?? 0, 0, 255);
+              const [r, g, b] = NEXT_COLORS[ci].rgb;
+              d[i * 4] = r; d[i * 4 + 1] = g; d[i * 4 + 2] = b; d[i * 4 + 3] = 255;
+            }
+          }
+        } else {
           const ZX_CLASSIC_PALETTE = [
             [0,0,0],[0,0,215],[215,0,0],[215,0,215],[0,215,0],[0,215,215],[215,215,0],[215,215,215],
             [0,0,0],[0,0,255],[255,0,0],[255,0,255],[0,255,0],[0,255,255],[255,255,0],[255,255,255]
@@ -10921,34 +11489,49 @@ attr grid: ${aw}x${ah}` : ''}`);
         const ctx = c.getContext('2d');
         const id = ctx.createImageData(ZX_W, ZX_H);
         const d = id.data;
-        const ZX_CLASSIC_PALETTE = [
-          [0,0,0],[0,0,215],[215,0,0],[215,0,215],[0,215,0],[0,215,215],[215,215,0],[215,215,215],
-          [0,0,0],[0,0,255],[255,0,0],[255,0,255],[0,255,0],[0,255,255],[255,255,0],[255,255,255]
-        ];
-        for (let y = 0; y < ZX_H; y++) {
-          for (let x = 0; x < ZX_W; x++) {
-            const i = getIdx(x, y);
-            const ai = Math.floor(y / 8) * ATTR_W + Math.floor(x / 8);
-            const attr = layer.attrs[ai];
-            if (attr === TRANSPARENT_ATTR) {
-              d[i * 4 + 3] = 0; // průhledné
+        if (isNextScreenMode()) {
+          for (let i = 0; i < ZX_W * ZX_H; i++) {
+            if (!layer.pixels[i]) {
+              d[i * 4 + 3] = 0;
               continue;
             }
-            const bright = (attr >> 6) & 1;
-            const inkIdx = (attr & 7) + (bright ? 8 : 0);
-            const paperIdx = ((attr >> 3) & 7) + (bright ? 8 : 0);
-            const paperTransp = layer.paperTransparent ? layer.paperTransparent[ai] : 0;
-            const on = layer.pixels[i];
-            const explPaper = layer.explicitPaper ? layer.explicitPaper[i] : 0;
-            if (!on && paperTransp && !explPaper) {
-              d[i * 4 + 3] = 0; // průhledný paper
-              continue;
-            }
-            const col = ZX_CLASSIC_PALETTE[on ? inkIdx : paperIdx];
-            d[i * 4]     = col[0];
-            d[i * 4 + 1] = col[1];
-            d[i * 4 + 2] = col[2];
+            const ci = clamp((layer.colors && layer.colors[i]) ?? 0, 0, 255);
+            const [r, g, b] = NEXT_COLORS[ci].rgb;
+            d[i * 4] = r;
+            d[i * 4 + 1] = g;
+            d[i * 4 + 2] = b;
             d[i * 4 + 3] = 255;
+          }
+        } else {
+          const ZX_CLASSIC_PALETTE = [
+            [0,0,0],[0,0,215],[215,0,0],[215,0,215],[0,215,0],[0,215,215],[215,215,0],[215,215,215],
+            [0,0,0],[0,0,255],[255,0,0],[255,0,255],[0,255,0],[0,255,255],[255,255,0],[255,255,255]
+          ];
+          for (let y = 0; y < ZX_H; y++) {
+            for (let x = 0; x < ZX_W; x++) {
+              const i = getIdx(x, y);
+              const ai = Math.floor(y / 8) * ATTR_W + Math.floor(x / 8);
+              const attr = layer.attrs[ai];
+              if (attr === TRANSPARENT_ATTR) {
+                d[i * 4 + 3] = 0; // průhledné
+                continue;
+              }
+              const bright = (attr >> 6) & 1;
+              const inkIdx = (attr & 7) + (bright ? 8 : 0);
+              const paperIdx = ((attr >> 3) & 7) + (bright ? 8 : 0);
+              const paperTransp = layer.paperTransparent ? layer.paperTransparent[ai] : 0;
+              const on = layer.pixels[i];
+              const explPaper = layer.explicitPaper ? layer.explicitPaper[i] : 0;
+              if (!on && paperTransp && !explPaper) {
+                d[i * 4 + 3] = 0; // průhledný paper
+                continue;
+              }
+              const col = ZX_CLASSIC_PALETTE[on ? inkIdx : paperIdx];
+              d[i * 4]     = col[0];
+              d[i * 4 + 1] = col[1];
+              d[i * 4 + 2] = col[2];
+              d[i * 4 + 3] = 255;
+            }
           }
         }
         ctx.putImageData(id, 0, 0);
@@ -10977,59 +11560,69 @@ attr grid: ${aw}x${ah}` : ''}`);
       // Vykreslí kompozitní "Result" preview s dithered aktivní vrstvou místo originálu.
       // Přesně simuluje co onOk udělá: paper pixely dithered vrstvy jsou průhledné
       // (paperTransparent=1) — jen ink (dithered pattern) překrývá spodní vrstvy.
-      function buildDitherCompositeResult(zx, origAttrs, targetLayerId) {
+      function buildDitherCompositeResult(zx, origAttrs, targetLayerId, origPixelsMask) {
         const ZX_CLASSIC_PALETTE = [
           [0,0,0],[0,0,215],[215,0,0],[215,0,215],[0,215,0],[0,215,215],[215,215,0],[215,215,215],
           [0,0,0],[0,0,255],[255,0,0],[255,0,255],[0,255,0],[0,255,255],[255,255,0],[255,255,255]
         ];
-        // Simulujeme přesně to co onOk udělá: newAttrs + obnovení TRANSPARENT_ATTR buněk
-        const newAttrs = zx.attrs ? new Uint8Array(zx.attrs) : new Uint8Array(ATTR_W * ATTR_H).fill(0);
-        const newPixels = new Uint8Array(zx.pixels);
-        if (origAttrs) {
-          for (let ay = 0; ay < ATTR_H; ay++) {
-            for (let ax = 0; ax < ATTR_W; ax++) {
-              const ai = ay * ATTR_W + ax;
-              if (origAttrs[ai] === TRANSPARENT_ATTR) {
-                newAttrs[ai] = TRANSPARENT_ATTR;
-                for (let py = 0; py < 8; py++)
-                  for (let px2 = 0; px2 < 8; px2++)
-                    newPixels[getIdx(ax * 8 + px2, ay * 8 + py)] = 0;
-              }
-            }
-          }
-        }
-
-        // Canvas pro dithered vrstvu jako ink-only overlay:
-        // pixel=1 (ink) → viditelný s barvou ink; pixel=0 (paper) → alpha=0 (průhledné)
-        // TRANSPARENT_ATTR buňky → celá buňka průhledná
         const dithCanvas = document.createElement('canvas');
         dithCanvas.width = ZX_W; dithCanvas.height = ZX_H;
         const dithCtx = dithCanvas.getContext('2d');
         const dithId = dithCtx.createImageData(ZX_W, ZX_H);
         const dd = dithId.data;
-        for (let y = 0; y < ZX_H; y++) {
-          for (let x = 0; x < ZX_W; x++) {
-            const i = getIdx(x, y);
-            const ai = Math.floor(y / 8) * ATTR_W + Math.floor(x / 8);
-            if (newAttrs[ai] === TRANSPARENT_ATTR) {
+
+        if (isNextScreenMode()) {
+          const newPixels = new Uint8Array(zx.pixels || new Uint8Array(ZX_W * ZX_H).fill(1));
+          const newColors = new Uint8Array(zx.colors || new Uint8Array(ZX_W * ZX_H));
+          const keepMask = origPixelsMask ? new Uint8Array(origPixelsMask) : null;
+          for (let i = 0; i < ZX_W * ZX_H; i++) {
+            if (keepMask && !keepMask[i]) newPixels[i] = 0;
+            if (!newPixels[i]) {
               dd[i * 4 + 3] = 0;
               continue;
             }
-            const on = newPixels[i];
-            if (!on) {
-              // paper pixel — průhledný (spodní vrstva prosvítá)
-              dd[i * 4 + 3] = 0;
-              continue;
-            }
-            // ink pixel — zobrazit barvou ink
-            const attr = newAttrs[ai];
-            const bright = (attr >> 6) & 1;
-            const inkIdx = (attr & 7) + (bright ? 8 : 0);
-            const col = ZX_CLASSIC_PALETTE[inkIdx];
-            dd[i * 4]     = col[0];
-            dd[i * 4 + 1] = col[1];
-            dd[i * 4 + 2] = col[2];
+            const ci = clamp(newColors[i] ?? 0, 0, 255);
+            const [r, g, b] = NEXT_COLORS[ci].rgb;
+            dd[i * 4] = r;
+            dd[i * 4 + 1] = g;
+            dd[i * 4 + 2] = b;
             dd[i * 4 + 3] = 255;
+          }
+        } else {
+          // Simulujeme přesně to co onOk udělá: newAttrs + obnovení TRANSPARENT_ATTR buněk
+          const newAttrs = zx.attrs ? new Uint8Array(zx.attrs) : new Uint8Array(ATTR_W * ATTR_H).fill(0);
+          const newPixels = new Uint8Array(zx.pixels);
+          if (origAttrs) {
+            for (let ay = 0; ay < ATTR_H; ay++) {
+              for (let ax = 0; ax < ATTR_W; ax++) {
+                const ai = ay * ATTR_W + ax;
+                if (origAttrs[ai] === TRANSPARENT_ATTR) {
+                  newAttrs[ai] = TRANSPARENT_ATTR;
+                  for (let py = 0; py < 8; py++)
+                    for (let px2 = 0; px2 < 8; px2++)
+                      newPixels[getIdx(ax * 8 + px2, ay * 8 + py)] = 0;
+                }
+              }
+            }
+          }
+          for (let y = 0; y < ZX_H; y++) {
+            for (let x = 0; x < ZX_W; x++) {
+              const i = getIdx(x, y);
+              const ai = Math.floor(y / 8) * ATTR_W + Math.floor(x / 8);
+              if (newAttrs[ai] === TRANSPARENT_ATTR) {
+                dd[i * 4 + 3] = 0;
+                continue;
+              }
+              const attr = newAttrs[ai];
+              const bright = (attr >> 6) & 1;
+              const inkIdx = (attr & 7) + (bright ? 8 : 0);
+              const paperIdx = ((attr >> 3) & 7) + (bright ? 8 : 0);
+              const col = ZX_CLASSIC_PALETTE[newPixels[i] ? inkIdx : paperIdx];
+              dd[i * 4] = col[0];
+              dd[i * 4 + 1] = col[1];
+              dd[i * 4 + 2] = col[2];
+              dd[i * 4 + 3] = 255;
+            }
           }
         }
         dithCtx.putImageData(dithId, 0, 0);
@@ -11061,6 +11654,7 @@ attr grid: ${aw}x${ah}` : ''}`);
         const bd = el('layerDitherBackdrop');
         bd._targetLayerId = layer.id;
         bd._origAttrs = new Uint8Array(layer.attrs);
+        bd._origPixels = new Uint8Array(layer.pixels);
         // convCanvas = pro konverzi (průhledné = černá, bez šachovnice)
         const convCanvas = layerToConvCanvas(layer);
         bd._convCanvas = convCanvas;
@@ -11079,13 +11673,18 @@ attr grid: ${aw}x${ah}` : ''}`);
 
       // Wire layer dither preview renderer — kompozitní pohled se všemi vrstvami
       function renderLayerDitherPreview(srcCanvas, dstCanvas, method, strength, matrix) {
-        const zx = method === 'bw'
-          ? convertImageToZXBWDithered(srcCanvas, strength, matrix)
-          : convertImageToZXDithered(srcCanvas, strength, matrix);
+        const zx = isNextScreenMode()
+          ? (method === 'bw'
+              ? convertImageToNextBWDithered(srcCanvas, strength, matrix)
+              : convertImageToNextDithered(srcCanvas, strength, matrix))
+          : (method === 'bw'
+              ? convertImageToZXBWDithered(srcCanvas, strength, matrix)
+              : convertImageToZXDithered(srcCanvas, strength, matrix));
         const origAttrs = el('layerDitherBackdrop')._origAttrs || null;
+        const origPixels = el('layerDitherBackdrop')._origPixels || null;
         const targetLayerId = el('layerDitherBackdrop')._targetLayerId || null;
         // Vykreslíme kompozit s dithered vrstvou
-        const composite = buildDitherCompositeResult(zx, origAttrs, targetLayerId);
+        const composite = buildDitherCompositeResult(zx, origAttrs, targetLayerId, origPixels);
         dstCanvas.width = ZX_W; dstCanvas.height = ZX_H;
         dstCanvas.getContext('2d').drawImage(composite, 0, 0);
       }
@@ -11446,19 +12045,25 @@ attr grid: ${aw}x${ah}` : ''}`);
         srcCanvasId: 'ldSrcCanvas', dstCanvasId: 'ldDstCanvas', spinnerId: 'ldSpinner',
         cancelBtnId: 'ldCancelBtn', okBtnId: 'ldOkBtn', autoAdjustBtnId: 'ldAutoAdjustBtn',
         getSource: () => el('layerDitherBackdrop')._convCanvas || el('layerDitherBackdrop')._source || null,
-        onCancel: () => { el('layerDitherBackdrop')._source = null; el('layerDitherBackdrop')._convCanvas = null; el('layerDitherBackdrop')._displayCanvas = null; el('layerDitherBackdrop')._targetLayerId = null; },
+        onCancel: () => { el('layerDitherBackdrop')._source = null; el('layerDitherBackdrop')._convCanvas = null; el('layerDitherBackdrop')._displayCanvas = null; el('layerDitherBackdrop')._targetLayerId = null; el('layerDitherBackdrop')._origAttrs = null; el('layerDitherBackdrop')._origPixels = null; },
         onOk: (adjCanvas, method, strength, matrix) => {
           const targetId = el('layerDitherBackdrop')._targetLayerId;
           const origAttrsSnapshot = el('layerDitherBackdrop')._origAttrs;
+          const origPixelsSnapshot = el('layerDitherBackdrop')._origPixels;
           el('layerDitherBackdrop')._source = null;
           el('layerDitherBackdrop')._convCanvas = null;
           el('layerDitherBackdrop')._displayCanvas = null;
           el('layerDitherBackdrop')._targetLayerId = null;
           el('layerDitherBackdrop')._origAttrs = null;
+          el('layerDitherBackdrop')._origPixels = null;
           if (!targetId) return;
-          const zx = method === 'bw'
-            ? convertImageToZXBWDithered(adjCanvas, strength, matrix)
-            : convertImageToZXDithered(adjCanvas, strength, matrix);
+          const conv = isNextScreenMode()
+            ? (method === 'bw'
+                ? convertImageToNextBWDithered(adjCanvas, strength, matrix)
+                : convertImageToNextDithered(adjCanvas, strength, matrix))
+            : (method === 'bw'
+                ? convertImageToZXBWDithered(adjCanvas, strength, matrix)
+                : convertImageToZXDithered(adjCanvas, strength, matrix));
           const label = method === 'bw'
             ? ` (BW ${Math.round(strength * 100)}%, ${matrix})`
             : ` (colour ${Math.round(strength * 100)}%, ${matrix})`;
@@ -11468,35 +12073,52 @@ attr grid: ${aw}x${ah}` : ''}`);
           if (layerIdx < 0) { setStatus('Layer not found.'); return; }
           const origLayer = next[layerIdx];
 
-          // Restore transparency: buňky, které byly v původní vrstvě průhledné
-          // (TRANSPARENT_ATTR), musí zůstat průhledné i po dithering konverzi.
-          const origAttrs = origAttrsSnapshot || new Uint8Array(origLayer.attrs);
-          const newAttrs = zx.attrs ? new Uint8Array(zx.attrs) : new Uint8Array(ATTR_W * ATTR_H).fill(makeAttrByte(7, 0, 0, 0));
-          const newPixels = new Uint8Array(zx.pixels);
+          if (isNextScreenMode()) {
+            const origPixels = origPixelsSnapshot || new Uint8Array(origLayer.pixels);
+            const newPixels = new Uint8Array(conv.pixels || new Uint8Array(ZX_W * ZX_H).fill(1));
+            const newColors = new Uint8Array(conv.colors || new Uint8Array(ZX_W * ZX_H));
+            for (let i = 0; i < ZX_W * ZX_H; i++) {
+              if (!origPixels[i]) {
+                newPixels[i] = 0;
+                newColors[i] = 0;
+              }
+            }
+            origLayer.pixels = newPixels;
+            origLayer.colors = newColors;
+            if (!origLayer.attrs) origLayer.attrs = new Uint8Array(ATTR_W * ATTR_H);
+            if (!origLayer.paperTransparent) origLayer.paperTransparent = new Uint8Array(ATTR_W * ATTR_H);
+            if (!origLayer.explicitPaper) origLayer.explicitPaper = new Uint8Array(ZX_W * ZX_H);
+            origLayer.attrs.fill(TRANSPARENT_ATTR);
+            origLayer.paperTransparent.fill(0);
+            origLayer.explicitPaper.fill(0);
+          } else {
+            // Restore transparency: buňky, které byly v původní vrstvě průhledné
+            // (TRANSPARENT_ATTR), musí zůstat průhledné i po dithering konverzi.
+            const origAttrs = origAttrsSnapshot || new Uint8Array(origLayer.attrs);
+            const newAttrs = conv.attrs ? new Uint8Array(conv.attrs) : new Uint8Array(ATTR_W * ATTR_H).fill(makeAttrByte(7, 0, 0, 0));
+            const newPixels = new Uint8Array(conv.pixels);
 
-          for (let ay = 0; ay < ATTR_H; ay++) {
-            for (let ax = 0; ax < ATTR_W; ax++) {
-              const ai = ay * ATTR_W + ax;
-              if (origAttrs[ai] === TRANSPARENT_ATTR) {
-                // Buňka byla průhledná — vrátit průhlednost a vymazat pixely
-                newAttrs[ai] = TRANSPARENT_ATTR;
-                for (let py = 0; py < 8; py++) {
-                  for (let px2 = 0; px2 < 8; px2++) {
-                    newPixels[getIdx(ax * 8 + px2, ay * 8 + py)] = 0;
+            for (let ay = 0; ay < ATTR_H; ay++) {
+              for (let ax = 0; ax < ATTR_W; ax++) {
+                const ai = ay * ATTR_W + ax;
+                if (origAttrs[ai] === TRANSPARENT_ATTR) {
+                  // Buňka byla průhledná — vrátit průhlednost a vymazat pixely
+                  newAttrs[ai] = TRANSPARENT_ATTR;
+                  for (let py = 0; py < 8; py++) {
+                    for (let px2 = 0; px2 < 8; px2++) {
+                      newPixels[getIdx(ax * 8 + px2, ay * 8 + py)] = 0;
+                    }
                   }
                 }
               }
             }
-          }
 
-          origLayer.pixels = newPixels;
-          origLayer.attrs = newAttrs;
-          if (zx.colors) origLayer.colors = zx.colors;
-          // Po dithering: paper pixely buněk jsou průhledné — ink vzor překrývá spodní vrstvy
-          // ale paper nezakrývá spodní vrstvy (jako ink-only overlay).
-          if (!origLayer.paperTransparent) origLayer.paperTransparent = new Uint8Array(ATTR_W * ATTR_H);
-          for (let ai = 0; ai < ATTR_W * ATTR_H; ai++) {
-            if (newAttrs[ai] !== TRANSPARENT_ATTR) origLayer.paperTransparent[ai] = 1;
+            origLayer.pixels = newPixels;
+            origLayer.attrs = newAttrs;
+            if (!origLayer.paperTransparent) origLayer.paperTransparent = new Uint8Array(ATTR_W * ATTR_H);
+            if (!origLayer.explicitPaper) origLayer.explicitPaper = new Uint8Array(ZX_W * ZX_H);
+            origLayer.paperTransparent.fill(0);
+            origLayer.explicitPaper.fill(0);
           }
           state.layers = next;
           setStatus(`Layer dithered${label}.`);
@@ -12263,10 +12885,37 @@ attr grid: ${aw}x${ah}` : ''}`);
       // ── Export palette as binary .nxp ────────────────────────────────────
       function exportPaletteNxp() {
         const out = new Uint8Array(512);
-        for (let i = 0; i < 256; i++) {
-          out[i]       = NEXT_COLORS[i].palLo & 0xFF;
-          out[256 + i] = NEXT_COLORS[i].palHi & 0xFF;
+
+        // Exportuje se skutecna hardwarova paleta 0..255.
+        // Picker muze byt serazeny podle odstinu, ale recolorMapping[] drzi
+        // realny Next palette index, ne jen pozici v zobrazeni.
+        const pal = _ptdWorkingPalette || NEXT_COLORS;
+        const writeEntry = (dstIdx, srcIdx) => {
+          const si = clamp(srcIdx | 0, 0, 255);
+          out[dstIdx] = pal[si].palLo & 0xFF;
+          out[256 + dstIdx] = pal[si].palHi & 0xFF;
+        };
+
+        // Nejdriv zkopiruj celou 256-entry Next paletu 1:1.
+        for (let i = 0; i < 256; i++) writeEntry(i, i);
+
+        // Klasicka ULA paleta na Nextu neni linearni 0..15 pro vsechno:
+        //   0..7   = INK 0..7
+        //   8..15  = BRIGHT INK 0..7
+        //   16..23 = PAPER 0..7
+        //   24..31 = BRIGHT PAPER 0..7
+        //
+        // Proto je potreba remap zrcadlit do INK i PAPER slotu.
+        for (let c = 0; c < 8; c++) {
+          const normalSrc = recolorMapping[c] & 0xFF;
+          writeEntry(c, normalSrc);
+          writeEntry(16 + c, normalSrc);
+
+          const brightSrc = recolorMapping[8 + c] & 0xFF;
+          writeEntry(8 + c, brightSrc);
+          writeEntry(24 + c, brightSrc);
         }
+
         const blob = new Blob([out], { type: 'application/octet-stream' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href=url; a.download=`${sanitizeLabel(state.screenName,'screen')}_palette.nxp`; a.click();
@@ -12673,6 +13322,20 @@ attr grid: ${aw}x${ah}` : ''}`);
       el('spriteColorBtn').addEventListener('click', () => { if (isNextSpriteMode()) return; state.sprite.colored = true; renderSpriteAll(); });
       el('spriteMaskBtn').addEventListener('click', () => { if (isNextSpriteMode()) return; state.sprite.autoMask = !state.sprite.autoMask; renderSpriteAll(); });
       el('spriteGridBtn').addEventListener('click', () => { state.sprite.showGrid = !state.sprite.showGrid; renderSpriteAll(); });
+      // ── Sprite shift / rotate buttons ───────────────────────────────────────
+      el('spriteShiftLeftBtn').addEventListener('click',  () => applySpriteMutation(() => shiftSpriteFrame(activeSpriteFrame(), -1, 0), 'Sprite shifted left.'));
+      el('spriteShiftRightBtn').addEventListener('click', () => applySpriteMutation(() => shiftSpriteFrame(activeSpriteFrame(),  1, 0), 'Sprite shifted right.'));
+      el('spriteShiftUpBtn').addEventListener('click',    () => applySpriteMutation(() => shiftSpriteFrame(activeSpriteFrame(),  0,-1), 'Sprite shifted up.'));
+      el('spriteShiftDownBtn').addEventListener('click',  () => applySpriteMutation(() => shiftSpriteFrame(activeSpriteFrame(),  0, 1), 'Sprite shifted down.'));
+      el('spriteRotateCCWBtn').addEventListener('click',  () => applySpriteMutation(() => rotateSpriteFrame(activeSpriteFrame(), false), 'Sprite rotated 90° CCW.'));
+      el('spriteRotateCWBtn').addEventListener('click',   () => applySpriteMutation(() => rotateSpriteFrame(activeSpriteFrame(), true),  'Sprite rotated 90° CW.'));
+      el('spriteShiftLeftAllBtn').addEventListener('click',  () => applySpriteMutation(() => state.sprite.frames.forEach(f => shiftSpriteFrame(f, -1, 0)), 'All frames shifted left.'));
+      el('spriteShiftRightAllBtn').addEventListener('click', () => applySpriteMutation(() => state.sprite.frames.forEach(f => shiftSpriteFrame(f,  1, 0)), 'All frames shifted right.'));
+      el('spriteShiftUpAllBtn').addEventListener('click',    () => applySpriteMutation(() => state.sprite.frames.forEach(f => shiftSpriteFrame(f,  0,-1)), 'All frames shifted up.'));
+      el('spriteShiftDownAllBtn').addEventListener('click',  () => applySpriteMutation(() => state.sprite.frames.forEach(f => shiftSpriteFrame(f,  0, 1)), 'All frames shifted down.'));
+      el('spriteRotateCCWAllBtn').addEventListener('click',  () => applySpriteMutation(() => { const ok = state.sprite.frames.every(f => rotateSpriteFrame(f, false) !== false); return ok ? undefined : false; }, 'All frames rotated 90° CCW.'));
+      el('spriteRotateCWAllBtn').addEventListener('click',   () => applySpriteMutation(() => { const ok = state.sprite.frames.every(f => rotateSpriteFrame(f, true)  !== false); return ok ? undefined : false; }, 'All frames rotated 90° CW.'));
+      // ────────────────────────────────────────────────────────────────────────
       el('addSpriteFrameBtn').addEventListener('click', () => { state.sprite.frames.push(createSpriteFrame(`Frame ${state.sprite.frames.length + 1}`)); state.sprite.activeFrame = state.sprite.frames.length - 1; renderSpriteAll(); setStatus('Sprite frame added.'); });
       el('duplicateSpriteFrameBtn').addEventListener('click', () => { const src = activeSpriteFrame(); if (!src) return; const copy = cloneSpriteFrameData(src); state.sprite.frames.push({ name: `${src.name} copy`, pixels: new Uint8Array(copy.pixels), colors: new Uint8Array(copy.colors), attrs: new Uint8Array(copy.attrs), mask: copy.mask ? new Uint8Array(copy.mask) : null }); state.sprite.activeFrame = state.sprite.frames.length - 1; renderSpriteAll(); setStatus('Sprite frame duplicated.'); });
       el('spriteCopyBtn').addEventListener('click', () => { const clip = copyActiveSpriteToClipboard(); if (!clip) return; setStatus(`Sprite copied: ${clip.width}×${clip.height}${clip.colored ? ', color' : ', monochrome'}${clip.frame.mask ? ', manual mask' : ', auto mask'}.`); });
@@ -13186,6 +13849,84 @@ total stride: ${totalStride}
 UDG codes: 144..164`);
         setStatus('ZX font routines downloaded.');
       }
+      // ── Sprite shift / rotate helpers ─────────────────────────────────────
+      // dx,dy = direction: only one of them should be non-zero for a simple 1px shift
+      function shiftSpriteFrame(frame, dx, dy) {
+        const w = state.sprite.width, h = state.sprite.height;
+        const np = new Uint8Array(w * h);
+        const nc = frame.colors ? new Uint8Array(w * h) : null;
+        const nm = frame.mask   ? new Uint8Array(w * h) : null;
+        for (let y = 0; y < h; y++) {
+          for (let x = 0; x < w; x++) {
+            const nx = x + dx, ny = y + dy;
+            if (nx >= 0 && nx < w && ny >= 0 && ny < h) {
+              np[ny * w + nx] = frame.pixels[y * w + x];
+              if (nc) nc[ny * w + nx] = frame.colors[y * w + x];
+              if (nm) nm[ny * w + nx] = frame.mask[y * w + x];
+            }
+          }
+        }
+        frame.pixels = np;
+        if (nc) frame.colors = nc;
+        if (nm) frame.mask = nm;
+        // Attrs (8×8 cells, classic mode) are not shifted for a 1px move —
+        // the attribute grid stays anchored to the canvas, only pixel data moves.
+      }
+
+      function setSpriteToolStatus(msg) {
+        const el2 = el('spriteToolStatus');
+        if (!el2) return;
+        if (msg) { el2.textContent = msg; el2.style.display = ''; }
+        else      { el2.textContent = ''; el2.style.display = 'none'; }
+      }
+
+      function rotateSpriteFrame(frame, clockwise) {
+        const w = state.sprite.width, h = state.sprite.height;
+        if (w !== h) { setSpriteToolStatus(`Rotate failed — sprite is not square (${w}×${h}).`); return false; }
+        const np = new Uint8Array(w * h);
+        const nc = frame.colors ? new Uint8Array(w * h) : null;
+        const nm = frame.mask   ? new Uint8Array(w * h) : null;
+        for (let y = 0; y < h; y++) {
+          for (let x = 0; x < w; x++) {
+            const src = y * w + x;
+            // CW:  dst_x = h-1-y, dst_y = x
+            // CCW: dst_x = y,     dst_y = w-1-x
+            const nx = clockwise ? (h - 1 - y) : y;
+            const ny = clockwise ? x            : (w - 1 - x);
+            np[ny * w + nx] = frame.pixels[src];
+            if (nc) nc[ny * w + nx] = frame.colors[src];
+            if (nm) nm[ny * w + nx] = frame.mask[src];
+          }
+        }
+        frame.pixels = np;
+        if (nc) frame.colors = nc;
+        if (nm) frame.mask = nm;
+        // Rotate attrs (8×8 cells) for classic mode — only valid when sprite is square & multiple of 8
+        if (!isNextSpriteMode() && frame.attrs) {
+          const { aw, ah } = getSpriteAttrSize();
+          if (aw === ah) {
+            const na = new Uint8Array(aw * ah);
+            for (let ay = 0; ay < ah; ay++) {
+              for (let ax = 0; ax < aw; ax++) {
+                const src = ay * aw + ax;
+                const nx = clockwise ? (ah - 1 - ay) : ay;
+                const ny = clockwise ? ax             : (aw - 1 - ax);
+                na[ny * aw + nx] = frame.attrs[src];
+              }
+            }
+            frame.attrs = na;
+          }
+        }
+        return true;
+      }
+
+      function applySpriteMutation(mutator, msg) {
+        pushSpriteHistory();
+        const ok = mutator();
+        renderSpriteAll();
+        if (ok !== false) { setSpriteToolStatus(null); setStatus(msg); }
+      }
+
       function shiftGlyphPixels(glyph, dir) { const w = state.font.width, h = state.font.height, np = new Uint8Array(w * h); for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const nx = x + dir; if (nx >= 0 && nx < w) np[y * w + nx] = glyph.pixels[y * w + x]; } glyph.pixels = np; if (glyph.mask) { const nm = new Uint8Array(w * h); for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const nx = x + dir; if (nx >= 0 && nx < w) nm[y * w + nx] = glyph.mask[y * w + x]; } glyph.mask = nm; } }
       function rotateGlyph(glyph, clockwise) { const w = state.font.width, h = state.font.height; if (w !== h) { setStatus('Rotate works only on square glyphs.'); return false; } const np = new Uint8Array(w * h); for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const src = y * w + x, nx = clockwise ? h - 1 - y : y, ny = clockwise ? x : w - 1 - x; np[ny * w + nx] = glyph.pixels[src]; } glyph.pixels = np; if (glyph.mask) { const nm = new Uint8Array(w * h); for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const src = y * w + x, nx = clockwise ? h - 1 - y : y, ny = clockwise ? x : w - 1 - x; nm[ny * w + nx] = glyph.mask[src]; } glyph.mask = nm; } return true; }
       function clearGlyph(glyph) { if (!glyph) return; glyph.pixels.fill(0); if (glyph.mask) glyph.mask.fill(0); }
