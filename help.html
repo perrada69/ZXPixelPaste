@@ -164,6 +164,7 @@
             <li><a href="#en-sprite">3. Sprite Editor</a>
               <div class="sub">
                 <a href="#en-sprite-classic">Classic ZX sprite mode</a>
+                <a href="#en-sprite-tools">Sprite tools — shift &amp; rotate</a>
                 <a href="#en-sprite-next">Next 8bpp sprite mode</a>
                 <a href="#en-sprite-multisize">Large / multi-tile sprites</a>
               </div>
@@ -555,6 +556,7 @@
                 <tr><td><strong>Monochrome / Color</strong></td><td>Monochrome stores only a 1bpp bitmap. Color additionally stores a ZX attribute per 8×8 cell.</td></tr>
                 <tr><td><strong>Mask: ON/OFF</strong></td><td>When on, generates or lets you manually edit a 1bpp mask (1 = transparent, 0 = opaque). Classic sprite routines use OR/AND masking.</td></tr>
                 <tr><td><strong>Frame controls</strong></td><td>New Frame, Duplicate Frame, Delete Frame — build multi-frame animations.</td></tr>
+                <tr><td><strong>Sprite tools</strong></td><td>Shift and rotate the active frame or all frames at once. See <a href="#en-sprite-tools">Sprite tools</a> below.</td></tr>
                 <tr><td><strong>Sprite canvas</strong></td><td>Left draws, right erases. Dragging interpolates missing pixels. Middle-click picks color.</td></tr>
                 <tr><td><strong>Mask panel</strong></td><td>Edit mask pixels manually. Restore auto-generated mask with <strong>↺ Auto</strong>.</td></tr>
                 <tr><td><strong>Animation preview</strong></td><td>Plays frames at the configured delay (ms).</td></tr>
@@ -564,6 +566,20 @@
               </tbody>
             </table>
             <div class="note"><strong>Mask editing:</strong> manual mask edits override auto-generated masks until you restore them with <strong>↺ Auto</strong>.</div>
+
+            <h3 id="en-sprite-tools">Sprite tools — shift &amp; rotate</h3>
+            <p>The <strong>Sprite tools</strong> section in the Sprite Setup panel provides pixel-level shift and 90° rotation for the current frame or all frames at once. Both classic ZX and Next 8bpp modes are fully supported. If a mask is active, it is transformed together with the pixel data.</p>
+            <table>
+              <thead><tr><th>Button</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><strong>← / → / ↑ / ↓ shift</strong></td><td>Moves all pixels of the current frame one pixel in the chosen direction. Pixels that overflow the edge are discarded — the operation does not wrap around. In classic color mode the per-pixel color data moves with the pixels; the attribute grid (8×8 cells) stays anchored to the canvas.</td></tr>
+                <tr><td><strong>⟲ / ⟳ rot</strong></td><td>Rotates the current frame 90° counter-clockwise or clockwise. <strong>Only works on square sprites</strong> (width = height). If the sprite is not square, a warning appears in the Sprite Setup panel. In classic mode, attribute cells are rotated together with the pixel data when the attribute grid is itself square.</td></tr>
+                <tr><td><strong>← / → / ↑ / ↓ all</strong></td><td>Same as the single-frame shift buttons, but applied to every frame in the set.</td></tr>
+                <tr><td><strong>⟲ / ⟳ all</strong></td><td>Same as the single-frame rotate buttons, but applied to every frame in the set.</td></tr>
+              </tbody>
+            </table>
+            <div class="note"><strong>Mask behaviour:</strong> if a manual mask exists on the frame it is shifted or rotated together with the pixel data. Auto-generated masks are always recomputed from the current pixels after the operation, so no extra steps are needed.</div>
+            <div class="note"><strong>Undo:</strong> all shift and rotate operations are recorded in the undo history (Ctrl+Z).</div>
 
             <h3 id="en-sprite-next">Next 8bpp sprite mode</h3>
             <div class="next-note">Select <strong>ZX Spectrum Next 8bpp</strong> from the Sprite mode dropdown to enable this mode.</div>
@@ -798,6 +814,7 @@
             <li><a href="#cz-sprite">3. Sprite Editor</a>
               <div class="sub">
                 <a href="#cz-sprite-classic">Klasické ZX sprity</a>
+                <a href="#cz-sprite-tools">Sprite tools — posun a rotace</a>
                 <a href="#cz-sprite-next">Next 8bpp sprity</a>
                 <a href="#cz-sprite-multisize">Větší / víceblokové sprity</a>
               </div>
@@ -1189,6 +1206,7 @@
                 <tr><td><strong>Monochrome / Color</strong></td><td>Monochrome ukládá jen 1bpp bitmapu. Color navíc ukládá ZX atribut na každých 8×8 pixelů.</td></tr>
                 <tr><td><strong>Mask: ON/OFF</strong></td><td>Při zapnuté masce se generuje nebo lze ručně editovat 1bpp maska (1 = průhledný, 0 = neprůhledný).</td></tr>
                 <tr><td><strong>Frame controls</strong></td><td>New Frame, Duplicate Frame, Delete Frame — vytváření animací po framech.</td></tr>
+                <tr><td><strong>Sprite tools</strong></td><td>Posun a rotace aktivního framu nebo celé sady najednou. Viz <a href="#cz-sprite-tools">Sprite tools</a> níže.</td></tr>
                 <tr><td><strong>Sprite canvas</strong></td><td>Levé kreslí, pravé maže. Při tahu se interpolují mezilehlé pixely. Prostřední klik přebírá barvu.</td></tr>
                 <tr><td><strong>Mask panel</strong></td><td>Ruční editace masky. Obnov auto-generovanou masku tlačítkem <strong>↺ Auto</strong>.</td></tr>
                 <tr><td><strong>Animation preview</strong></td><td>Přehrává framy v nastaveném intervalu (ms).</td></tr>
@@ -1198,6 +1216,20 @@
               </tbody>
             </table>
             <div class="note"><strong>Editace masky:</strong> ruční úprava masky přepíše automaticky generovanou, dokud ji neobnovíš tlačítkem <strong>↺ Auto</strong>.</div>
+
+            <h3 id="cz-sprite-tools">Sprite tools — posun a rotace</h3>
+            <p>Sekce <strong>Sprite tools</strong> v panelu Sprite Setup umožňuje posun pixelů o 1 pixel a rotaci o 90° — buď pro aktuální frame, nebo pro celou sadu najednou. Funkce fungují jak v klasickém ZX režimu, tak v Next 8bpp režimu. Pokud je aktivní maska, transformuje se spolu s pixely.</p>
+            <table>
+              <thead><tr><th>Tlačítko</th><th>Co dělá</th></tr></thead>
+              <tbody>
+                <tr><td><strong>← / → / ↑ / ↓ shift</strong></td><td>Posune všechny pixely aktuálního framu o 1 pixel daným směrem. Pixely, které přetečou za okraj, se ztratí — operace nepřetéká. V klasickém barevném režimu se s pixely posouvají i data barev (per-pixel color); atributová mřížka (8×8 buněk) zůstává ukotvená na canvasu.</td></tr>
+                <tr><td><strong>⟲ / ⟳ rot</strong></td><td>Otočí aktuální frame o 90° doleva nebo doprava. <strong>Funguje pouze pro čtvercové sprity</strong> (šířka = výška). Pokud sprite není čtvercový, zobrazí se varování přímo v panelu Sprite Setup. V klasickém režimu se atributové buňky rotují spolu s pixely, pokud je atributová mřížka sama čtvercová.</td></tr>
+                <tr><td><strong>← / → / ↑ / ↓ all</strong></td><td>Stejné jako shift pro jeden frame, ale aplikuje se na každý frame v sadě.</td></tr>
+                <tr><td><strong>⟲ / ⟳ all</strong></td><td>Stejné jako rotace pro jeden frame, ale aplikuje se na každý frame v sadě.</td></tr>
+              </tbody>
+            </table>
+            <div class="note"><strong>Chování masky:</strong> pokud frame obsahuje ručně editovanou masku, posouvá nebo rotuje se spolu s pixely. Automaticky generované masky se vždy přepočítají z aktuálních pixelů, takže není potřeba dělat nic navíc.</div>
+            <div class="note"><strong>Zpět (Undo):</strong> všechny operace posunu a rotace jsou zaznamenány v historii změn (Ctrl+Z).</div>
 
             <h3 id="cz-sprite-next">Next 8bpp sprity</h3>
             <div class="next-note">Vyber <strong>ZX Spectrum Next 8bpp</strong> z rozbalovacího menu Sprite mode pro aktivaci tohoto módu.</div>
