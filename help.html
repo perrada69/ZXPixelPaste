@@ -364,9 +364,10 @@
                 <tr><td><strong>Import NXI</strong></td><td>Loads an NXI file. If the file contains palette data (≥ 49664 bytes) it is also applied to the editor palette.</td></tr>
                 <tr><td><strong>Convert to Next</strong></td><td>Converts the current classic ZX screen to Next Layer 2 format. Text object colors are also converted to the nearest Next palette index.</td></tr>
                 <tr><td><strong>Convert to Classic</strong></td><td>Converts the current Next Layer 2 canvas back to classic ZX Spectrum format. A <strong>conversion dialog</strong> appears with a live before/after preview and the following options:<br><br>
-                  <strong>Method:</strong> <em>Direct conversion</em> (nearest ZX colour per pixel, fast) or <em>Dithering — Ordered Bayer</em> (dot patterns simulate mid-tones within each 8×8 attribute cell).<br>
+                  <strong>Method:</strong> <em>Direct conversion</em> (nearest ZX colour per pixel, fast), <em>Dithering — Ordered Bayer</em> (dot patterns simulate mid-tones within each 8×8 attribute cell), or <em>Floyd-Steinberg dithering</em> (error diffusion — see below).<br>
                   <strong>Dither strength</strong> (0–100 %): how strongly the Bayer pattern is applied. At 0 % it behaves like direct conversion; at 100 % full dithering is used.<br>
                   <strong>Matrix:</strong> Bayer 2×2 (finer), 4×4 (recommended), or 8×8 (coarser texture).<br>
+                  <strong>Diffusion strength</strong> (0–100 %): intensity of error diffusion (Floyd-Steinberg only).<br>
                   <strong>Brightness / Contrast / Saturation</strong> (-100…+100): pre-process the source image before conversion. The preview updates live as you move the sliders.<br><br>
                   Text object palette indices are mapped to the nearest ZX ink color.</td></tr>
               </tbody>
@@ -474,8 +475,10 @@
               <tbody>
                 <tr><td><strong>Colour dithering</strong></td><td>Ordered Bayer dithering. For each 8×8 attribute cell the algorithm selects the best ZX ink+paper colour pair (using perceptual colour distance), then applies the Bayer matrix to distribute pixels between those two colours and simulate mid-tones.</td></tr>
                 <tr><td><strong>B&amp;W dithering</strong></td><td>Monochrome mode. Uses white ink on black paper. The same Bayer matrix and strength settings apply. Useful for creating clean halftone patterns.</td></tr>
+                <tr><td><strong>Floyd-Steinberg dithering</strong></td><td>Error diffusion dithering inspired by the <a href="https://solhsa.com/spectrumizer/index.html" target="_blank">Image Spectrumizer</a> algorithm. Works in two passes: first, the best ink+paper colour pair is selected for each 8×8 cell (same perceptual selection as Bayer); then Floyd-Steinberg error diffusion is applied pixel by pixel within each cell — quantisation error is spread to neighbouring pixels using the classic 7/3/5/1 weights. Compared to Bayer, it produces smoother gradients with fewer regular dot patterns and generally looks better on photographs and continuous-tone images. Error diffusion is kept within each cell boundary to prevent colour bleeding across attribute borders.</td></tr>
                 <tr><td><strong>Dither strength</strong></td><td>Controls the intensity of the Bayer pattern (0–100 %). At 0 % the result is equivalent to a direct nearest-colour conversion. At 100 % the full dither pattern is applied. 70 % is a good starting point.</td></tr>
                 <tr><td><strong>Matrix</strong></td><td>Selects the Bayer matrix size: <em>Bayer 2×2</em>, <em>Bayer 4×4 (recommended)</em>, or <em>Bayer 8×8</em>. Larger matrices produce finer patterns with more tonal gradations; smaller matrices are coarser but cleaner at low zoom.</td></tr>
+                <tr><td><strong>Diffusion strength</strong></td><td>Controls the intensity of the Floyd-Steinberg error diffusion (0–100 %). At 0 % the result is equivalent to a direct conversion; at 100 % the full error is propagated. 80 % is a good starting point. Only visible when Floyd-Steinberg is selected.</td></tr>
                 <tr><td><strong>Brightness / Contrast / Saturation</strong></td><td>Pre-processing adjustments applied to the source image before dithering. Increasing contrast or saturation often improves colour cell selection. These adjustments are temporary and only affect the conversion — the original layer pixels are not modified by them.</td></tr>
                 <tr><td><strong>Auto tune</strong></td><td>Automatically finds the best brightness/contrast/saturation combination for the current dither method and strength. Useful as a starting point — you can fine-tune manually afterwards.</td></tr>
                 <tr><td><strong>Split / Result only / Source only</strong></td><td>Switches the preview between a split view (Original left, Result right), result only, or source only.</td></tr>
@@ -527,11 +530,14 @@
               <thead><tr><th>Control</th><th>Mode</th><th>Purpose</th></tr></thead>
               <tbody>
                 <tr><td><strong>Import Image</strong></td><td>Both</td><td>Converts a regular image (JPG, PNG, …) to ZX-compatible screen data. In <strong>classic ZX mode</strong> a conversion dialog appears with a live before/after preview and these options:<br><br>
-                  <strong>Method:</strong> <em>Direct conversion</em> (two most common ZX colours per 8×8 cell) or <em>Dithering — Ordered Bayer</em> (dot patterns simulate gradients and mid-tones).<br>
-                  <strong>Dither strength</strong> (0–100 %): intensity of the Bayer pattern.<br>
-                  <strong>Matrix:</strong> Bayer 2×2 / 4×4 / 8×8.<br>
-                  <strong>Brightness / Contrast / Saturation</strong> (-100…+100): adjust the image before conversion. The preview canvas updates live.<br><br>
-                  In <strong>Next mode</strong> the image is converted directly to the nearest Next palette index (no dialog).</td></tr>
+                  <strong>Crop / selection (Source panel):</strong> If the source image is larger than 256×192 px, a selection overlay appears directly on the Source preview. Drag the white rectangle to choose which part of the image to import. Resize it by dragging any of the 8 corner or edge handles. The info bar below the preview shows the current selection position and size in source pixels. The checkbox <em>Lock 4∶3</em> constrains the selection to the exact 256∶192 aspect ratio — if the selection covers most of the image, a centered crop is placed automatically; for smaller selections only the shorter dimension is adjusted.<br><br>
+                  <strong>Method:</strong> <em>Direct conversion</em> (two most common ZX colours per 8×8 cell), <em>Dithering — Ordered Bayer</em> (dot patterns simulate gradients and mid-tones), <em>Black &amp; White dithering</em> (monochrome, white ink on black paper), or <em>Floyd-Steinberg dithering</em> (error diffusion — see below).<br>
+                  <strong>Dither strength</strong> (0–100 %): intensity of the Bayer pattern (Bayer methods only).<br>
+                  <strong>Matrix:</strong> Bayer 2×2 / 4×4 / 8×8 (Bayer methods only).<br>
+                  <strong>Diffusion strength</strong> (0–100 %): intensity of error diffusion (Floyd-Steinberg only).<br>
+                  <strong>Brightness / Contrast / Saturation</strong> (-100…+100): adjust the image before conversion. The preview canvas updates live.<br>
+                  <strong>Auto tune:</strong> automatically finds a good brightness/contrast/saturation combination for the selected crop and conversion method.<br><br>
+                  In <strong>Next mode</strong> the same crop overlay and Lock 4∶3 option are available. The conversion converts the selected region to the nearest Next palette index.</td></tr>
                 <tr><td><strong>Import SCR / Import L2</strong></td><td>Classic / Next</td><td>Loads SCR/BIN screen data (classic) or raw 49152-byte Layer 2 data (Next).</td></tr>
                 <tr><td><strong>Export SCR / Export L2 Raw</strong></td><td>Classic / Next</td><td>Exports a standard 6912-byte SCR (classic) or raw Layer 2 pixel data (Next). Text objects are baked into the exported image.</td></tr>
                 <tr><td><strong>Export ATTR / Export PAL</strong></td><td>Classic / Next</td><td>Exports only the attribute block (classic) or the 512-byte Next palette (Next).</td></tr>
@@ -720,14 +726,17 @@
             <h3>Image import and Next → Classic conversion with dithering</h3>
             <ol>
               <li>In <strong>classic ZX mode</strong>, click <strong>Import Image</strong> and select a JPG/PNG file — or switch the screen mode from <em>Next Layer 2</em> to <em>Classic ZX Spectrum</em>. A conversion dialog opens.</li>
-              <li>The dialog shows a <strong>live preview</strong> with the source image on top and the converted ZX result below. Both update automatically as you change any setting.</li>
+              <li>The dialog shows a <strong>live preview</strong> with the source image on the left (Source) and the converted ZX result on the right (Result). Both update automatically as you change any setting.</li>
+              <li>If the source image is larger than 256×192 px, a <strong>selection overlay</strong> appears on the Source preview. Drag the white rectangle to select the region you want to import. Resize it using the corner or edge handles. The info bar below shows the current position and size in source pixels. Use <strong>Lock 4∶3</strong> to snap the selection to the correct ZX aspect ratio.</li>
               <li>Choose the conversion <strong>method</strong>: <em>Direct</em> for speed and clean solid areas, or <em>Dithering (Ordered Bayer)</em> for photos and complex graphics where gradients matter.</li>
               <li>If dithering is selected, set the <strong>dither strength</strong> (70–100 % is a good starting point) and pick a <strong>matrix</strong>: Bayer 4×4 is the best general-purpose choice.</li>
-              <li>Use the <strong>Brightness / Contrast / Saturation</strong> sliders to pre-process the source image. Increasing contrast often improves ZX conversion results by making colours more distinct.</li>
-              <li>When the preview looks good, click <strong>Convert</strong> / <strong>Import</strong>. The conversion is applied to the canvas and can be undone.</li>
+              <li>Use the <strong>Brightness / Contrast / Saturation</strong> sliders to pre-process the source image. Increasing contrast often improves ZX conversion results by making colours more distinct. Click <strong>Auto tune</strong> to let the editor find a good starting point automatically.</li>
+              <li>When the preview looks good, click <strong>Import</strong>. The conversion is applied to the canvas and can be undone.</li>
             </ol>
 
             <div class="tip"><strong>Dithering tips:</strong> the algorithm selects the best ink+paper pair for each 8×8 attribute cell using perceptual colour distance (weighted for human vision), then applies the Bayer pattern within each cell. Increasing contrast before conversion, or using Saturation +20–40, often produces crisper attribute choices. If the result looks too noisy, reduce the dither strength or try Bayer 2×2 instead of 4×4.</div>
+
+            <div class="tip"><strong>Crop tips:</strong> for portrait photos, enable <em>Lock 4∶3</em> — the editor automatically places a centered landscape crop that matches the ZX screen ratio. You can then drag it to the area of interest. The selected region is always scaled to exactly 256×192 on import, regardless of its original pixel size.</div>
 
             <h3>Classic → Next conversion workflow</h3>
             <ol>
@@ -1014,9 +1023,10 @@
                 <tr><td><strong>Import NXI</strong></td><td>Načte NXI soubor včetně palety.</td></tr>
                 <tr><td><strong>Konverze Classic → Next</strong></td><td>Konvertuje klasickou ZX obrazovku do Next Layer 2 formátu. Barvy textových objektů jsou také automaticky konvertovány na nejbližší index Next palety.</td></tr>
                 <tr><td><strong>Konverze Next → Classic</strong></td><td>Konvertuje Next Layer 2 canvas zpět do klasického ZX formátu. Zobrazí se <strong>konverzní dialog</strong> s živým náhledem před/po a těmito možnostmi:<br><br>
-                  <strong>Metoda:</strong> <em>Přímý převod</em> (nejbližší ZX barva per pixel, rychlé) nebo <em>Dithering — Ordered Bayer</em> (tečkované vzory simulují střední tóny v rámci každé 8×8 atributové buňky).<br>
+                  <strong>Metoda:</strong> <em>Přímý převod</em> (nejbližší ZX barva per pixel, rychlé), <em>Dithering — Ordered Bayer</em> (tečkované vzory simulují střední tóny v rámci každé 8×8 atributové buňky) nebo <em>Floyd-Steinberg dithering</em> (difuze chyb — viz níže).<br>
                   <strong>Síla ditheringu</strong> (0–100 %): intenzita Bayer vzoru. Na 0 % se chová jako přímý převod, na 100 % plný dithering.<br>
                   <strong>Matice:</strong> Bayer 2×2 (jemnější), 4×4 (doporučeno) nebo 8×8 (hrubší vzor).<br>
+                  <strong>Síla difuze</strong> (0–100 %): intenzita difuze chyb (jen Floyd-Steinberg).<br>
                   <strong>Jas / Kontrast / Saturace</strong> (-100…+100): předúprava zdrojového obrázku před konverzí. Náhled se aktualizuje živě při pohybu sliderů.<br><br>
                   Indexy palety textových objektů jsou namapovány na nejbližší ZX barvu inkoustu.</td></tr>
               </tbody>
@@ -1124,8 +1134,10 @@
               <tbody>
                 <tr><td><strong>Colour dithering</strong></td><td>Ordered Bayer dithering. Pro každou atributovou buňku 8×8 algoritmus vybere nejlepší dvojici ZX ink+paper barev (pomocí percepční vzdálenosti barev) a pak aplikuje Bayerovu matici k rozložení pixelů mezi tyto dvě barvy a simulaci středních tónů.</td></tr>
                 <tr><td><strong>B&amp;W dithering</strong></td><td>Monochromatický mód. Používá bílý ink na černém paperu. Platí stejná Bayerova matice i nastavení síly. Vhodné pro vytváření čistých polotónových vzorů.</td></tr>
+                <tr><td><strong>Floyd-Steinberg dithering</strong></td><td>Dithering s difuzí chyb, inspirovaný algoritmem <a href="https://solhsa.com/spectrumizer/index.html" target="_blank">Image Spectrumizer</a>. Funguje ve dvou průchodech: nejprve se pro každou 8×8 buňku vybere nejlepší dvojice ink+paper barev (stejný percepční výběr jako u Bayeru); pak se pixel po pixelu aplikuje Floyd-Steinbergova difuze chyb v rámci buňky — chyba kvantizace se šíří na sousední pixely klasickými vahami 7/3/5/1. Oproti Bayeru produkuje hladší přechody bez pravidelných tečkových vzorů a obecně vypadá lépe na fotografiích a plynule tonálních obrázcích. Difuze chyb probíhá uvnitř každé buňky, takže nedochází ke krvácení barev přes hranice atributů.</td></tr>
                 <tr><td><strong>Dither strength</strong></td><td>Řídí intenzitu Bayerova vzoru (0–100 %). Při 0 % je výsledek ekvivalentní přímé konverzi nejbližší barvou. Při 100 % se plně aplikuje dithering vzor. Jako výchozí bod dobře funguje 70 %.</td></tr>
                 <tr><td><strong>Matrix</strong></td><td>Vybírá velikost Bayerovy matice: <em>Bayer 2×2</em>, <em>Bayer 4×4 (doporučeno)</em> nebo <em>Bayer 8×8</em>. Větší matice produkují jemnější vzor s více tónovými přechody; menší matice jsou hrubší, ale čistší při nízkém zoomu.</td></tr>
+                <tr><td><strong>Diffusion strength</strong></td><td>Řídí intenzitu Floyd-Steinbergovy difuze chyb (0–100 %). Při 0 % je výsledek ekvivalentní přímému převodu; při 100 % se šíří plná chyba. Jako výchozí bod dobře funguje 80 %. Zobrazuje se jen při výběru Floyd-Steinberg metody.</td></tr>
                 <tr><td><strong>Brightness / Contrast / Saturation</strong></td><td>Předúpravy zdrojového obrázku před ditheringem. Zvýšení kontrastu nebo saturace často zlepší výběr atributových barev. Tyto úpravy jsou dočasné a ovlivní pouze konverzi — původní pixely vrstvy se jimi nemění.</td></tr>
                 <tr><td><strong>Auto tune</strong></td><td>Automaticky najde nejlepší kombinaci jasu/kontrastu/saturace pro aktuální metodu a sílu ditheringu. Vhodné jako výchozí bod — poté lze ručně doladit.</td></tr>
                 <tr><td><strong>Split / Result only / Source only</strong></td><td>Přepíná náhled mezi rozděleným pohledem (Original vlevo, Result vpravo), pouze výsledkem nebo pouze zdrojem.</td></tr>
@@ -1177,11 +1189,14 @@
               <thead><tr><th>Prvek</th><th>Mód</th><th>Účel</th></tr></thead>
               <tbody>
                 <tr><td><strong>Import Image</strong></td><td>Oba</td><td>Převede běžný obrázek (JPG, PNG, …) na ZX kompatibilní screen data. V <strong>klasickém ZX módu</strong> se zobrazí konverzní dialog s živým náhledem před/po a těmito možnostmi:<br><br>
-                  <strong>Metoda:</strong> <em>Přímý převod</em> (dvě nejčastější ZX barvy na 8×8 buňku) nebo <em>Dithering — Ordered Bayer</em> (tečkové vzory simulují přechody a střední tóny).<br>
-                  <strong>Síla ditheringu</strong> (0–100 %): intenzita Bayer vzoru.<br>
-                  <strong>Matice:</strong> Bayer 2×2 / 4×4 / 8×8.<br>
-                  <strong>Jas / Kontrast / Saturace</strong> (-100…+100): úprava obrázku před konverzí. Náhled se aktualizuje živě.<br><br>
-                  V <strong>Next módu</strong> se obrázek konvertuje přímo na nejbližší index Next palety (bez dialogu).</td></tr>
+                  <strong>Výběr / výřez (panel Source):</strong> Pokud je zdrojový obrázek větší než 256×192 px, zobrazí se na náhledu Source interaktivní výběrový rámeček. Tažením bílého obdélníku vybíráš, která část obrázku se importuje. Velikost měníš tažením libovolného ze 8 rohových nebo hranových úchytů. Informační lišta pod náhledem zobrazuje aktuální pozici a rozměr výběru ve zdrojových pixelech. Zaškrtávátko <em>Lock 4∶3</em> zamkne výběr na přesný poměr stran 256∶192 — pokud výběr pokrývá většinu obrázku, umístí se centrovaný výřez automaticky; u menšího výběru se jen minimálně upraví kratší rozměr.<br><br>
+                  <strong>Metoda:</strong> <em>Přímý převod</em> (dvě nejčastější ZX barvy na 8×8 buňku), <em>Dithering — Ordered Bayer</em> (tečkové vzory simulují přechody a střední tóny), <em>Černobílý dithering</em> (monochromatický, bílý inkoust na černém papíru) nebo <em>Floyd-Steinberg dithering</em> (difuze chyb — viz níže).<br>
+                  <strong>Síla ditheringu</strong> (0–100 %): intenzita Bayer vzoru (jen Bayer metody).<br>
+                  <strong>Matice:</strong> Bayer 2×2 / 4×4 / 8×8 (jen Bayer metody).<br>
+                  <strong>Síla difuze</strong> (0–100 %): intenzita difuze chyb (jen Floyd-Steinberg).<br>
+                  <strong>Jas / Kontrast / Saturace</strong> (-100…+100): úprava obrázku před konverzí. Náhled se aktualizuje živě.<br>
+                  <strong>Auto tune:</strong> automaticky najde dobrou kombinaci jasu/kontrastu/saturace pro zvolený výřez a metodu konverze.<br><br>
+                  V <strong>Next módu</strong> je stejný výběrový rámeček a volba Lock 4∶3 k dispozici také. Konverze převede vybranou oblast na nejbližší index Next palety.</td></tr>
                 <tr><td><strong>Import SCR / Import L2</strong></td><td>Klasický / Next</td><td>Načte ZX screen data (klasický) nebo raw Layer 2 data (Next).</td></tr>
                 <tr><td><strong>Export SCR / Export L2 Raw</strong></td><td>Klasický / Next</td><td>Exportuje SCR (klasický) nebo raw Layer 2 pixelová data (Next). Textové objekty jsou zahrnuty v exportu.</td></tr>
                 <tr><td><strong>Export ATTR / Export PAL</strong></td><td>Klasický / Next</td><td>Exportuje jen atributový blok (klasický) nebo 512bajtovou Next paletu (Next).</td></tr>
@@ -1370,14 +1385,17 @@
             <h3>Import obrázku a konverze Next → Classic s ditheringem</h3>
             <ol>
               <li>V <strong>klasickém ZX módu</strong> klikni na <strong>Import Image</strong> a vyber JPG/PNG soubor — nebo přepni mód obrazovky z <em>Next Layer 2</em> na <em>Classic ZX Spectrum</em>. Otevře se konverzní dialog.</li>
-              <li>Dialog zobrazuje <strong>živý náhled</strong>: zdrojový obrázek nahoře a výsledek ZX konverze níže. Oboje se automaticky aktualizuje při každé změně nastavení.</li>
+              <li>Dialog zobrazuje <strong>živý náhled</strong>: zdrojový obrázek vlevo (Source) a výsledek ZX konverze vpravo (Result). Oboje se automaticky aktualizuje při každé změně nastavení.</li>
+              <li>Pokud je zdrojový obrázek větší než 256×192 px, zobrazí se na náhledu Source <strong>výběrový rámeček</strong>. Tažením bílého obdélníku vyber oblast, která se bude importovat. Velikost měň tažením rohových nebo hranových úchytů. Informační lišta pod náhledem ukazuje pozici a rozměr výběru ve zdrojových pixelech. Zaškrtni <strong>Lock 4∶3</strong> pro zamknutí výběru na správný poměr stran ZX obrazovky.</li>
               <li>Zvol <strong>metodu</strong>: <em>Přímý převod</em> je rychlý a vhodný pro čisté ploché barvy; <em>Dithering (Ordered Bayer)</em> je lepší pro fotografie a složitou grafiku, kde záleží na přechodech.</li>
               <li>Při ditheringu nastav <strong>sílu</strong> (70–100 % je dobrý výchozí bod) a vyber <strong>matici</strong>: Bayer 4×4 je nejlepší pro obecné použití.</li>
-              <li>Slidermi <strong>Jas / Kontrast / Saturace</strong> předuprav zdrojový obrázek. Zvýšení kontrastu před konverzí často zlepší výsledek tím, že ZX barvy jsou výraznější.</li>
-              <li>Až náhled vypadá dobře, klikni <strong>Convert</strong> / <strong>Import</strong>. Konverze se aplikuje na canvas a jde vrátit pomocí Undo.</li>
+              <li>Slidermi <strong>Jas / Kontrast / Saturace</strong> předuprav zdrojový obrázek. Zvýšení kontrastu před konverzí často zlepší výsledek tím, že ZX barvy jsou výraznější. Tlačítko <strong>Auto tune</strong> automaticky najde dobrý výchozí bod.</li>
+              <li>Až náhled vypadá dobře, klikni <strong>Import</strong>. Konverze se aplikuje na canvas a jde vrátit pomocí Undo.</li>
             </ol>
 
             <div class="tip"><strong>Tipy pro dithering:</strong> algoritmus vybírá nejlepší dvojici ink+paper pro každou 8×8 atributovou buňku pomocí perceptuální vzdálenosti barev (vážená pro lidské vnímání), poté aplikuje Bayer vzor uvnitř každé buňky. Zvýšení kontrastu nebo saturace +20–40 před konverzí často dává čistší atributové volby. Pokud výsledek vypadá příliš zašuměně, sniž sílu ditheringu nebo zkus Bayer 2×2 místo 4×4.</div>
+
+            <div class="tip"><strong>Tipy pro výřez:</strong> u fotek na výšku (portrait) zapni <em>Lock 4∶3</em> — editor automaticky umístí centrovaný landscape výřez odpovídající poměru ZX obrazovky. Pak ho přetáhni na požadovanou oblast. Vybraná oblast se vždy při importu škáluje přesně na 256×192, bez ohledu na její původní pixel-rozměry.</div>
 
             <h3>Konverze Classic → Next</h3>
             <ol>

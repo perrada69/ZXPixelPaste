@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -1289,8 +1289,17 @@
       border-radius: 16px;
       box-shadow: var(--shadow);
       display: grid;
-      grid-template-rows: auto 1fr;
+      grid-template-rows: auto 1fr auto;
       overflow: hidden;
+    }
+    .ptd-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 10px 14px;
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.15);
     }
     .palette-tools-dialog-body {
       display: grid;
@@ -3243,16 +3252,19 @@
             <button id="ptdTabScr" class="ptd-tab">📺 SCR Recolor</button>
           </div>
         </div>
-        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
           <button id="ptdSavePaletteBtn" class="btn-export" style="padding:6px 12px;font-size:12px;min-height:unset;">💾 Save JSON</button>
-          <button id="ptdExportNxpBtn" class="btn-export" style="padding:6px 12px;font-size:12px;min-height:unset;">📤 Export NXP</button>
           <label class="button-like btn-import" for="ptdLoadPaletteInput" style="padding:6px 12px;font-size:12px;min-height:unset;">📂 Load JSON</label>
           <input id="ptdLoadPaletteInput" class="hidden" type="file" accept=".json,application/json">
+          <span style="width:1px;height:20px;background:var(--border);margin:0 4px;display:inline-block;"></span>
+          <button id="ptdExportNxpBtn" class="btn-export" style="padding:6px 12px;font-size:12px;min-height:unset;">📤 Export NXP</button>
           <label class="button-like btn-import" for="ptdImportNxpInput" style="padding:6px 12px;font-size:12px;min-height:unset;">📥 Import NXP</label>
           <input id="ptdImportNxpInput" class="hidden" type="file" accept=".nxp,.bin,application/octet-stream">
+          <button id="ptdExportPalBtn" class="btn-export" style="padding:6px 12px;font-size:12px;min-height:unset;">📤 Export PAL</button>
+          <label class="button-like btn-import" for="ptdImportPalInput" style="padding:6px 12px;font-size:12px;min-height:unset;">📥 Import PAL</label>
+          <input id="ptdImportPalInput" class="hidden" type="file" accept=".pal,.bin,application/octet-stream">
+          <span style="width:1px;height:20px;background:var(--border);margin:0 4px;display:inline-block;"></span>
           <button id="ptdResetPaletteBtn" style="padding:6px 12px;font-size:12px;min-height:unset;">↺ Reset palette</button>
-          <button id="paletteToolsApplyBtn" class="primary btn-export" style="padding:6px 14px;font-size:13px;">✓ Apply</button>
-          <button id="paletteToolsCloseBtn" style="padding:6px 14px;font-size:13px;">✕ Cancel</button>
         </div>
       </div>
       <div class="palette-tools-dialog-body">
@@ -3360,6 +3372,10 @@
           </div>
 
         </div>
+      </div>
+      <div class="ptd-footer">
+        <button id="paletteToolsApplyBtn" class="primary btn-export" style="padding:7px 18px;font-size:13px;">✓ Apply</button>
+        <button id="paletteToolsCloseBtn" style="padding:7px 18px;font-size:13px;">✕ Cancel</button>
       </div>
     </div>
   </div>
@@ -3940,6 +3956,59 @@
       max-height: min(520px, 62vh);
     }
 
+    /* ── Crop overlay (v2 — integrated into Source canvas) ──── */
+    .crop-src-wrap {
+      position: relative;
+      display: block;
+      line-height: 0;
+    }
+    /* Release fixed aspect-ratio when crop active — canvas has correct intrinsic size */
+    .crop-src-wrap.crop-active .conv-canvas {
+      aspect-ratio: unset;
+      width: 100%;
+      height: auto;
+      max-height: min(340px, 40vh);
+    }
+    .crop-svg-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      touch-action: none;
+      user-select: none;
+    }
+    .crop-src-wrap:not(.crop-active) .crop-svg-overlay {
+      display: none;
+    }
+    .crop-info-bar {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 2px 0;
+      flex-wrap: wrap;
+    }
+    .crop-src-wrap.crop-active + .crop-info-bar {
+      display: flex;
+    }
+    .crop-coords {
+      font-size: 11px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      flex: 1;
+    }
+    .crop-lock-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--muted);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    /* ── end crop overlay ────────────────────────────────────── */
+
     .conv-controls {
       display: flex;
       flex-direction: column;
@@ -4122,6 +4191,19 @@
                     <span class="conv-radio-opt-desc">Monochrome import with white ink on black paper. Uses the same dither controls below.</span>
                   </div>
                 </label>
+                <label class="conv-radio-opt">
+                  <input type="radio" name="nextTo48kMethod" value="fs" style="margin-top:2px;flex-shrink:0;">
+                  <div class="conv-radio-opt-text">
+                    <span class="conv-radio-opt-title">Floyd-Steinberg dithering</span>
+                    <span class="conv-radio-opt-desc">Error diffusion — lepší pro fotografie a plynulé přechody. Algoritmus Spectrumizer.</span>
+                    <div id="n48kFsExtra" class="conv-dither-extra">
+                      <div class="conv-slider-row">
+                        <div class="conv-slider-label">Diffusion strength <span id="n48kFsStrengthVal" class="conv-slider-val">80%</span></div>
+                        <input type="range" id="n48kFsStrength" min="0" max="100" value="80">
+                      </div>
+                    </div>
+                  </div>
+                </label>
               </div>
             </div>
             <div class="conv-section">
@@ -4176,7 +4258,14 @@
             <div class="conv-preview-canvases" data-conv-title="Import Image → ZX Spectrum Next Layer 2">
               <div class="conv-preview-col" data-view-col="source">
                 <div class="conv-preview-sublabel">Source</div>
-                <canvas id="nextImgSrcCanvas" class="conv-canvas"></canvas>
+                <div class="crop-src-wrap" id="nextImgCropWrap">
+                  <canvas id="nextImgSrcCanvas" class="conv-canvas"></canvas>
+                  <svg id="nextImgCropSvg" class="crop-svg-overlay" xmlns="http://www.w3.org/2000/svg"></svg>
+                </div>
+                <div class="crop-info-bar">
+                  <span id="nextImgCropCoords" class="crop-coords">X: 0  Y: 0  (256×192)</span>
+                  <label class="crop-lock-label"><input type="checkbox" id="nextImgCropLock"> Lock 4∶3</label>
+                </div>
               </div>
               <div class="conv-preview-col" data-view-col="result">
                 <div class="conv-preview-sublabel conv-preview-sublabel-row"><span>Result</span><span
@@ -4275,7 +4364,14 @@
             <div class="conv-preview-canvases" data-conv-title="Import Image → ZX Spectrum 48k">
               <div class="conv-preview-col" data-view-col="source">
                 <div class="conv-preview-sublabel">Source</div>
-                <canvas id="imgSrcCanvas" class="conv-canvas"></canvas>
+                <div class="crop-src-wrap" id="imgCropWrap">
+                  <canvas id="imgSrcCanvas" class="conv-canvas"></canvas>
+                  <svg id="imgCropSvg" class="crop-svg-overlay" xmlns="http://www.w3.org/2000/svg"></svg>
+                </div>
+                <div class="crop-info-bar">
+                  <span id="imgCropCoords" class="crop-coords">X: 0  Y: 0  (256×192)</span>
+                  <label class="crop-lock-label"><input type="checkbox" id="imgCropLock"> Lock 4∶3</label>
+                </div>
               </div>
               <div class="conv-preview-col" data-view-col="result">
                 <div class="conv-preview-sublabel conv-preview-sublabel-row"><span>Result</span><span id="imgSpinner"
@@ -4324,6 +4420,19 @@
                   <div class="conv-radio-opt-text">
                     <span class="conv-radio-opt-title">Black &amp; White dithering</span>
                     <span class="conv-radio-opt-desc">Monochrome import with white ink on black paper. Uses the same dither controls below.</span>
+                  </div>
+                </label>
+                <label class="conv-radio-opt">
+                  <input type="radio" name="imgImportMethod" value="fs" style="margin-top:2px;flex-shrink:0;">
+                  <div class="conv-radio-opt-text">
+                    <span class="conv-radio-opt-title">Floyd-Steinberg dithering</span>
+                    <span class="conv-radio-opt-desc">Error diffusion — lepší pro fotografie a plynulé přechody. Algoritmus Spectrumizer.</span>
+                    <div id="imgFsExtra" class="conv-dither-extra">
+                      <div class="conv-slider-row">
+                        <div class="conv-slider-label">Diffusion strength <span id="imgFsStrengthVal" class="conv-slider-val">80%</span></div>
+                        <input type="range" id="imgFsStrength" min="0" max="100" value="80">
+                      </div>
+                    </div>
                   </div>
                 </label>
               </div>
@@ -5310,6 +5419,7 @@
 
       const CHANGELOG_PAGE_SIZE = 8;
       const changelogItems = [
+        { date: '2026-05-24', text: "Sprite Next Editor - Fixed ASM export" },
         { date: '2026-04-18', text: "Sprite Editor - the ability to move sprites in all directions and rotate them in 90-degree increments—both for individual sprites and for all frames at once." },
         { date: '2026-04-16', text: "The Font Editor displays a \"Mask fit preview\". A 16x16 grid option has been added to the Screen Editor. Option to convert the layer to dithering. Added more tools for working with layers: Color to Transparency and Merge with Layer Below..." },
         { date: '2026-04-15', text: "Palette tools in the Next section. Option to redefine the palette for Next and classic ZX Spectrum images. A new \"Transform Layer\" tool has been added, along with numerous bug fixes and many minor improvements. Updated Sprite Editor (48k/128k) – added a preview with a mask." },
@@ -8962,6 +9072,130 @@
         return { pixels, attrs };
       }
 
+      // Ditherizuje klasickou 48k vrstvu kombinací originálních pixelů a Bayer patternu.
+      // adjCanvas (volitelný): použije se pro přepočet atributů — barvy ink/paper z vrstvy
+      //   se vezmou, hledají se v adjCanvas odpovídající adjustované hodnoty, a přepočítají
+      //   se na nejbližší ZX barvy. Tím jas/kontrast/saturace ovlivní atributy.
+      // strength=0: beze změny. strength=1: plný Bayer pattern.
+      // Průhledné buňky (TRANSPARENT_ATTR) přeskočí.
+      // Varianta convertLayerToZXDithered která čte adjustované barvy přímo ze srcCanvas.
+      // Na místě každého ink/paper pixelu vrstvy přečte barvu z canvasu → nearestZXColor.
+      // Tím funguje správně i pro Auto tune (kde adjustments nejsou dostupné jako hodnoty).
+      function convertLayerToZXDitheredFromCanvas(layer, strength, matrix, srcCanvas) {
+        const pixels = new Uint8Array(ZX_W * ZX_H);
+        const attrs = new Uint8Array(ATTR_W * ATTR_H).fill(TRANSPARENT_ATTR);
+        const paperTransparent = new Uint8Array(ATTR_W * ATTR_H);
+        const explicitPaper = new Uint8Array(ZX_W * ZX_H);
+
+        const srcData = srcCanvas
+          ? srcCanvas.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, ZX_W, ZX_H).data
+          : null;
+
+        for (let ay = 0; ay < ATTR_H; ay++) for (let ax = 0; ax < ATTR_W; ax++) {
+          const ai = getAttrIdx(ax, ay);
+          const origAttr = layer.attrs[ai];
+          if (origAttr === TRANSPARENT_ATTR) continue;
+
+          const isPaperTransp = layer.paperTransparent ? layer.paperTransparent[ai] : false;
+          if (isPaperTransp) paperTransparent[ai] = 1;
+
+          let finalAttr = origAttr;
+          if (srcData) {
+            // Najdi první ink a první paper pixel v buňce, přečti jejich barvu ze srcCanvas
+            let inkR = -1, inkG = -1, inkB = -1;
+            let papR = -1, papG = -1, papB = -1;
+            for (let py = 0; py < 8; py++) for (let px = 0; px < 8; px++) {
+              const x = ax * 8 + px, y = ay * 8 + py;
+              const idx = getIdx(x, y);
+              const on = layer.pixels[idx];
+              const explPaper = layer.explicitPaper ? layer.explicitPaper[idx] : false;
+              if (on && inkR < 0) {
+                const ci = (y * ZX_W + x) * 4;
+                inkR = srcData[ci]; inkG = srcData[ci + 1]; inkB = srcData[ci + 2];
+              }
+              if (!on && !(isPaperTransp && !explPaper) && papR < 0) {
+                const ci = (y * ZX_W + x) * 4;
+                papR = srcData[ci]; papG = srcData[ci + 1]; papB = srcData[ci + 2];
+              }
+              if (inkR >= 0 && papR >= 0) break;
+            }
+            const newInkIdx = inkR >= 0 ? nearestZXColorPerceptual(inkR, inkG, inkB) : (origAttr & 7) + (((origAttr >> 6) & 1) ? 8 : 0);
+            const newPaperIdx = papR >= 0 ? nearestZXColorPerceptual(papR, papG, papB) : (((origAttr >> 3) & 7) + (((origAttr >> 6) & 1) ? 8 : 0));
+            const newBright = (newInkIdx > 7 || newPaperIdx > 7) ? 1 : 0;
+            finalAttr = makeAttrByte(newInkIdx & 7, newPaperIdx & 7, newBright, 0);
+          }
+          attrs[ai] = finalAttr;
+
+          // Spočítej poměr ink pixelů a Bayer blend
+          let inkCount = 0, visibleCount = 0;
+          for (let py = 0; py < 8; py++) for (let px = 0; px < 8; px++) {
+            const idx = getIdx(ax * 8 + px, ay * 8 + py);
+            const on = layer.pixels[idx];
+            const explPaper = layer.explicitPaper ? layer.explicitPaper[idx] : false;
+            if (!on && isPaperTransp && !explPaper) continue;
+            visibleCount++;
+            if (on) inkCount++;
+          }
+          if (!visibleCount) continue;
+
+          const t = 1 - (inkCount / visibleCount);
+
+          for (let py = 0; py < 8; py++) for (let px = 0; px < 8; px++) {
+            const x = ax * 8 + px, y = ay * 8 + py;
+            const idx = getIdx(x, y);
+            const origOn = layer.pixels[idx];
+            const explPaper = layer.explicitPaper ? layer.explicitPaper[idx] : false;
+            if (!origOn && isPaperTransp && !explPaper) { pixels[idx] = 0; continue; }
+            const bayerBit = ditherPixelBit(x, y, t, 1.0, matrix);
+            let bit;
+            if (origOn === bayerBit) {
+              bit = origOn;
+            } else {
+              const blendThreshold = getBayerThreshold(matrix, x + 3, y + 3);
+              bit = strength >= blendThreshold ? bayerBit : origOn;
+            }
+            pixels[idx] = bit ? 1 : 0;
+            if (!bit && isPaperTransp) explicitPaper[idx] = 1;
+          }
+        }
+        return { pixels, attrs, paperTransparent, explicitPaper };
+      }
+
+
+      // Ditherizuje Next vrstvu přímo z jejích dat — respektuje průhlednost (pixels[i]=0).
+      // adjCanvas (volitelný): adjustovaný canvas s upravenou barvou pro každý pixel.
+      function convertLayerToNextDithered(layer, strength, matrix, adjCanvas) {
+        const newPixels = new Uint8Array(ZX_W * ZX_H);
+        const newColors = new Uint8Array(ZX_W * ZX_H);
+        const amount = Math.max(0, Math.min(1, strength || 0)) * 32;
+
+        let adjData = null;
+        if (adjCanvas) {
+          const cx = adjCanvas.getContext('2d', { willReadFrequently: true });
+          adjData = cx.getImageData(0, 0, ZX_W, ZX_H).data;
+        }
+
+        for (let y = 0; y < ZX_H; y++) for (let x = 0; x < ZX_W; x++) {
+          const i = getIdx(x, y);
+          if (!layer.pixels[i]) continue;
+          newPixels[i] = 1;
+          let r, g, b;
+          if (adjData) {
+            const ci = (y * ZX_W + x) * 4;
+            r = adjData[ci]; g = adjData[ci + 1]; b = adjData[ci + 2];
+          } else {
+            const ci = clamp((layer.colors && layer.colors[i]) ?? 0, 0, 255);
+            [r, g, b] = NEXT_COLORS[ci].rgb;
+          }
+          const threshold = (getBayerThreshold(matrix, x, y) - 0.5) * amount;
+          const dr = clamp(Math.round(r + threshold), 0, 255);
+          const dg = clamp(Math.round(g + threshold), 0, 255);
+          const db = clamp(Math.round(b + threshold), 0, 255);
+          newColors[i] = nearestNextColor(dr, dg, db);
+        }
+        return { pixels: newPixels, colors: newColors };
+      }
+
       function convertImageToZXBWDithered(image, strength, matrix) {
         const cv = document.createElement('canvas'); cv.width = ZX_W; cv.height = ZX_H;
         const cx = cv.getContext('2d', { willReadFrequently: true });
@@ -8977,6 +9211,109 @@
           const thresholdBias = (1 - Math.max(0, Math.min(1, strength))) * 0.2;
           const t = Math.max(0, Math.min(1, 1 - luma + thresholdBias));
           pixels[getIdx(x, y)] = ditherPixelBit(x, y, t, strength, matrix);
+        }
+
+        return { pixels, attrs };
+      }
+
+      // Floyd-Steinberg error diffusion pro 48k ZX Spectrum import.
+      // Inspirováno algoritmem Image Spectrumizer (jarikomppa/img2spec).
+      //
+      // Průběh:
+      //   Pass 1 — cell pre-scan: pro každou 8×8 buňku najdi nejlepší ink/paper pár
+      //            (stejný findBestZXPair jako u Bayer ditheru, strength=0 = bez Bayeru).
+      //   Pass 2 — FS error diffusion pixel po pixelu (scanline order):
+      //            chyba kvantizace se šíří na 4 sousedy (klasické FS váhy 7/3/5/1).
+      //            Každý pixel je kvantizován na ink nebo paper své buňky.
+      //   strength [0..1] ovládá intenzitu difuze (0 = direct, 1 = plný FS).
+      function convertImageToZXFloydSteinberg(image, strength) {
+        const cv = document.createElement('canvas'); cv.width = ZX_W; cv.height = ZX_H;
+        const cx = cv.getContext('2d', { willReadFrequently: true });
+        cx.drawImage(image, 0, 0, ZX_W, ZX_H);
+        const src = cx.getImageData(0, 0, ZX_W, ZX_H).data;
+
+        // Float buffer pro RGB s chybami — inicializace ze src
+        const buf = new Float32Array(ZX_W * ZX_H * 3);
+        for (let i = 0; i < ZX_W * ZX_H; i++) {
+          buf[i * 3]     = src[i * 4];
+          buf[i * 3 + 1] = src[i * 4 + 1];
+          buf[i * 3 + 2] = src[i * 4 + 2];
+        }
+
+        const pixels = new Uint8Array(ZX_W * ZX_H);
+        const attrs  = new Uint8Array(ATTR_W * ATTR_H).fill(TRANSPARENT_ATTR);
+
+        // Pass 1: určení ink/paper párů pro každou buňku
+        const inkRGB   = new Uint8Array(ATTR_W * ATTR_H * 3); // [r,g,b] pro ink
+        const paperRGB = new Uint8Array(ATTR_W * ATTR_H * 3); // [r,g,b] pro paper
+        const cellInkCi   = new Uint8Array(ATTR_W * ATTR_H);
+        const cellPaperCi = new Uint8Array(ATTR_W * ATTR_H);
+
+        for (let ay = 0; ay < ATTR_H; ay++) {
+          for (let ax = 0; ax < ATTR_W; ax++) {
+            const cellRGB = [];
+            for (let py = 0; py < 8; py++) for (let px = 0; px < 8; px++) {
+              const x = ax * 8 + px, y = ay * 8 + py;
+              const bi = (y * ZX_W + x) * 3;
+              cellRGB.push([buf[bi], buf[bi + 1], buf[bi + 2]]);
+            }
+            // strength=0 → čistá direct volba barvy (bez Bayer vlivu na pair selection)
+            const { inkCi, paperCi, bright } = findBestZXPair(cellRGB, 0, 'bayer4', ax, ay);
+            const ai = getAttrIdx(ax, ay);
+            attrs[ai] = makeAttrByte(inkCi & 7, paperCi & 7, bright, 0);
+            cellInkCi[ai]   = inkCi;
+            cellPaperCi[ai] = paperCi;
+            const [ir, ig, ib] = ZX_COLORS[inkCi].rgb;
+            const [pr, pg, pb] = ZX_COLORS[paperCi].rgb;
+            inkRGB[ai * 3] = ir; inkRGB[ai * 3 + 1] = ig; inkRGB[ai * 3 + 2] = ib;
+            paperRGB[ai * 3] = pr; paperRGB[ai * 3 + 1] = pg; paperRGB[ai * 3 + 2] = pb;
+          }
+        }
+
+        // Pass 2: Floyd-Steinberg error diffusion
+        const fsStrength = Math.max(0, Math.min(1, strength ?? 1));
+
+        for (let y = 0; y < ZX_H; y++) {
+          for (let x = 0; x < ZX_W; x++) {
+            const bi  = (y * ZX_W + x) * 3;
+            const ai  = getAttrIdx(Math.floor(x / 8), Math.floor(y / 8));
+            const ir = inkRGB[ai * 3], ig = inkRGB[ai * 3 + 1], ib = inkRGB[ai * 3 + 2];
+            const pr = paperRGB[ai * 3], pg = paperRGB[ai * 3 + 1], pb = paperRGB[ai * 3 + 2];
+
+            const r = buf[bi], g = buf[bi + 1], b = buf[bi + 2];
+            const dI = colorDist(r, g, b, ir, ig, ib);
+            const dP = colorDist(r, g, b, pr, pg, pb);
+            const bit = dI <= dP ? 1 : 0;
+            pixels[getIdx(x, y)] = bit;
+
+            // Chyba kvantizace
+            const er = r - (bit ? ir : pr);
+            const eg = g - (bit ? ig : pg);
+            const eb = b - (bit ? ib : pb);
+
+            // Distribuujeme chybu jen pokud strength > 0
+            if (fsStrength > 0) {
+              const s = fsStrength;
+              function addErr(nx, ny, wr, wg, wb) {
+                if (nx < 0 || nx >= ZX_W || ny >= ZX_H) return;
+                // Chybu šíříme jen v rámci stejné 8×8 buňky (cell-contained FS)
+                // — tak nedochází ke "krvácení" barev přes hranice atributů.
+                // Přepínač: pokud chceš cross-cell FS (agresivnější, ale občas
+                // přeskakovací artefakty), odstraň podmínku níže.
+                const sameCell = (Math.floor(nx / 8) === Math.floor(x / 8)) &&
+                                  (Math.floor(ny / 8) === Math.floor(y / 8));
+                if (!sameCell) return;
+                const ni = (ny * ZX_W + nx) * 3;
+                buf[ni]     += er * wr * s;
+                buf[ni + 1] += eg * wg * s;
+                buf[ni + 2] += eb * wb * s;
+              }
+              addErr(x + 1, y,     7/16, 7/16, 7/16);
+              addErr(x - 1, y + 1, 3/16, 3/16, 3/16);
+              addErr(x,     y + 1, 5/16, 5/16, 5/16);
+              addErr(x + 1, y + 1, 1/16, 1/16, 1/16);
+            }
+          }
         }
 
         return { pixels, attrs };
@@ -9638,18 +9975,11 @@ mode: ${state.sprite.colored ? 'color' : 'monochrome'}`);
                   const sx = tx * 16, sy = ty * 16;
                   parts.push(`; sub-sprite ${subIdx} [${tx},${ty}] at pixel (${sx},${sy})`);
                   parts.push(`${labelBase}_${frameLabelBase}_sub${subIdx}_${block.index}:`);
+                  const tileBase = subIdx * bytesPerSubsprite;
+                  const rowBytesPerSubsprite = (previewFormat === 'hw4') ? 8 : 16;
                   for (let y = 0; y < 16; y++) {
-                    const globalY = sy + y;
-                    const rowFull = nextBytes.slice(globalY * rowStride, (globalY + 1) * rowStride);
-                    const bytesPerPx = (previewFormat === 'hw4') ? 0.5 : 1;
-                    let rowBytes;
-                    if (previewFormat === 'hw4') {
-                      // 4bpp: each pixel = 4 bits, 2 pixels per byte; sx must be even
-                      const byteStart = Math.floor(sx / 2), byteCount = 8;
-                      rowBytes = rowFull.slice(byteStart, byteStart + byteCount);
-                    } else {
-                      rowBytes = rowFull.slice(sx, sx + 16);
-                    }
+                    const rowStart = tileBase + y * rowBytesPerSubsprite;
+                    const rowBytes = nextBytes.slice(rowStart, rowStart + rowBytesPerSubsprite);
                     parts.push(`    DB  ${rowBytes.map(v => formatAsmValue(v)).join(', ')}`);
                   }
                   parts.push('');
@@ -10911,12 +11241,14 @@ attr grid: ${aw}x${ah}` : ''}`);
         return { pixels, attrs };
       }
 
-      function renderConversionPreview(srcCanvas, dstCanvas, method, strength, matrix) {
+      function renderConversionPreview(srcCanvas, dstCanvas, method, strength, matrix, fsStrength) {
         const zx = method === 'bw'
           ? convertImageToZXBWDithered(srcCanvas, strength, matrix)
-          : method === 'dither'
-            ? convertImageToZXDithered(srcCanvas, strength, matrix)
-            : convertImageToZXClassic(srcCanvas);
+          : method === 'fs'
+            ? convertImageToZXFloydSteinberg(srcCanvas, fsStrength ?? 0.8)
+            : method === 'dither'
+              ? convertImageToZXDithered(srcCanvas, strength, matrix)
+              : convertImageToZXClassic(srcCanvas);
 
         // Draw result onto dstCanvas (ZX 256x192 pixels)
         const dw = dstCanvas.width, dh = dstCanvas.height;
@@ -10946,12 +11278,26 @@ attr grid: ${aw}x${ah}` : ''}`);
         dstCanvas.getContext('2d').drawImage(tmp, 0, 0);
       }
 
-      // Build an adjusted source canvas (256x192) from an Image or from current Next layer
-      function buildAdjustedSrcCanvas(source, brightness, contrast, saturation) {
+      // Build an adjusted source canvas (256x192) from an Image or from current Next layer.
+      // cropX/cropY: top-left of selection in source pixels (null = no crop, scale full image)
+      // cropW/cropH: size of selection in source pixels (null = use ZX_W/ZX_H)
+      // The selected region is always scaled to exactly ZX_W×ZX_H output.
+      function buildAdjustedSrcCanvas(source, brightness, contrast, saturation, cropX, cropY, cropW, cropH) {
         const cv = document.createElement('canvas'); cv.width = ZX_W; cv.height = ZX_H;
         const cx = cv.getContext('2d', { willReadFrequently: true });
         if (source instanceof HTMLImageElement || source instanceof HTMLCanvasElement) {
-          cx.drawImage(source, 0, 0, ZX_W, ZX_H);
+          const sw = source instanceof HTMLImageElement ? source.naturalWidth : source.width;
+          const sh = source instanceof HTMLImageElement ? source.naturalHeight : source.height;
+          if (cropX != null || cropY != null) {
+            const sx = Math.max(0, Math.min((cropX || 0), sw - 1));
+            const sy = Math.max(0, Math.min((cropY || 0), sh - 1));
+            const cw = Math.max(1, Math.min(cropW != null ? cropW : ZX_W, sw - sx));
+            const ch = Math.max(1, Math.min(cropH != null ? cropH : ZX_H, sh - sy));
+            // Scale the crop region to full ZX_W×ZX_H output
+            cx.drawImage(source, sx, sy, cw, ch, 0, 0, ZX_W, ZX_H);
+          } else {
+            cx.drawImage(source, 0, 0, ZX_W, ZX_H);
+          }
         } else {
           // source is a merged layer object from mergeVisibleLayers() in Next mode
           // pixels[i]=1 means drawn pixel, pixels[i]=0 means paper (background)
@@ -11655,14 +12001,13 @@ function closeLayerColorTransparencyDialog() {
         bd._targetLayerId = layer.id;
         bd._origAttrs = new Uint8Array(layer.attrs);
         bd._origPixels = new Uint8Array(layer.pixels);
-        // convCanvas = pro konverzi (průhledné = černá, bez šachovnice)
-        const convCanvas = layerToConvCanvas(layer);
-        bd._convCanvas = convCanvas;
-        // Kompozitní "Original" panel — ukazuje jak vypadá scéna se všemi vrstvami
+        // Pro barevný dithering použijeme kompozitní canvas (všechny vrstvy) jako zdroj —
+        // to zajistí, že dithering dostane reálné barevné přechody místo monochromatického ZX obrazu.
         const compositeOriginal = buildDitherCompositeOriginal(layer.id);
+        bd._convCanvas = compositeOriginal;
         bd._displayCanvas = compositeOriginal;
-        // Otevřeme dialog — source = convCanvas (pro konverzi)
-        bd._openDialog(convCanvas);
+        // Otevřeme dialog — source = kompozitní canvas
+        bd._openDialog(compositeOriginal);
         // Přepis levého "Original" panelu na kompozitní pohled
         const srcCv = el('ldSrcCanvas');
         if (srcCv) {
@@ -11672,29 +12017,340 @@ function closeLayerColorTransparencyDialog() {
       }
 
       // Wire layer dither preview renderer — kompozitní pohled se všemi vrstvami
+      // srcCanvas = adjustovaný kompozit (brightness/contrast/saturation již aplikovány)
       function renderLayerDitherPreview(srcCanvas, dstCanvas, method, strength, matrix) {
-        const zx = isNextScreenMode()
-          ? (method === 'bw'
-              ? convertImageToNextBWDithered(srcCanvas, strength, matrix)
-              : convertImageToNextDithered(srcCanvas, strength, matrix))
-          : (method === 'bw'
-              ? convertImageToZXBWDithered(srcCanvas, strength, matrix)
-              : convertImageToZXDithered(srcCanvas, strength, matrix));
         const origAttrs = el('layerDitherBackdrop')._origAttrs || null;
         const origPixels = el('layerDitherBackdrop')._origPixels || null;
         const targetLayerId = el('layerDitherBackdrop')._targetLayerId || null;
-        // Vykreslíme kompozit s dithered vrstvou
+        const targetLayer = targetLayerId ? state.layers.find(l => l.id === targetLayerId) : null;
+
+        let zx;
+        if (method === 'bw') {
+          zx = isNextScreenMode()
+            ? convertImageToNextBWDithered(srcCanvas, strength, matrix)
+            : convertImageToZXBWDithered(srcCanvas, strength, matrix);
+        } else {
+          if (isNextScreenMode() && targetLayer) {
+            zx = convertLayerToNextDithered(targetLayer, strength, matrix, srcCanvas);
+          } else if (!isNextScreenMode() && targetLayer) {
+            // Pro 48k: přečti adjustované barvy přímo ze srcCanvas na místech kde jsou
+            // ink/paper pixely vrstvy → odvoď nové atributy bez nutnosti znát B/C/S hodnoty.
+            zx = convertLayerToZXDitheredFromCanvas(targetLayer, strength, matrix, srcCanvas);
+          } else {
+            zx = isNextScreenMode()
+              ? convertImageToNextDithered(srcCanvas, strength, matrix)
+              : convertImageToZXDithered(srcCanvas, strength, matrix);
+          }
+        }
+
         const composite = buildDitherCompositeResult(zx, origAttrs, targetLayerId, origPixels);
         dstCanvas.width = ZX_W; dstCanvas.height = ZX_H;
         dstCanvas.getContext('2d').drawImage(composite, 0, 0);
       }
 
       // Wire up a conversion dialog: handles preview, sliders, ok/cancel
+      // ── Crop overlay helper (v2) ───────────────────────────────────────────────
+      // Works by drawing a dimmed rect + selection rect as SVG over the Source canvas.
+      // The Source canvas is rendered at full source-image fit (not ZX_W×ZX_H scaled).
+      // Dragging moves the selection; resizing from any corner/edge is also supported.
+      // When lockRatio is true, the rect keeps the target aspect ratio (ZX_W:ZX_H).
+      function wireCropPanel(wrapId, svgId, coordsId, lockCheckboxId, targetW, targetH, onCropChange) {
+        const wrap = el(wrapId);
+        const svg  = el(svgId);
+        const coordsEl = el(coordsId);
+        const lockCb   = lockCheckboxId ? el(lockCheckboxId) : null;
+        if (!wrap || !svg) return null;
+
+        let srcImg = null;
+        let imgW = 0, imgH = 0;          // source image natural size
+        let selX = 0, selY = 0;          // selection in source pixels
+        let selW = targetW, selH = targetH;
+        let active = false;
+
+        // SVG elements
+        const NS = 'http://www.w3.org/2000/svg';
+        function mkEl(tag, attrs) {
+          const e = document.createElementNS(NS, tag);
+          Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k, v));
+          return e;
+        }
+        // dim overlay (4 rects around selection)
+        const dimT = mkEl('rect', { fill:'rgba(0,0,0,0.55)' });
+        const dimB = mkEl('rect', { fill:'rgba(0,0,0,0.55)' });
+        const dimL = mkEl('rect', { fill:'rgba(0,0,0,0.55)' });
+        const dimR = mkEl('rect', { fill:'rgba(0,0,0,0.55)' });
+        // selection border
+        const selBorder = mkEl('rect', { fill:'none', stroke:'white', 'stroke-width':'1.5', rx:'1' });
+        const selBorderOuter = mkEl('rect', { fill:'none', stroke:'rgba(0,0,0,0.5)', 'stroke-width':'0.8' });
+        [dimT,dimB,dimL,dimR,selBorderOuter,selBorder].forEach(e => svg.appendChild(e));
+
+        // handle grips — mv first so resize handles render on top of it
+        const HANDLES = [
+          { id:'mv', cur:'move',      dx:0,dy:0,dw: 0,dh: 0 },
+          { id:'nw', cur:'nw-resize', dx:1,dy:1,dw:-1,dh:-1 },
+          { id:'n',  cur:'n-resize',  dx:0,dy:1,dw: 0,dh:-1 },
+          { id:'ne', cur:'ne-resize', dx:0,dy:1,dw: 1,dh:-1 },
+          { id:'e',  cur:'e-resize',  dx:0,dy:0,dw: 1,dh: 0 },
+          { id:'se', cur:'se-resize', dx:0,dy:0,dw: 1,dh: 1 },
+          { id:'s',  cur:'s-resize',  dx:0,dy:0,dw: 0,dh: 1 },
+          { id:'sw', cur:'sw-resize', dx:1,dy:0,dw:-1,dh: 1 },
+          { id:'w',  cur:'w-resize',  dx:1,dy:0,dw:-1,dh: 0 },
+        ];
+        const hEls = HANDLES.map(h => {
+          const r = mkEl('rect', {
+            fill: h.id === 'mv' ? 'transparent' : 'white',
+            stroke: h.id === 'mv' ? 'none' : 'rgba(0,0,0,0.4)',
+            'stroke-width': '0.8',
+            rx: h.id === 'mv' ? '0' : '2',
+            cursor: h.cur,
+            style: 'touch-action:none'
+          });
+          svg.appendChild(r);
+          return { ...h, el: r };
+        });
+
+        function getScale() {
+          const canvas = wrap.querySelector('canvas');
+          if (!canvas || !imgW || !imgH) return { sx: 1, sy: 1 };
+          // Use intrinsic canvas dimensions (set by fitCanvas) for accurate mapping
+          const sx = canvas.width  / imgW;
+          const sy = canvas.height / imgH;
+          return { sx, sy };
+        }
+
+        const HS = 7; // handle half-size in CSS px
+
+        function clampSel() {
+          selW = Math.max(16, Math.min(selW, imgW));
+          selH = Math.max(16, Math.min(selH, imgH));
+          selX = Math.max(0, Math.min(selX, imgW - selW));
+          selY = Math.max(0, Math.min(selY, imgH - selH));
+          selX = Math.round(selX); selY = Math.round(selY);
+          selW = Math.round(selW); selH = Math.round(selH);
+        }
+
+        function applyLock() {
+          const ratio = targetW / targetH; // 4/3 (256/192)
+
+          // If current selection covers almost the whole image (>80% of area),
+          // default to the largest 4:3 crop that fits, centered
+          const coverRatio = (selW * selH) / (imgW * imgH);
+          if (coverRatio > 0.8) {
+            const scaleW = imgW / targetW;
+            const scaleH = imgH / targetH;
+            const s = Math.min(scaleW, scaleH);
+            const nw = Math.round(targetW * s);
+            const nh = Math.round(targetH * s);
+            selX = Math.round((imgW - nw) / 2);
+            selY = Math.round((imgH - nh) / 2);
+            selW = nw; selH = nh;
+            clampSel();
+            return;
+          }
+
+          // Otherwise: minimal adjustment — keep the dimension that changes less
+          const hA = selW / ratio;  // option A: keep width
+          const wB = selH * ratio;  // option B: keep height
+          const okA = hA <= imgH;
+          const okB = wB <= imgW;
+
+          if (okA && okB) {
+            if (Math.abs(hA - selH) <= Math.abs(wB - selW)) {
+              selH = Math.round(hA);
+            } else {
+              selW = Math.round(wB);
+            }
+          } else if (okA) {
+            selH = Math.round(hA);
+          } else if (okB) {
+            selW = Math.round(wB);
+          } else {
+            const s = Math.min(imgW / targetW, imgH / targetH);
+            selW = Math.round(targetW * s);
+            selH = Math.round(targetH * s);
+          }
+          clampSel();
+        }
+
+        function updateSvg() {
+          const { sx, sy } = getScale();
+          const canvas = wrap.querySelector('canvas');
+          if (!canvas) return;
+          // Use intrinsic canvas size for viewBox — matches source pixel mapping exactly
+          const W = canvas.width;
+          const H = canvas.height;
+          // Size the SVG to match the canvas CSS rendered size
+          svg.style.width  = canvas.clientWidth  + 'px';
+          svg.style.height = canvas.clientHeight + 'px';
+          svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+          const rx = selX * sx;
+          const ry = selY * sy;
+          const rw = selW * sx;
+          const rh = selH * sy;
+
+          // dim rects
+          dimT.setAttribute('x','0'); dimT.setAttribute('y','0'); dimT.setAttribute('width',String(W)); dimT.setAttribute('height',String(ry));
+          dimB.setAttribute('x','0'); dimB.setAttribute('y',String(ry+rh)); dimB.setAttribute('width',String(W)); dimB.setAttribute('height',String(Math.max(0,H-ry-rh)));
+          dimL.setAttribute('x','0'); dimL.setAttribute('y',String(ry)); dimL.setAttribute('width',String(rx)); dimL.setAttribute('height',String(rh));
+          dimR.setAttribute('x',String(rx+rw)); dimR.setAttribute('y',String(ry)); dimR.setAttribute('width',String(Math.max(0,W-rx-rw))); dimR.setAttribute('height',String(rh));
+
+          selBorder.setAttribute('x',String(rx+0.75)); selBorder.setAttribute('y',String(ry+0.75)); selBorder.setAttribute('width',String(Math.max(0,rw-1.5))); selBorder.setAttribute('height',String(Math.max(0,rh-1.5)));
+          selBorderOuter.setAttribute('x',String(rx)); selBorderOuter.setAttribute('y',String(ry)); selBorderOuter.setAttribute('width',String(rw)); selBorderOuter.setAttribute('height',String(rh));
+
+          // handle positions — clamped so they're always fully inside the SVG viewport
+          const hxc = { nw:rx, n:rx+rw/2, ne:rx+rw, e:rx+rw, se:rx+rw, s:rx+rw/2, sw:rx, w:rx };
+          const hyc = { nw:ry, n:ry,       ne:ry,    e:ry+rh/2, se:ry+rh, s:ry+rh, sw:ry+rh, w:ry+rh/2 };
+          hEls.forEach(h => {
+            if (h.id === 'mv') {
+              h.el.setAttribute('x', String(rx)); h.el.setAttribute('y', String(ry));
+              h.el.setAttribute('width', String(rw)); h.el.setAttribute('height', String(rh));
+            } else {
+              // Clamp handle center so the full HS*2 square stays inside [0..W] x [0..H]
+              const hcx = Math.max(HS, Math.min(W - HS, hxc[h.id]));
+              const hcy = Math.max(HS, Math.min(H - HS, hyc[h.id]));
+              h.el.setAttribute('x', String(hcx - HS)); h.el.setAttribute('y', String(hcy - HS));
+              h.el.setAttribute('width', String(HS*2)); h.el.setAttribute('height', String(HS*2));
+            }
+          });
+
+          if (coordsEl) {
+            coordsEl.textContent = `X: ${selX}  Y: ${selY}  ${selW}×${selH}`;
+          }
+        }
+
+        // Drag state
+        let drag = null; // { handle, startX, startY, startSelX, startSelY, startSelW, startSelH }
+
+        function svgPoint(e) {
+          const rect = svg.getBoundingClientRect();
+          const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+          const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+          const canvas = wrap.querySelector('canvas');
+          // Map CSS pixels to SVG intrinsic (= canvas intrinsic) coordinates
+          const scaleX = canvas ? canvas.width  / rect.width  : 1;
+          const scaleY = canvas ? canvas.height / rect.height : 1;
+          return {
+            x: (clientX - rect.left) * scaleX,
+            y: (clientY - rect.top)  * scaleY
+          };
+        }
+
+        hEls.forEach(h => {
+          h.el.addEventListener('mousedown', e => startDrag(e, h));
+          h.el.addEventListener('touchstart', e => { e.preventDefault(); startDrag(e, h); }, { passive: false });
+        });
+
+        function startDrag(e, h) {
+          e.stopPropagation();
+          const pt = svgPoint(e);
+          drag = { h, startX: pt.x, startY: pt.y, startSelX: selX, startSelY: selY, startSelW: selW, startSelH: selH };
+        }
+
+        function onMove(e) {
+          if (!drag) return;
+          e.preventDefault();
+          const { sx, sy } = getScale();
+          const pt = svgPoint(e);
+          const dx = (pt.x - drag.startX) / sx;
+          const dy = (pt.y - drag.startY) / sy;
+          const h = drag.h;
+          const isLocked = lockCb ? lockCb.checked : true;
+
+          if (h.id === 'mv') {
+            selX = drag.startSelX + dx;
+            selY = drag.startSelY + dy;
+          } else {
+            let nx = drag.startSelX + (h.dx ? dx : 0);
+            let ny = drag.startSelY + (h.dy ? dy : 0);
+            let nw = drag.startSelW + (h.dw ? dx * h.dw : 0);
+            let nh = drag.startSelH + (h.dh ? dy * h.dh : 0);
+            if (isLocked) {
+              // Preserve aspect ratio: pick dominant axis
+              if (Math.abs(h.dw) >= Math.abs(h.dh) || h.dh === 0) {
+                nw = Math.max(16, nw);
+                nh = nw * (targetH / targetW);
+              } else {
+                nh = Math.max(16, nh);
+                nw = nh * (targetW / targetH);
+              }
+              if (h.dx) nx = drag.startSelX + (drag.startSelW - nw);
+              if (h.dy) ny = drag.startSelY + (drag.startSelH - nh);
+            }
+            selX = nx; selY = ny; selW = nw; selH = nh;
+          }
+          clampSel();
+          updateSvg();
+          onCropChange(selX, selY, selW, selH);
+        }
+
+        function onUp() { drag = null; }
+
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+        window.addEventListener('touchmove', onMove, { passive: false });
+        window.addEventListener('touchend', onUp);
+        if (lockCb) lockCb.addEventListener('change', () => {
+          if (lockCb.checked) applyLock();
+          clampSel(); updateSvg(); onCropChange(selX, selY, selW, selH);
+        });
+
+        // Resize observer to keep SVG in sync when dialog is resized
+        if (typeof ResizeObserver !== 'undefined') {
+          new ResizeObserver(() => updateSvg()).observe(wrap);
+        }
+
+        return {
+          setup(img) {
+            srcImg = img;
+            imgW = img instanceof HTMLImageElement ? img.naturalWidth : img.width;
+            imgH = img instanceof HTMLImageElement ? img.naturalHeight : img.height;
+            const needsCrop = imgW > targetW || imgH > targetH;
+            // Default: select entire image
+            selX = 0; selY = 0; selW = imgW; selH = imgH;
+            // If lock is already checked, apply centered largest 4:3 crop
+            if (lockCb && lockCb.checked) {
+              const s = Math.min(imgW / targetW, imgH / targetH);
+              selW = Math.round(targetW * s);
+              selH = Math.round(targetH * s);
+              selX = Math.round((imgW - selW) / 2);
+              selY = Math.round((imgH - selH) / 2);
+              clampSel();
+            }
+            wrap.classList.toggle('crop-active', needsCrop);
+            return needsCrop;
+          },
+          redraw() { if (active || wrap.classList.contains('crop-active')) updateSvg(); },
+          get cropX() { return selX; },
+          get cropY() { return selY; },
+          get cropW() { return selW; },
+          get cropH() { return selH; },
+          get isLocked() { return lockCb ? lockCb.checked : true; },
+          reset() {
+            srcImg = null; imgW = 0; imgH = 0;
+            selX = 0; selY = 0; selW = targetW; selH = targetH;
+            wrap.classList.remove('crop-active');
+            if (coordsEl) coordsEl.textContent = '';
+          }
+        };
+      }
+      // ── end crop overlay helper ────────────────────────────────────────────────
+
+      // Fit image into max display box 600×340, preserving aspect ratio
+      function fitCanvas(canvas, iW, iH) {
+        const MAX_W = 600, MAX_H = 340;
+        const scale = Math.min(MAX_W / iW, MAX_H / iH, 1);
+        canvas.width  = Math.max(1, Math.round(iW * scale));
+        canvas.height = Math.max(1, Math.round(iH * scale));
+      }
+
       function wireConvDialog({ backdropId, methodName, ditherExtraId,
         strengthId, strengthValId, matrixId,
+        fsExtraId, fsStrengthId, fsStrengthValId,
         brightnessId, brightnessValId, contrastId, contrastValId, saturationId, saturationValId,
         srcCanvasId, dstCanvasId, spinnerId,
         cancelBtnId, okBtnId, autoAdjustBtnId,
+        cropWrapId, cropSvgId, cropCoordsId, cropLockId,  // optional crop overlay
         getSource,       // ()=>Image|canvas|layer|null
         onCancel,        // ()=>void
         onOk,            // (adjustedSrcCanvas, method, strength, matrix)=>void
@@ -11702,6 +12358,7 @@ function closeLayerColorTransparencyDialog() {
       }) {
         const backdrop = el(backdropId);
         const ditherExtra = el(ditherExtraId);
+        const fsExtra = fsExtraId ? el(fsExtraId) : null;
         const srcCanvas = el(srcCanvasId);
         const dstCanvas = el(dstCanvasId);
         const spinner = el(spinnerId);
@@ -11715,6 +12372,16 @@ function closeLayerColorTransparencyDialog() {
         let lastSrcCanvas = null;
         let previewSuspend = false;
         let busyMode = '';
+
+        // Crop overlay (optional — only for image import dialogs)
+        let cropCtrl = null;
+        if (cropWrapId && cropSvgId) {
+          cropCtrl = wireCropPanel(
+            cropWrapId, cropSvgId, cropCoordsId, cropLockId,
+            ZX_W, ZX_H,
+            () => schedulePreview()   // repaint on drag/resize
+          );
+        }
 
         function setPreviewView(mode = 'split') {
           const normalized = mode === 'result-only' || mode === 'source-only' ? mode : 'split';
@@ -11734,15 +12401,17 @@ function closeLayerColorTransparencyDialog() {
           const method = getMethod();
           const strength = (+(el(strengthId)?.value ?? 70)) / 100;
           const matrix = el(matrixId)?.value || 'bayer4';
+          const fsStrength = fsStrengthId ? (+(el(fsStrengthId)?.value ?? 80)) / 100 : 0.8;
           const brightness = +(el(brightnessId)?.value ?? 0);
           const contrast = +(el(contrastId)?.value ?? 0);
           const saturation = +(el(saturationId)?.value ?? 0);
-          return { method, strength, matrix, brightness, contrast, saturation };
+          return { method, strength, matrix, fsStrength, brightness, contrast, saturation };
         }
 
         function syncMethodUI() {
           const method = getMethod();
           if (ditherExtra) ditherExtra.style.display = (method === 'dither' || method === 'bw') ? 'flex' : 'none';
+          if (fsExtra) fsExtra.style.display = method === 'fs' ? 'flex' : 'none';
           if (autoAdjustBtn) {
             autoAdjustBtn.disabled = !!busyMode;
             autoAdjustBtn.title = '';
@@ -11790,6 +12459,7 @@ function closeLayerColorTransparencyDialog() {
 
         function syncAllLabels() {
           syncLabel(strengthId, strengthValId, '%');
+          if (fsStrengthId && fsStrengthValId) syncLabel(fsStrengthId, fsStrengthValId, '%');
           syncLabel(brightnessId, brightnessValId);
           syncLabel(contrastId, contrastValId);
           syncLabel(saturationId, saturationValId);
@@ -11815,20 +12485,29 @@ function closeLayerColorTransparencyDialog() {
           previewTimer = setTimeout(() => {
             const source = getSource();
             if (!source) { setSpinnerActive(false); return; }
-            const { method, strength, matrix, brightness, contrast, saturation } = getParams();
-            lastSrcCanvas = buildAdjustedSrcCanvas(source, brightness, contrast, saturation);
+            const { method, strength, matrix, fsStrength, brightness, contrast, saturation } = getParams();
+            const isCropActive = cropCtrl && el(cropWrapId) && el(cropWrapId).classList.contains('crop-active');
+            const cx_ = isCropActive ? cropCtrl.cropX : null;
+            const cy_ = isCropActive ? cropCtrl.cropY : null;
+            const cw_ = isCropActive ? cropCtrl.cropW : null;
+            const ch_ = isCropActive ? cropCtrl.cropH : null;
+            lastSrcCanvas = buildAdjustedSrcCanvas(source, brightness, contrast, saturation, cx_, cy_, cw_, ch_);
             if (srcCanvas) {
-              // Pokud backdrop má _displayCanvas, použij ho pro levý "Original" panel
               const displayOverride = backdrop._displayCanvas || null;
               if (displayOverride) {
                 srcCanvas.width = ZX_W; srcCanvas.height = ZX_H;
                 srcCanvas.getContext('2d').drawImage(displayOverride, 0, 0);
+              } else if (cropCtrl && el(cropWrapId) && el(cropWrapId).classList.contains('crop-active') && source instanceof HTMLImageElement) {
+                // When crop active: draw full source image at fitted size so SVG overlay aligns
+                fitCanvas(srcCanvas, source.naturalWidth, source.naturalHeight);
+                srcCanvas.getContext('2d').drawImage(source, 0, 0, srcCanvas.width, srcCanvas.height);
+                if (cropCtrl.redraw) cropCtrl.redraw();
               } else {
                 srcCanvas.width = ZX_W; srcCanvas.height = ZX_H;
                 srcCanvas.getContext('2d').drawImage(lastSrcCanvas, 0, 0);
               }
             }
-            (previewRenderer || renderConversionPreview)(lastSrcCanvas, dstCanvas, method, strength, matrix);
+            (previewRenderer || renderConversionPreview)(lastSrcCanvas, dstCanvas, method, strength, matrix, fsStrength);
             setSpinnerActive(false);
           }, delay);
         }
@@ -11853,7 +12532,7 @@ function closeLayerColorTransparencyDialog() {
           autoAdjustBtn.addEventListener('click', () => {
             const source = getSource();
             if (!source || busyMode) return;
-            const { method, strength, matrix } = getParams();
+            const { method, strength, matrix, fsStrength } = getParams();
             previewSuspend = true;
             if (previewTimer) clearTimeout(previewTimer);
             setBusy('auto');
@@ -11873,6 +12552,7 @@ function closeLayerColorTransparencyDialog() {
         cancelBtn.addEventListener('click', () => {
           if (busyMode) return;
           backdrop.classList.remove('open');
+          if (cropCtrl) cropCtrl.reset();
           onCancel();
         });
 
@@ -11885,13 +12565,19 @@ function closeLayerColorTransparencyDialog() {
             }
             return;
           }
-          const { method, strength, matrix, brightness, contrast, saturation } = getParams();
-          const adjCanvas = buildAdjustedSrcCanvas(source, brightness, contrast, saturation);
+          const { method, strength, matrix, fsStrength, brightness, contrast, saturation } = getParams();
+          const isCropActive = cropCtrl && el(cropWrapId) && el(cropWrapId).classList.contains('crop-active');
+          const cx_ = isCropActive ? cropCtrl.cropX : null;
+          const cy_ = isCropActive ? cropCtrl.cropY : null;
+          const cw_ = isCropActive ? cropCtrl.cropW : null;
+          const ch_ = isCropActive ? cropCtrl.cropH : null;
+          const adjCanvas = buildAdjustedSrcCanvas(source, brightness, contrast, saturation, cx_, cy_, cw_, ch_);
           setBusy('import');
           setTimeout(() => {
             try {
               backdrop.classList.remove('open');
-              onOk(adjCanvas, method, strength, matrix);
+              if (cropCtrl) cropCtrl.reset();
+              onOk(adjCanvas, method, strength, matrix, fsStrength);
             } finally {
               setBusy('');
             }
@@ -11906,10 +12592,18 @@ function closeLayerColorTransparencyDialog() {
           syncMethodUI();
           backdrop.classList.add('open');
           backdrop._source = source;
+          const hasCrop = cropCtrl ? cropCtrl.setup(source) : false;
           if (srcCanvas && source) {
-            srcCanvas.width = ZX_W; srcCanvas.height = ZX_H;
-            const cv = buildAdjustedSrcCanvas(source, 0, 0, 0);
-            srcCanvas.getContext('2d').drawImage(cv, 0, 0);
+            if (hasCrop && source instanceof HTMLImageElement) {
+              // Draw at fitted size so SVG overlay aligns correctly for any aspect ratio
+              fitCanvas(srcCanvas, source.naturalWidth, source.naturalHeight);
+              srcCanvas.getContext('2d').drawImage(source, 0, 0, srcCanvas.width, srcCanvas.height);
+              requestAnimationFrame(() => { if (cropCtrl && cropCtrl.redraw) cropCtrl.redraw(); });
+            } else {
+              srcCanvas.width = ZX_W; srcCanvas.height = ZX_H;
+              const cv = buildAdjustedSrcCanvas(source, 0, 0, 0, null, null, null, null);
+              srcCanvas.getContext('2d').drawImage(cv, 0, 0);
+            }
           }
           schedulePreview();
         };
@@ -11921,6 +12615,8 @@ function closeLayerColorTransparencyDialog() {
         ditherExtraId: 'n48kDitherExtra',
         strengthId: 'n48kDitherStrength', strengthValId: 'n48kStrengthVal',
         matrixId: 'n48kDitherMatrix',
+        fsExtraId: 'n48kFsExtra',
+        fsStrengthId: 'n48kFsStrength', fsStrengthValId: 'n48kFsStrengthVal',
         brightnessId: 'n48kBrightness', brightnessValId: 'n48kBrightnessVal',
         contrastId: 'n48kContrast', contrastValId: 'n48kContrastVal',
         saturationId: 'n48kSaturation', saturationValId: 'n48kSaturationVal',
@@ -11928,13 +12624,15 @@ function closeLayerColorTransparencyDialog() {
         cancelBtnId: 'nextTo48kCancelBtn', okBtnId: 'nextTo48kOkBtn', autoAdjustBtnId: 'n48kAutoAdjustBtn',
         getSource: () => el('nextTo48kBackdrop')._source || null,
         onCancel: () => { if (el('screenModeSelect')) el('screenModeSelect').value = state.screenMode; },
-        onOk: (adjCanvas, method, strength, matrix) => {
+        onOk: (adjCanvas, method, strength, matrix, fsStrength) => {
           pushHistory('Screen mode converted.');
           const zx = method === 'bw'
             ? convertImageToZXBWDithered(adjCanvas, strength, matrix)
-            : method === 'dither'
-              ? convertImageToZXDithered(adjCanvas, strength, matrix)
-              : convertImageToZXClassic(adjCanvas);
+            : method === 'fs'
+              ? convertImageToZXFloydSteinberg(adjCanvas, fsStrength ?? 0.8)
+              : method === 'dither'
+                ? convertImageToZXDithered(adjCanvas, strength, matrix)
+                : convertImageToZXClassic(adjCanvas);
           state.layers.forEach((layer, i) => {
             if (i === 0) {
               layer.pixels = zx.pixels;
@@ -11984,6 +12682,8 @@ function closeLayerColorTransparencyDialog() {
         saturationId: 'nextImgSaturation', saturationValId: 'nextImgSaturationVal',
         srcCanvasId: 'nextImgSrcCanvas', dstCanvasId: 'nextImgDstCanvas', spinnerId: 'nextImgSpinner',
         cancelBtnId: 'nextImgImportCancelBtn', okBtnId: 'nextImgImportOkBtn', autoAdjustBtnId: null,
+        cropWrapId: 'nextImgCropWrap', cropSvgId: 'nextImgCropSvg',
+        cropCoordsId: 'nextImgCropCoords', cropLockId: 'nextImgCropLock',
         getSource: () => el('nextImgImportBackdrop')._source || null,
         onCancel: () => { el('nextImgImportBackdrop')._source = null; },
         onOk: (adjCanvas, method, strength, matrix) => {
@@ -12011,24 +12711,32 @@ function closeLayerColorTransparencyDialog() {
         ditherExtraId: 'imgDitherExtra',
         strengthId: 'imgDitherStrength', strengthValId: 'imgStrengthVal',
         matrixId: 'imgDitherMatrix',
+        fsExtraId: 'imgFsExtra',
+        fsStrengthId: 'imgFsStrength', fsStrengthValId: 'imgFsStrengthVal',
         brightnessId: 'imgBrightness', brightnessValId: 'imgBrightnessVal',
         contrastId: 'imgContrast', contrastValId: 'imgContrastVal',
         saturationId: 'imgSaturation', saturationValId: 'imgSaturationVal',
         srcCanvasId: 'imgSrcCanvas', dstCanvasId: 'imgDstCanvas', spinnerId: 'imgSpinner',
         cancelBtnId: 'imgImportCancelBtn', okBtnId: 'imgImportOkBtn', autoAdjustBtnId: 'imgAutoAdjustBtn',
+        cropWrapId: 'imgCropWrap', cropSvgId: 'imgCropSvg',
+        cropCoordsId: 'imgCropCoords', cropLockId: 'imgCropLock',
         getSource: () => el('imgImportBackdrop')._source || null,
         onCancel: () => { el('imgImportBackdrop')._source = null; },
-        onOk: (adjCanvas, method, strength, matrix) => {
+        onOk: (adjCanvas, method, strength, matrix, fsStrength) => {
           let zx;
           if (method === 'bw') zx = convertImageToZXBWDithered(adjCanvas, strength, matrix);
           else if (method === 'dither') zx = convertImageToZXDithered(adjCanvas, strength, matrix);
+          else if (method === 'fs') {
+            zx = convertImageToZXFloydSteinberg(adjCanvas, fsStrength ?? 0.8);
+          }
           else zx = convertImageToZXClassic(adjCanvas);
           const src = el('imgImportBackdrop')._source;
           el('imgImportBackdrop')._source = null;
           state.importOverlay = { image: src instanceof HTMLImageElement ? src : adjCanvas, alpha: .35 };
           const label = method === 'bw'
             ? ` (BW dithering ${Math.round(strength * 100)}%, ${matrix})`
-            : method === 'dither' ? ` (dithering ${Math.round(strength * 100)}%, ${matrix})` : '';
+            : method === 'dither' ? ` (dithering ${Math.round(strength * 100)}%, ${matrix})`
+            : method === 'fs' ? ` (Floyd-Steinberg ${Math.round((fsStrength ?? 0.8) * 100)}%)` : '';
           mutateActiveLayer(layer => { layer.pixels = zx.pixels; if (zx.colors) layer.colors = zx.colors; if (zx.attrs) layer.attrs = zx.attrs; }, 'Image imported' + label + '.');
         }
       });
@@ -12046,7 +12754,7 @@ function closeLayerColorTransparencyDialog() {
         cancelBtnId: 'ldCancelBtn', okBtnId: 'ldOkBtn', autoAdjustBtnId: 'ldAutoAdjustBtn',
         getSource: () => el('layerDitherBackdrop')._convCanvas || el('layerDitherBackdrop')._source || null,
         onCancel: () => { el('layerDitherBackdrop')._source = null; el('layerDitherBackdrop')._convCanvas = null; el('layerDitherBackdrop')._displayCanvas = null; el('layerDitherBackdrop')._targetLayerId = null; el('layerDitherBackdrop')._origAttrs = null; el('layerDitherBackdrop')._origPixels = null; },
-        onOk: (adjCanvas, method, strength, matrix) => {
+        onOk: (adjCanvas, method, strength, matrix, fsStrength) => {
           const targetId = el('layerDitherBackdrop')._targetLayerId;
           const origAttrsSnapshot = el('layerDitherBackdrop')._origAttrs;
           const origPixelsSnapshot = el('layerDitherBackdrop')._origPixels;
@@ -12057,69 +12765,99 @@ function closeLayerColorTransparencyDialog() {
           el('layerDitherBackdrop')._origAttrs = null;
           el('layerDitherBackdrop')._origPixels = null;
           if (!targetId) return;
-          const conv = isNextScreenMode()
-            ? (method === 'bw'
-                ? convertImageToNextBWDithered(adjCanvas, strength, matrix)
-                : convertImageToNextDithered(adjCanvas, strength, matrix))
-            : (method === 'bw'
-                ? convertImageToZXBWDithered(adjCanvas, strength, matrix)
-                : convertImageToZXDithered(adjCanvas, strength, matrix));
-          const label = method === 'bw'
-            ? ` (BW ${Math.round(strength * 100)}%, ${matrix})`
-            : ` (colour ${Math.round(strength * 100)}%, ${matrix})`;
+
           pushHistory();
           const next = cloneLayers(state.layers);
           const layerIdx = next.findIndex(l => l.id === targetId);
           if (layerIdx < 0) { setStatus('Layer not found.'); return; }
           const origLayer = next[layerIdx];
 
-          if (isNextScreenMode()) {
-            const origPixels = origPixelsSnapshot || new Uint8Array(origLayer.pixels);
-            const newPixels = new Uint8Array(conv.pixels || new Uint8Array(ZX_W * ZX_H).fill(1));
-            const newColors = new Uint8Array(conv.colors || new Uint8Array(ZX_W * ZX_H));
-            for (let i = 0; i < ZX_W * ZX_H; i++) {
-              if (!origPixels[i]) {
-                newPixels[i] = 0;
-                newColors[i] = 0;
+          const label = method === 'bw'
+            ? ` (BW ${Math.round(strength * 100)}%, ${matrix})`
+            : ` (colour ${Math.round(strength * 100)}%, ${matrix})`;
+
+          if (method === 'bw') {
+            // BW dithering — přes image canvas jako dřív
+            const conv = isNextScreenMode()
+              ? convertImageToNextBWDithered(adjCanvas, strength, matrix)
+              : convertImageToZXBWDithered(adjCanvas, strength, matrix);
+
+            if (isNextScreenMode()) {
+              const origPixels = origPixelsSnapshot || new Uint8Array(origLayer.pixels);
+              const newPixels = new Uint8Array(conv.pixels || new Uint8Array(ZX_W * ZX_H).fill(1));
+              const newColors = new Uint8Array(conv.colors || new Uint8Array(ZX_W * ZX_H));
+              for (let i = 0; i < ZX_W * ZX_H; i++) {
+                if (!origPixels[i]) { newPixels[i] = 0; newColors[i] = 0; }
               }
+              origLayer.pixels = newPixels;
+              origLayer.colors = newColors;
+              if (!origLayer.attrs) origLayer.attrs = new Uint8Array(ATTR_W * ATTR_H);
+              if (!origLayer.paperTransparent) origLayer.paperTransparent = new Uint8Array(ATTR_W * ATTR_H);
+              if (!origLayer.explicitPaper) origLayer.explicitPaper = new Uint8Array(ZX_W * ZX_H);
+              origLayer.attrs.fill(TRANSPARENT_ATTR);
+              origLayer.paperTransparent.fill(0);
+              origLayer.explicitPaper.fill(0);
+            } else {
+              const origAttrs = origAttrsSnapshot || new Uint8Array(origLayer.attrs);
+              const newAttrs = conv.attrs ? new Uint8Array(conv.attrs) : new Uint8Array(ATTR_W * ATTR_H).fill(makeAttrByte(7, 0, 0, 0));
+              const newPixels = new Uint8Array(conv.pixels);
+              for (let ay = 0; ay < ATTR_H; ay++) for (let ax = 0; ax < ATTR_W; ax++) {
+                const ai = ay * ATTR_W + ax;
+                if (origAttrs[ai] === TRANSPARENT_ATTR) {
+                  newAttrs[ai] = TRANSPARENT_ATTR;
+                  for (let py = 0; py < 8; py++) for (let px2 = 0; px2 < 8; px2++)
+                    newPixels[getIdx(ax * 8 + px2, ay * 8 + py)] = 0;
+                }
+              }
+              origLayer.pixels = newPixels;
+              origLayer.attrs = newAttrs;
+              if (!origLayer.paperTransparent) origLayer.paperTransparent = new Uint8Array(ATTR_W * ATTR_H);
+              if (!origLayer.explicitPaper) origLayer.explicitPaper = new Uint8Array(ZX_W * ZX_H);
+              origLayer.paperTransparent.fill(0);
+              origLayer.explicitPaper.fill(0);
             }
-            origLayer.pixels = newPixels;
-            origLayer.colors = newColors;
-            if (!origLayer.attrs) origLayer.attrs = new Uint8Array(ATTR_W * ATTR_H);
-            if (!origLayer.paperTransparent) origLayer.paperTransparent = new Uint8Array(ATTR_W * ATTR_H);
-            if (!origLayer.explicitPaper) origLayer.explicitPaper = new Uint8Array(ZX_W * ZX_H);
-            origLayer.attrs.fill(TRANSPARENT_ATTR);
-            origLayer.paperTransparent.fill(0);
-            origLayer.explicitPaper.fill(0);
-          } else {
-            // Restore transparency: buňky, které byly v původní vrstvě průhledné
-            // (TRANSPARENT_ATTR), musí zůstat průhledné i po dithering konverzi.
+          } else if (method === 'fs' && !isNextScreenMode()) {
+            // Floyd-Steinberg dithering pro 48k — z adjCanvas, zachování průhledných buněk
+            const conv = convertImageToZXFloydSteinberg(adjCanvas, fsStrength ?? 0.8);
             const origAttrs = origAttrsSnapshot || new Uint8Array(origLayer.attrs);
             const newAttrs = conv.attrs ? new Uint8Array(conv.attrs) : new Uint8Array(ATTR_W * ATTR_H).fill(makeAttrByte(7, 0, 0, 0));
             const newPixels = new Uint8Array(conv.pixels);
-
-            for (let ay = 0; ay < ATTR_H; ay++) {
-              for (let ax = 0; ax < ATTR_W; ax++) {
-                const ai = ay * ATTR_W + ax;
-                if (origAttrs[ai] === TRANSPARENT_ATTR) {
-                  // Buňka byla průhledná — vrátit průhlednost a vymazat pixely
-                  newAttrs[ai] = TRANSPARENT_ATTR;
-                  for (let py = 0; py < 8; py++) {
-                    for (let px2 = 0; px2 < 8; px2++) {
-                      newPixels[getIdx(ax * 8 + px2, ay * 8 + py)] = 0;
-                    }
-                  }
-                }
+            for (let ay = 0; ay < ATTR_H; ay++) for (let ax = 0; ax < ATTR_W; ax++) {
+              const ai = ay * ATTR_W + ax;
+              if (origAttrs[ai] === TRANSPARENT_ATTR) {
+                newAttrs[ai] = TRANSPARENT_ATTR;
+                for (let py = 0; py < 8; py++) for (let px2 = 0; px2 < 8; px2++)
+                  newPixels[getIdx(ax * 8 + px2, ay * 8 + py)] = 0;
               }
             }
-
             origLayer.pixels = newPixels;
             origLayer.attrs = newAttrs;
             if (!origLayer.paperTransparent) origLayer.paperTransparent = new Uint8Array(ATTR_W * ATTR_H);
             if (!origLayer.explicitPaper) origLayer.explicitPaper = new Uint8Array(ZX_W * ZX_H);
             origLayer.paperTransparent.fill(0);
             origLayer.explicitPaper.fill(0);
+          } else {
+            // Colour dithering — přímé zpracování z dat vrstvy
+            if (isNextScreenMode()) {
+              const conv = convertLayerToNextDithered(origLayer, strength, matrix, adjCanvas);
+              origLayer.pixels = conv.pixels;
+              origLayer.colors = conv.colors;
+              if (!origLayer.attrs) origLayer.attrs = new Uint8Array(ATTR_W * ATTR_H);
+              if (!origLayer.paperTransparent) origLayer.paperTransparent = new Uint8Array(ATTR_W * ATTR_H);
+              if (!origLayer.explicitPaper) origLayer.explicitPaper = new Uint8Array(ZX_W * ZX_H);
+              origLayer.attrs.fill(TRANSPARENT_ATTR);
+              origLayer.paperTransparent.fill(0);
+              origLayer.explicitPaper.fill(0);
+            } else {
+              // Pro 48k: použij adjustovaný canvas přímo (funguje i pro Auto tune)
+              const conv = convertLayerToZXDitheredFromCanvas(origLayer, strength, matrix, adjCanvas);
+              origLayer.pixels = conv.pixels;
+              origLayer.attrs = conv.attrs;
+              origLayer.paperTransparent = conv.paperTransparent;
+              origLayer.explicitPaper = conv.explicitPaper;
+            }
           }
+
           state.layers = next;
           setStatus(`Layer dithered${label}.`);
           renderAll();
@@ -12955,7 +13693,77 @@ function closeLayerColorTransparencyDialog() {
         e.target.value = '';
       });
 
+      // ── Export palette as binary .pal (interleaved: lo,hi per entry) ─────
+      function exportPalettePal() {
+        const pal = _ptdWorkingPalette || NEXT_COLORS;
+        const out = new Uint8Array(512);
 
+        // Zkopiruj celou 256-entry Next paletu 1:1 (interleaved lo/hi).
+        for (let i = 0; i < 256; i++) {
+          out[i * 2]     = pal[i].palLo & 0xFF;
+          out[i * 2 + 1] = pal[i].palHi & 0xFF;
+        }
+
+        // Aplikuj recolorMapping[] do ULA slotu.
+        // ULA Next paleta:
+        //   0–7   = INK normal
+        //   8–15  = INK bright
+        //   16–23 = PAPER normal
+        //   24–31 = PAPER bright
+        // INK i PAPER sloty musi dostat stejnou barvu (stejny next index),
+        // jinak paper bude jina barva nez ink pri same ULA barvicce.
+        const writeEntry = (dstIdx, srcIdx) => {
+          const si = clamp(srcIdx | 0, 0, 255);
+          out[dstIdx * 2]     = pal[si].palLo & 0xFF;
+          out[dstIdx * 2 + 1] = pal[si].palHi & 0xFF;
+        };
+        for (let c = 0; c < 8; c++) {
+          const normalSrc = recolorMapping[c] & 0xFF;
+          writeEntry(c,      normalSrc);   // INK normal
+          writeEntry(16 + c, normalSrc);   // PAPER normal
+
+          const brightSrc = recolorMapping[8 + c] & 0xFF;
+          writeEntry(8  + c, brightSrc);   // INK bright
+          writeEntry(24 + c, brightSrc);   // PAPER bright
+        }
+
+        const blob = new Blob([out], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = `${sanitizeLabel(state.screenName, 'screen')}_palette.pal`; a.click();
+        URL.revokeObjectURL(url);
+        const s = el('ptdPaletteIOStatus');
+        if (s) { s.classList.remove('hidden'); s.textContent = 'Palette exported as binary .pal (512 bytes, interleaved lo/hi, recolor applied).'; }
+        setStatus('Palette exported as .pal.');
+      }
+      if (el('ptdExportPalBtn')) el('ptdExportPalBtn').addEventListener('click', exportPalettePal);
+
+      // ── Import palette from binary .pal (interleaved: lo,hi per entry) ───
+      function importPalettePal(file) {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          const buf = new Uint8Array(ev.target.result);
+          const s = el('ptdPaletteIOStatus');
+          if (buf.length < 512) {
+            if (s) { s.classList.remove('hidden'); s.textContent = `PAL import failed: file too small (${buf.length} B, need 512).`; }
+            setStatus(`PAL import failed: ${buf.length} B, need 512.`);
+            return;
+          }
+          if (!_ptdWorkingPalette) ptdSnapshotPalette();
+          for (let i = 0; i < 256; i++) {
+            ptdSetWorkingEntry(i, buf[i * 2], buf[i * 2 + 1]);
+          }
+          ptdRenderPreview();
+          if (_ptdActiveTab === 'palette') ptdRenderPalGrid();
+          if (s) { s.classList.remove('hidden'); s.textContent = `PAL imported from ${file.name} (click Apply to confirm).`; }
+          setStatus(`PAL imported — click Apply to confirm.`);
+        };
+        reader.readAsArrayBuffer(file);
+      }
+      if (el('ptdImportPalInput')) el('ptdImportPalInput').addEventListener('change', e => {
+        const f = e.target.files && e.target.files[0];
+        if (f) importPalettePal(f);
+        e.target.value = '';
+      });
 
       // Layer controls
       el('layerTransformCancelBtn').addEventListener('click', closeLayerTransformDialog);
